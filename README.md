@@ -16,7 +16,9 @@ A configuration file is used to declare all used GPIO pins. Then, a library is c
 
 ### File Descriptions
 The `config.py` file list all the GPIO pins being used for the blood smearing device.
+
 The `slide_stepper.py` file declares a class with functions to actuate the linear guide's stepper motor.
+
 The `basic_smear.py` file commands the linear guide for a Proof of Concept presentation.
 
 References
