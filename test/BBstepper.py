@@ -1,3 +1,5 @@
+# This is an example code from which I built on
+
 #enter stepper.'rotation'(pinarray, degrees, rpm)
 #1.8 per step
 
@@ -39,5 +41,3 @@ class Stepper(object):
 		
 	def cleanup(self, pins):
 		GPIO.cleanup()
-
-		
