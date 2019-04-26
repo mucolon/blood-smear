@@ -39,3 +39,5 @@ class Stepper(object):
 		
 	def cleanup(self, pins):
 		GPIO.cleanup()
+
+		
