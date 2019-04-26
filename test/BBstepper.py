@@ -1,4 +1,4 @@
-# This is an example code from which I built on
+# This is an example code from which I built on.
 
 #enter stepper.'rotation'(pinarray, degrees, rpm)
 #1.8 per step
