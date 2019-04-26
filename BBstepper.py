@@ -38,4 +38,4 @@ class Stepper(object):
 			GPIO.output(config.pins["clk"], GPIO.HIGH)
 		
 	def cleanup(self, pins):
-		GPIO.cleanup()	
+		GPIO.cleanup()
