@@ -2,12 +2,14 @@ blood-smear: A complete repository for a prototype hematology blood smearing mac
 ======================
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for hematology studies. A BeagleBone Black Wireless was used to control the device.
 
+
 Installation
 -----------------------
 Clone this repository using this code below.
 ```
 git clone git://github.com/mucolon/blood-smear.git
 ```
+
 
 Code Methodology
 --------------------------------
@@ -20,6 +22,7 @@ The `config.py` file list all the GPIO pins being used for the blood smearing de
 The `slide_stepper.py` file declares a class with functions to actuate the linear guide's stepper motor.
 
 The `basic_smear.py` file commands the linear guide for a Proof of Concept presentation.
+
 
 References
 ---------------------------
