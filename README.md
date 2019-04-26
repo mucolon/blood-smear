@@ -12,7 +12,7 @@ git clone git://github.com/mucolon/blood-smear.git
 Code Methodology
 --------------------------------
 ### Overview
-A configuration file is used to declare all used GPIO pins. Then, a library is created for each motor in use. These libraries declare functions to actuate each different motor. Finally, a script is used to command all of the different motors for the automated smearing process.
+A configuration file is used to declare all the used GPIO pins. Then, a library is created for each motor in use. These libraries declare functions to actuate each different motor. Finally, a script is used to command all of the different motors for the automated smearing process.
 
 ### File Descriptions
 The `config.py` file list all the GPIO pins being used for the blood smearing device.
