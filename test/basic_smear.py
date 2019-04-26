@@ -12,7 +12,7 @@ import time
 import math
 
 
-# configuring pins
+# initializing pins
 slide.init_pins(config.slide_pins)
 
 
