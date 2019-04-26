@@ -25,7 +25,7 @@ def step_backward(pins, pin_index):
 # declaring stepper class with functions
 class stepper(object):
 
-    # function to initialize pins
+# function to initialize pins
     def init_pins(self, pins):
         GPIO.setup(config.slide_pins["pul"], GPIO.OUT)
         GPIO.setup(config.slide_pins["dir"], GPIO.OUT)
@@ -46,7 +46,7 @@ class stepper(object):
 
 # fucntion to move motor counterclockwise
     def spin_counterclockwise(self, pins, rotations, rpm):
-        sleep_time = .3 / float(rpm)
+        sleep_time = 0.3 / float(rpm)
         steps_backward = rotations * 200  # 1 micro step = 200 pulses
         # steps_background = rotations * 6400 # 32 micro steps = 6400 pulses
         GPIO.output(config.slide_pins["dir"], GPIO.LOW)
@@ -58,3 +58,10 @@ class stepper(object):
 # function to cleanup up pins from use
     def cleanup(self, pins):
         GPIO.cleanup()
+
+# function to disable motor from sending pulses
+    def disable(self, pins):
+    	GPIO.output(config.slide_pins["ena"], GPIO.HIGH)
+    	GPIO.output(config.slide_pins["pul"], GPIO.LOW)
+
+
