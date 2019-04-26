@@ -1,8 +1,9 @@
-# mae156-bloodSmearingMachine
+blood-smear
+======================
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for hematology studies.
 
 Cloning
--------
+-----------------------
 Clone this repository this this code below.
 ```
 git clone git://github.com/mucolon/blood-smear.git
