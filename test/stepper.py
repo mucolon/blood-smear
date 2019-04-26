@@ -1,3 +1,5 @@
+# This is an example code from which I built on.
+
 #example Python code used to run stepper motors
 
 from BBstepper import Stepper
@@ -17,4 +19,3 @@ stepper.spin_counterclockwise(config.pins, 3, 30)
 
 
 stepper.cleanup(pins)
-
