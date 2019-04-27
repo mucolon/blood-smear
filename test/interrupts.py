@@ -1,4 +1,4 @@
-# This file handles
+# This file handles GPIO interrupts
 
 
 # importing libraries
@@ -13,10 +13,15 @@ import os
 import select
 
 
+# constants
+DEBOUNCE_INTERVAL = 0.5
+
+
+# interrupt class
 class InputEvent(threading.Thread):
 
-    LOW = 1
-    HIGH = 2
+    LOW = 0
+    HIGH = 1
 
     class InputEventInterrupt(Exception):
         pass
