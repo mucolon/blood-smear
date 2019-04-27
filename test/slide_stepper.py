@@ -25,7 +25,7 @@ def step_backward(pins, pin_index):
 # declaring stepper class with functions
 class stepper(object):
 
-# function to initialize pins
+    # function to initialize pins
     def init_pins(self, pins):
         GPIO.setup(config.slide_pins["pul"], GPIO.OUT)
         GPIO.setup(config.slide_pins["dir"], GPIO.OUT)
@@ -61,7 +61,5 @@ class stepper(object):
 
 # function to disable motor from sending pulses
     def disable(self, pins):
-    	GPIO.output(config.slide_pins["ena"], GPIO.HIGH)
-    	GPIO.output(config.slide_pins["pul"], GPIO.LOW)
-
-
+        GPIO.output(config.slide_pins["ena"], GPIO.HIGH)
+        GPIO.output(config.slide_pins["pul"], GPIO.LOW)
