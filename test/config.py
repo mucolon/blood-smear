@@ -5,7 +5,6 @@
 from array import *
 
 
-# example GPIO pins
 # active pins for linear guide
 slide_pins = {"pul": "P9_41", "dir": "P9_23", "ena": "P9_15"}
 
