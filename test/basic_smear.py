@@ -21,7 +21,7 @@ slide.init_pins(config.slide_pins)
 radius = 72 / (math.pi * 2)  # [mm] from CAD
 mms2rpm = radius * 4.5628764e-5  # [rpm]
 
-input_mms = 100  # [mm/s]
+input_mms = 20  # [mm/s]
 rpm = input_mms * mms2rpm
 
 slide.spin_clockwise(config.slide_pins, 1, rpm)
