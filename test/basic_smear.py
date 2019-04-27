@@ -10,11 +10,11 @@ import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
 import time
 import math
-import config
+from config import slide_pins
 
 
 # initializing pins
-slide.init_pins(config.slide_pins)
+slide.init_pins(slide_pins)
 
 
 # conversion factors
@@ -25,7 +25,9 @@ mms2rpm = radius * 4.5628764e-5  # [rpm]
 input_mms = 20  # [mm/s]
 rpm = input_mms * mms2rpm
 
-slide.spin_clockwise(config.slide_pins, 1, rpm)
-slide.spin_counterclockwise(config.slide_pins, 1, rpm)
+time.sleep(1)
+slide.spin_clockwise(slide_pins, 1, rpm)
+time.sleep(1)
+slide.spin_counterclockwise(slide_pins, 1, rpm)
 
-slide.cleanup(config.slide_pins)
+slide.cleanup(slide_pins)
