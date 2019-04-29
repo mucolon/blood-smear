@@ -5,7 +5,7 @@
 
 
 # importing libraries
-from slide_stepper import Stepper
+from stepper import Stepper
 # import Adafruit_BBIO.GPIO as GPIO
 # import Adafruit_BBIO.PWM as PWM
 import time
@@ -29,24 +29,24 @@ slide.init_pins()
 
 
 # conversion factors
-# radius = 13.3  # [mm] from CAD
-radius = 72 / (math.pi * 2)  # [mm] from CAD
-mms2rpm = radius * 4.5628764e-5  # [rpm]
+# radius = 13.3              # [mm] from CAD
+radius = 72 / (math.pi * 2)  # [mm] from manufacturer
+mms2rpm = radius * 60        # [rpm]
 
-input_mms = 10  # [mm/s]
-# rpm = input_mms * mms2rpm
-rpm = 10
+input_mms = 100  # [mm/s]
+rpm = input_mms * mms2rpm
+# rpm = 75
 
-for x in range(1):
-    # time.sleep(1)
-    # print("Spining Clockwise")
-    # slide.spin(2, rpm, cw)
+for x in range(10):
+    time.sleep(1)
+    print("Spining Clockwise")
+    slide.spin(1, rpm, cw)
 
-    # time.sleep(1)
-    print("Spining CounterClockwise")
+    time.sleep(1)
+    print("Spining Counterclockwise")
     slide.spin(1, rpm, ccw)
 
-    print("Completed", x+1, "Cycles")
+    print("Completed", x+1, "cycles")
 
 print("Cleaning up pins")
 slide.cleanup()
