@@ -5,7 +5,7 @@
 
 
 # importing libraries
-from slide_stepper_test import Stepper
+from slide_stepper import Stepper
 # import Adafruit_BBIO.GPIO as GPIO
 # import Adafruit_BBIO.PWM as PWM
 import time
@@ -35,16 +35,16 @@ mms2rpm = radius * 4.5628764e-5  # [rpm]
 
 input_mms = 10  # [mm/s]
 # rpm = input_mms * mms2rpm
-rpm = 20
+rpm = 10
 
 for x in range(1):
-    time.sleep(1)
-    print("Spining Clockwise")
-    slide.spin(2, rpm, cw)
+    # time.sleep(1)
+    # print("Spining Clockwise")
+    # slide.spin(2, rpm, cw)
 
-    time.sleep(1)
+    # time.sleep(1)
     print("Spining CounterClockwise")
-    slide.spin(2, rpm, ccw)
+    slide.spin(1, rpm, ccw)
 
     print("Completed", x+1, "Cycles")
 
