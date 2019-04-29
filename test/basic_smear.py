@@ -5,16 +5,20 @@
 
 
 # importing libraries
-from slide_stepper import stepper as slide
-import Adafruit_BBIO.GPIO as GPIO
-import Adafruit_BBIO.PWM as PWM
+from slide_stepper import Slide
+# import Adafruit_BBIO.GPIO as GPIO
+# import Adafruit_BBIO.PWM as PWM
 import time
 import math
-from config import slide_pins
+import config
+
+
+# initializing stepper classes
+slide = Slide()
 
 
 # initializing pins
-slide.init_pins(slide_pins)
+slide.init_pins(config.slide_pins)
 
 
 # conversion factors
@@ -26,8 +30,8 @@ input_mms = 20  # [mm/s]
 rpm = input_mms * mms2rpm
 
 time.sleep(1)
-slide.spin_clockwise(slide_pins, 1, rpm)
+slide.spin_clockwise(config.slide_pins, 1, rpm)
 time.sleep(1)
-slide.spin_counterclockwise(slide_pins, 1, rpm)
+slide.spin_counterclockwise(config.slide_pins, 1, rpm)
 
-slide.cleanup(slide_pins)
+slide.cleanup(config.slide_pins)
