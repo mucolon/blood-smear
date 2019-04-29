@@ -14,10 +14,12 @@ import config
 
 
 # initializing stepper classes
+print("Initializing Classes")
 slide = Slide()
 
 
 # initializing pins
+print("Initializing Pins")
 slide.init_pins(config.slide_pins)
 
 
@@ -26,12 +28,15 @@ slide.init_pins(config.slide_pins)
 radius = 72 / (math.pi * 2)  # [mm] from CAD
 mms2rpm = radius * 4.5628764e-5  # [rpm]
 
-input_mms = 20  # [mm/s]
+input_mms = 50  # [mm/s]
 rpm = input_mms * mms2rpm
 
 time.sleep(1)
-slide.spin_clockwise(config.slide_pins, 1, rpm)
+print("Spining Clockwise")
+slide.spin_clockwise(config.slide_pins, 2, rpm)
 time.sleep(1)
-slide.spin_counterclockwise(config.slide_pins, 1, rpm)
+print("Spining CounterClockwise")
+slide.spin_counterclockwise(config.slide_pins, 2, rpm)
 
+print("Cleaning up pins")
 slide.cleanup(config.slide_pins)
