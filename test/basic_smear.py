@@ -72,7 +72,8 @@ if __name__ == "__main__":
 
     # setting stepper motor micro steps
     print("Setting Micro Steps")
-    input_micro = int(input("Enter motor micro steps: "))
+    # input_micro = int(input("Enter motor micro steps: "))
+    input_micro = slide_ui.micro_steps()
     slide.micro_steps(1)
 
     # moving motor

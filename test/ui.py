@@ -42,7 +42,7 @@ class UserI:
             except ValueError:
                 print("Sorry, I didn't understand that.\nTry agian.")
                 continue
-            if (self.string_dir != "cw" or self.string_dir != "ccw"):
+            if (self.string_dir != "cw") or (self.string_dir != "ccw"):
                 print("Error: Invalid input. cw for clockwise. ccw for counterclockwise")
                 continue
             else:
