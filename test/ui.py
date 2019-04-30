@@ -73,16 +73,34 @@ class UserI:
                 continue
             elif self.microStep is not 1:
                 print("Error: Invalid value (type 0 for help)")
+                continue
             elif self.microStep is not 2:
                 print("Error: Invalid value (type 0 for help)")
+                continue
             elif self.microStep is not 4:
                 print("Error: Invalid value (type 0 for help)")
+                continue
             elif self.microStep is not 8:
                 print("Error: Invalid value (type 0 for help)")
+                continue
             elif self.microStep is not 16:
                 print("Error: Invalid value (type 0 for help)")
+                continue
             elif self.microStep is not 32:
                 print("Error: Invalid value (type 0 for help)")
+                continue
+            elif if self.microStep == 1:
+                break
+            elif if self.microStep == 2:
+                break
+            elif if self.microStep == 4:
+                break
+            elif if self.microStep == 8:
+                break
+            elif if self.microStep == 16:
+                break
+            elif if self.microStep == 32:
+                break
             else:
                 break
         return self.microStep
