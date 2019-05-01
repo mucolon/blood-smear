@@ -89,17 +89,17 @@ class UserI:
             elif self.microStep is not 32:
                 print("Error: Invalid value (type 0 for help)")
                 continue
-            elif if self.microStep == 1:
+            elif self.microStep == 1:
                 break
-            elif if self.microStep == 2:
+            elif self.microStep == 2:
                 break
-            elif if self.microStep == 4:
+            elif self.microStep == 4:
                 break
-            elif if self.microStep == 8:
+            elif self.microStep == 8:
                 break
-            elif if self.microStep == 16:
+            elif self.microStep == 16:
                 break
-            elif if self.microStep == 32:
+            elif self.microStep == 32:
                 break
             else:
                 break

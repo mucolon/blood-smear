@@ -11,6 +11,7 @@ import math
 class Stepper:
 
     # intitial class function
+    # pins: dictionary containg used stepper motor pins
     def __init__(self, pins):
         self.ena = pins["ena"]
         self.dir = pins["dir"]
@@ -95,7 +96,5 @@ class Stepper:
 
     # function to cleanup up pins from use
     def cleanup(self):
-        GPIO.cleanup(self.ena)
-        GPIO.cleanup(self.dir)
-        GPIO.cleanup(self.pul)
+        GPIO.cleanup()
         self.disable()

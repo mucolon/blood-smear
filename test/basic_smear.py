@@ -8,7 +8,7 @@
 from stepper import Stepper
 from input_io import Input_io
 from ui import UserI
-# import Adafruit_BBIO.GPIO as GPIO
+import Adafruit_BBIO.GPIO as GPIO
 # import Adafruit_BBIO.PWM as PWM
 import time
 from math import pi
@@ -26,17 +26,41 @@ radius = 72 / (pi * 2)  # [mm] from manufacturer
 mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
+# function to move motor to linear guide home
+def home():
+    while far_switch.event() != True:
+        slide.move_steps(1, 50, ccw)
+    print("Home Position")
+
+
 # main function to move motor
 def main():
 
-    # input_mms = 100  # [mm/s]
-    # input_mms = float(input("Enter linear travel speed [mm/s]: "))
+    # asking for linear spped
+    print("Please enter linear speed of smear.")
     input_mms = slide_ui.linear_speed()
     rpm = input_mms * mms2rpm
+
+    # moving motor to blood dispensing site
+    print("Moving to blood dispensing site.")
+    slide.rotate(1, 50, cw)
+    print("Please dipense blood at target location.")
+    input("Press any key after blood is dispensed.")
+
+    # moving motor for smearing stage
+    print("Preparing for smear.")
+    print("Wicking blood")
+    slide.rotate(1, 50, cw)
+
+    # input_mms = 100  # [mm/s]
+    # input_mms = float(input("Enter linear travel speed [mm/s]: "))
+    # input_mms = slide_ui.linear_speed()
+    # rpm = input_mms * mms2rpm
     # rpm = 75
 
     # input_rot = float(input("Enter amount of motor rotations: "))
-    input_rot = slide_ui.rotations()
+    # input_rot = slide_ui.rotations()
+    input_rot = .7
 
     # input_dir = input("Enter motor direction [cw or ccw]: ")
     # if input_dir == "cw":
@@ -47,12 +71,15 @@ def main():
     #     dir_text = "Spining Counterclockwise"
     # else:
     #     print("Error: Invalid input. cw for clockwise. ccw for counterclockwise")
-    input_dir = slide_ui.direction()
+    # input_dir = slide_ui.direction()
+    input_dir = ccw
 
     time.sleep(1)
-    print(input_dir[1])
-    slide.rotate(input_rot, rpm, input_dir[0])
-    print("Completed rotations")
+    # print(input_dir[1])
+    print("Smearing blood")
+    # slide.rotate(input_rot, rpm, input_dir[0])
+    slide.rotate(input_rot, rpm, input_dir)
+    print("Completed smear")
 
 
 if __name__ == "__main__":
@@ -64,36 +91,53 @@ if __name__ == "__main__":
     far_switch = Input_io(config.limit_far_pin)
     slide_ui = UserI()
 
+    # confirming power
+    input("Press any key after motors are connected to power.")
+
     # initializing pins
     print("Initializing Pins")
     slide.init_pins()
     near_switch.init_pin()
     far_switch.init_pin()
 
+    # initializing limit switches
+    # print("Initilizing Limit Switches")
+
     # setting stepper motor micro steps
     print("Setting Micro Steps")
     # input_micro = int(input("Enter motor micro steps: "))
-    input_micro = slide_ui.micro_steps()
-    slide.micro_steps(1)
+    # input_micro = slide_ui.micro_steps()
+    input_micro = 1
+    slide.micro_steps(input_micro)
+
+    # moving to origin
+    print("Moving to home position.")
+    home()
 
     # moving motor
+    print("Preparing to make smear.")
+    print("Please load slide.")
+    input("Press any key after slide is loaded.")
     main()
 
     # asking to repeat process
     while True:
         try:
-            cont = input("Press enter to repeat\nOR\nPress n to stop: ")
+            cont = input("Press enter to repeat.\nOR\nPress n to stop: ")
         except ValueError:
-            print("Sorry, I didn't understand that.\nTry again.")
+            print("Sorry, I didn't understand that.\nTry again")
             continue
         if cont == "":
             main()
+            break
         elif cont == "n":
             break
         else:
-            print("Press enter to repeat\nOR\nPress n to stop: ")
+            print("Press enter to repeat.\nOR\nPress n to stop: ")
             continue
 
     # cleaning up pins
-    print("Cleaning up pins")
+    print("Cleaning up pins.")
     slide.cleanup()
+    near_switch.cleanup()
+    far_switch.cleanup()
