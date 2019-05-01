@@ -11,9 +11,14 @@ class Input_io():
     # intitial class function
     def __init__(self, pin, read_state):
         # pin: dictionary containing used input pin
-        # read_state: RISING, FALLING, BOTH
+        # read_state: rise, fall, both
         self.sig = pin["sig"]
-        self.edge = GPIO.read_state
+        if read_state == "rise"
+            self.edge = GPIO.RISING
+        elif read_state == "fall"
+            self.edge = GPIO.FALLING
+        elif read_state == "both"
+            self.edge = GPIO.BOTH
 
     # function to initialize pin
     def init_pin(self):
