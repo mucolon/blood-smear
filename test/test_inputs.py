@@ -22,10 +22,10 @@ input("Press any key after motors are connected to power.")
 
 # reading inputs
 for x in range(30):
-    # print("Near switch: ", near_switch.read())
-    # print("Far switch: ", far_switch.read(), "\n")
-    print("Near switch: ", GPIO.input(config.limit_near_pin["sig"]))
-    print("Far switch: ", GPIO.input(config.limit_far_pin["sig"]), "\n")
+    print("Near switch: ", near_switch.read())
+    print("Far switch: ", far_switch.read(), "\n")
+    # print("Near switch: ", GPIO.input(config.limit_near_pin["sig"]))
+    # print("Far switch: ", GPIO.input(config.limit_far_pin["sig"]), "\n")
     time.sleep(1)
 
 # cleaning up pins

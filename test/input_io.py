@@ -29,7 +29,7 @@ class Input_io():
 
     # function to read input
     def read(self):
-    	GPIO.input(self.sig)
+    	return GPIO.input(self.sig)
 
     # function to detect event
     def event(self):
