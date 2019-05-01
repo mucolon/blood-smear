@@ -29,7 +29,7 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 def home():
     read_value = 0
     while read_value != 1:
-        slide.move_steps(1, 30, ccw)
+        slide.move_steps(1, 50, ccw)
         read_value = far_switch.read()
     print("Home Position")
 
@@ -51,7 +51,7 @@ def main():
     # moving motor for smearing stage
     print("Preparing for smear")
     print("Wicking blood")
-    slide.move_linear(35, 40, cw, slide_circum)
+    slide.move_linear(35, 50, cw, slide_circum)
 
     # input_mms = 100  # [mm/s]
     # input_mms = float(input("Enter linear travel speed [mm/s]: "))
@@ -125,18 +125,18 @@ if __name__ == "__main__":
     # asking to repeat process
     while True:
         try:
-            cont = input("Press enter to repeat.\nOR\nPress n to stop: ")
+            cont = input("Press enter to repeat\nOR\nPress n to stop: ")
         except ValueError:
-            print("Sorry, I didn't understand that.\nTry again")
+            print("Error: Invalid Value")
             continue
         if cont == "":
-            # home()
+            home()
             main()
             break
         elif cont == "n":
             break
         else:
-            print("Press enter to repeat.\nOR\nPress n to stop: ")
+            print("Press enter to repeat\nOR\nPress n to stop: ")
             continue
 
     # cleaning up pins
