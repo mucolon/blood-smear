@@ -2,7 +2,7 @@
 
 
 # importing libraries
-from input_io omport input_io
+from input_io import Input_io
 import config
 import time
 
@@ -15,8 +15,11 @@ far_switch = Input_io(config.limit_far_pin, "fall")
 near_switch.init_pin()
 far_switch.init_pin()
 
+# confirming power
+input("Press any key after motors are connected to power.")
+
 # reading inputs
-for x in range(100):
+for x in range(30):
     print("Near switch: ", near_switch.read())
     print("Far switch: ", far_switch.read(), "\n")
     time.sleep(1)
@@ -24,4 +27,4 @@ for x in range(100):
 # cleaning up pins
 print("Cleaning up pins.")
 near_switch.cleanup()
-far_switch.cleaning()
+far_switch.cleanup()

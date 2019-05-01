@@ -15,15 +15,17 @@ class Input_io():
         self.sig = pin["sig"]
         if read_state == "rise":
             self.edge = GPIO.RISING
+            self.initial = GPIO.LOW
         elif read_state == "fall":
             self.edge = GPIO.FALLING
+            self.initial = GPIO.HIGH
         elif read_state == "both":
             self.edge = GPIO.BOTH
 
     # function to initialize pin
     def init_pin(self):
-        GPIO.setup(self.sig, GPIO.IN)
-        GPIO.add_event_detect(self.sig,self.edge)
+        GPIO.setup(self.sig, GPIO.IN, self.initial)
+        GPIO.add_event_detect(self.sig, self.edge)
 
     # function to read input
     def read(self):
