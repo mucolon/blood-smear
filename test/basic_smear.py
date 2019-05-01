@@ -8,7 +8,7 @@
 from stepper import Stepper
 from input_io import Input_io
 from ui import UserI
-import Adafruit_BBIO.GPIO as GPIO
+# import Adafruit_BBIO.GPIO as GPIO
 # import Adafruit_BBIO.PWM as PWM
 import time
 from math import pi
@@ -29,7 +29,7 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 # function to move motor to linear guide home
 def home():
     while far_switch.event() != True:
-        slide.move_steps(1, 50, ccw)
+        slide.move_steps(1, 30, ccw)
     print("Home Position")
 
 

@@ -13,17 +13,17 @@ class Input_io():
         # pin: dictionary containing used input pin
         # read_state: rise, fall, both
         self.sig = pin["sig"]
-        if read_state == "rise"
+        if read_state == "rise":
             self.edge = GPIO.RISING
-        elif read_state == "fall"
+        elif read_state == "fall":
             self.edge = GPIO.FALLING
-        elif read_state == "both"
+        elif read_state == "both":
             self.edge = GPIO.BOTH
 
     # function to initialize pin
     def init_pin(self):
         GPIO.setup(self.sig, GPIO.IN)
-        GOIO.add_event_detect(self.sig,self.edge)
+        GPIO.add_event_detect(self.sig,self.edge)
 
     # function to read input
     def read(self):
@@ -36,6 +36,6 @@ class Input_io():
     # function to clean up pin
     def cleanup(self):
         GPIO.remove_event_detect(self.sig)
-        GOIO.cleanup()
+        GPIO.cleanup()
 
 
