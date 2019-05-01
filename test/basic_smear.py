@@ -1,7 +1,7 @@
 # This is the test code for a basic smear
 #
 # run program with this line of code below
-# sudo python3 basic_smear.py
+# sudo python3 blood-smear/test/test_inputs.py
 
 
 # importing libraries

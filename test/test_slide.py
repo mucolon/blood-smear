@@ -1,7 +1,7 @@
 # This is the user input code for testing differnt motor paramenters
 #
 # run program with this line of code below
-# sudo python3 test_slide.py
+# sudo python3 blood-smear/test/test_slide.py
 
 
 # importing libraries
