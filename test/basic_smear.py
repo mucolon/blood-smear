@@ -44,7 +44,7 @@ def main():
 
     # moving motor to blood dispensing site
     print("Moving to blood dispensing site")
-    slide.move_linear(200, 50, cw, slide_circum)
+    slide.move_linear(100, 50, cw, slide_circum)
     print("Please dipense blood at target location")
     input("Press any key after blood is dispensed")
 
