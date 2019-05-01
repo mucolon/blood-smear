@@ -18,11 +18,12 @@ import config
 # declaring constants
 cw = 1  # clockwise
 ccw = 0 # counterclockwise
+slide_circum = 72
 
 
 # conversion factors
 # radius = 13.3         # [mm] from CAD
-radius = 72 / (pi * 2)  # [mm] from manufacturer
+radius = slide_circum / (pi * 2)  # [mm] from manufacturer
 mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
@@ -39,18 +40,18 @@ def main():
     # asking for linear spped
     print("Please enter linear speed of smear.")
     input_mms = slide_ui.linear_speed()
-    rpm = input_mms * mms2rpm
+    input_rpm = input_mms * mms2rpm
 
     # moving motor to blood dispensing site
     print("Moving to blood dispensing site.")
-    slide.rotate(1, 50, cw)
+    slide.move_linear(200, 50, cw, slide_circum)
     print("Please dipense blood at target location.")
     input("Press any key after blood is dispensed.")
 
     # moving motor for smearing stage
     print("Preparing for smear.")
     print("Wicking blood")
-    slide.rotate(1, 50, cw)
+    slide.move_linear(35, 40, cw, slide_circum)
 
     # input_mms = 100  # [mm/s]
     # input_mms = float(input("Enter linear travel speed [mm/s]: "))
@@ -60,7 +61,7 @@ def main():
 
     # input_rot = float(input("Enter amount of motor rotations: "))
     # input_rot = slide_ui.rotations()
-    input_rot = .7
+    # input_rot = .7
 
     # input_dir = input("Enter motor direction [cw or ccw]: ")
     # if input_dir == "cw":
@@ -74,11 +75,11 @@ def main():
     # input_dir = slide_ui.direction()
     input_dir = ccw
 
-    time.sleep(1)
+    time.sleep(3)
     # print(input_dir[1])
     print("Smearing blood")
     # slide.rotate(input_rot, rpm, input_dir[0])
-    slide.rotate(input_rot, rpm, input_dir)
+    slide.move_linear(50, input_rpm, input_dir, slide_circum)
     print("Completed smear")
 
 
@@ -104,21 +105,25 @@ if __name__ == "__main__":
     # print("Initilizing Limit Switches")
 
     # setting stepper motor micro steps
-    print("Setting Micro Steps")
+    print("Setting Micro Steps for linear guide.")
     # input_micro = int(input("Enter motor micro steps: "))
     # input_micro = slide_ui.micro_steps()
     input_micro = 1
     slide.micro_steps(input_micro)
 
     # moving to origin
-    print("Moving to home position.")
-    home()
+    # print("Moving to home position.")
+    # home()
 
-    # moving motor
+    # moving linear guide for smearing process
     print("Preparing to make smear.")
     print("Please load slide.")
     input("Press any key after slide is loaded.")
     main()
+
+    # moving linear guide to start position
+    print("Moving linear guide to start position")
+    slide.move_linear(185, 40, ccw, slide_circum)
 
     # asking to repeat process
     while True:
@@ -128,6 +133,7 @@ if __name__ == "__main__":
             print("Sorry, I didn't understand that.\nTry again")
             continue
         if cont == "":
+            # home()
             main()
             break
         elif cont == "n":

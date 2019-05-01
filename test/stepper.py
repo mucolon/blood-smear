@@ -90,6 +90,14 @@ class Stepper:
         else:
             print("Error: Invalid dir value [1 for cw or 0 for ccw]")
 
+    def move_linear(self, dist, rpm, dir, circum):
+        # dist: linear distance to move motor [mm]
+        # rpm: float number to describe motor's rpm
+        # dir: 1 is for clockwise and 0 is for counterclockwise
+        # circum: circumference of motor [mm]
+        rot = dist / circum
+        self.rotate(rot, rpm, dir)
+
     # function to disable motor from sending pulses
     def disable(self):
         GPIO.output(self.ena, GPIO.HIGH)
