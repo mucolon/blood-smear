@@ -1,7 +1,7 @@
-# This is the test code for a basic smear
+# This is the user input code for testing differnt motor paramenters
 #
 # run program with this line of code below
-# sudo python3 basic_smear.py
+# sudo python3 test_slide.py
 
 
 # importing libraries
@@ -86,7 +86,7 @@ def main():
 if __name__ == "__main__":
 
     # initializing  classes
-    print("\n\nInitializing Classes")
+    print("Initializing Classes")
     slide = Stepper(config.slide_pins)
     near_switch = Input_io(config.limit_near_pin, "fall")
     far_switch = Input_io(config.limit_far_pin, "fall")
