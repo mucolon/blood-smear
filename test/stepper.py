@@ -106,8 +106,8 @@ class Stepper:
     def disable(self):
         GPIO.output(self.ena, GPIO.HIGH)
 
-    # funtion to enable motor to hold current position
-    def hold(self):
+    # funtion to enable motor to send pulses
+    def enable(self):
         GPIO.output(self.ena, GPIO.LOW)
 
     # function to cleanup up pins from use

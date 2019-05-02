@@ -43,6 +43,7 @@ def home():
 # main function to move motor
 def main():
 
+    slide.enable()
     # asking for linear spped
     print("Please enter linear speed of smear")
     input_mms = slide_ui.linear_speed()
@@ -92,6 +93,24 @@ def main():
     slide.move_linear(60, input_rpm, input_dir, slide_circum)
     print("Completed smear\n")
 
+    slide.disable()
+    # asking to repeat process
+    while True:
+        try:
+            cont = str(input("Press enter if you're loading another slide\nOR\nPress n to stop: "))
+        except ValueError:
+            print("Error: Invalid Value")
+            continue
+        if cont == "":
+            # home()
+            main()
+            break
+        elif cont == "n":
+            break
+        else:
+            print("Press enter to repeat\nOR\nPress n to stop: ")
+            continue
+
 
 if __name__ == "__main__":
 
@@ -129,28 +148,28 @@ if __name__ == "__main__":
     # moving linear guide for smearing process
     # print("Preparing to make smear")
     main()
-    slide.disable()
+    # slide.disable()
 
     # moving linear guide to start position
     # print("Moving linear guide to start position")
     # slide.move_linear(185, 40, ccw, slide_circum)
 
-    # asking to repeat process
-    while True:
-        try:
-            cont = str(input("Press enter if you're loading another slide\nOR\nPress n to stop: "))
-        except ValueError:
-            print("Error: Invalid Value")
-            continue
-        if cont == "":
-            # home()
-            main()
-            break
-        elif cont == "n":
-            break
-        else:
-            print("Press enter to repeat\nOR\nPress n to stop: ")
-            continue
+    # # asking to repeat process
+    # while True:
+    #     try:
+    #         cont = str(input("Press enter if you're loading another slide\nOR\nPress n to stop: "))
+    #     except ValueError:
+    #         print("Error: Invalid Value")
+    #         continue
+    #     if cont == "":
+    #         # home()
+    #         main()
+    #         break
+    #     elif cont == "n":
+    #         break
+    #     else:
+    #         print("Press enter to repeat\nOR\nPress n to stop: ")
+    #         continue
 
     # cleaning up pins
     # print("Cleaning up pins.")
