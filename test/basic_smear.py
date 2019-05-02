@@ -61,7 +61,8 @@ def main():
 
     # moving motor for smearing stage
     print("Preparing to wick blood")
-    slide.move_linear(175, 80, cw, slide_circum)
+    # slide.move_linear(175, 80, cw, slide_circum)
+    slide.move_linear(40, 90, cw, slide_circum)
     print("Waiting for blood to wick\n")
 
     # input_mms = 100  # [mm/s]
