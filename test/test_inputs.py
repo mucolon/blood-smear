@@ -10,21 +10,10 @@ import Adafruit_BBIO.GPIO as GPIO
 import config
 import time
 
+
 def test():
     print("\nTest function")
 
-# initializing  classes
-print("Initializing Classes")
-near_switch = Input_io(config.limit_near_pin, "fall")
-far_switch = Input_io(config.limit_far_pin, "fall")
-
-# initializing pins
-print("Initializing Pins")
-near_switch.init_pin(test())
-far_switch.init_pin(test())
-
-# confirming power
-input("Press any key after motors are connected to power.")
 
 # reading inputs
 # for x in range(30):
@@ -36,17 +25,38 @@ input("Press any key after motors are connected to power.")
 #     # print("Far switch: ", GPIO.input(config.limit_far_pin["sig"]), "\n")
 #     time.sleep(1)
 
-# testing interrupts
-read_value = 0
+
+if __name__ == "__main__":
+    # initializing  classes
+    print("\nInitializing Classes")
+    near_switch = Input_io(config.limit_near_pin, "fall")
+    far_switch = Input_io(config.limit_far_pin, "fall")
+
+    # initializing pins
+    print("Initializing Pins")
+    near_info = near_switch.init_pin()
+    far_info = far_switch.init_pin()
+    near_pin = near_info[0]
+    far_pin = far_info[0]
+    near_edge = near_info[1]
+    far_edge = far_edge[1]
+
+    GPIO.add_event_detect(near_pin, near_edge, callback = test())
+
+    # confirming power
+    input("Press any key after motors are connected to power.")
+
+    time.sleep(10)
+
+    # testing interrupts
+    read_value = 0
     while read_value != 1:
         read_value = near_switch.read()
-    print("Test 1")
+    print("\nTest 1")
 
-
-
-# cleaning up pins
-print("Cleaning up pins.")
-near_switch.remove_event()
-far_switch.remove_event()
-near_switch.cleanup()
-far_switch.cleanup()
+    # cleaning up pins
+    print("\nCleaning up pins.")
+    near_switch.remove_event()
+    far_switch.remove_event()
+    near_switch.cleanup()
+    far_switch.cleanup()
