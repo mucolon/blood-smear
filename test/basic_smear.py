@@ -60,7 +60,7 @@ def main():
 
     # moving motor for smearing stage
     print("Preparing to wick blood")
-    slide.move_linear(160, 50, cw, slide_circum)
+    slide.move_linear(175, 80, cw, slide_circum)
     print("Waiting for blood to wick\n")
 
     # input_mms = 100  # [mm/s]
@@ -124,11 +124,12 @@ if __name__ == "__main__":
 
     # welcome introduction
     print("Hi there, this a sample run for the Blood Smearing Device")
-    print("This run is only for Proof of Concept Presentation\n")
+    print("This run is only for a Proof of Concept Presentation\n")
 
     # moving linear guide for smearing process
     # print("Preparing to make smear")
     main()
+    slide.disable()
 
     # moving linear guide to start position
     # print("Moving linear guide to start position")
