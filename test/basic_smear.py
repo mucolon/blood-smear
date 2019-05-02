@@ -27,10 +27,10 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 # function to move motor to linear guide home
 def home():
-    far_switch.init_pin()
+    # far_switch.init_pin()
     far_switch.wait()
-    while far_switch.event() != True:
-        lide.move_steps(1, 50, ccw)
+    while far_switch.event() == True:
+        slide.move_steps(1, 50, ccw)
     far_switch.remove_event()
     # read_value = 0
     # while read_value != 1:
