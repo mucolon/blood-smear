@@ -93,8 +93,8 @@ if __name__ == "__main__":
     # initializing  classes
     print("\n\nInitializing Classes")
     slide = Stepper(config.slide_pins)
-    near_switch = Input_io(config.limit_near_pin, "fall")
-    far_switch = Input_io(config.limit_far_pin, "fall")
+    near_switch = Input_io(config.limit_near_pin, "fall", "pull_up")
+    far_switch = Input_io(config.limit_far_pin, "fall", "pull_up")
     slide_ui = UserI()
 
     # initializing pins

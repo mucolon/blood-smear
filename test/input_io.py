@@ -38,17 +38,17 @@ class Input_io():
     def init_pin(self, callback = None):
         # callback: function to call if event is detected
         #   None is selected by default for a callback function
-        GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
-        GPIO.add_event_detect(self.sig, self.edge, callback = None)
+        GPIO.setup(self.sig, GPIO.IN, self.resistor)
+        GPIO.add_event_detect(self.sig, self.edge, callback)
 
     # function to read input
     def read(self):
-        # function returns:
+        # function returns: int 0 when nothing is detected and int 1 when sensor is triggered
     	return GPIO.input(self.sig)
 
     # function to detect event
     def event(self):
-        # function returns:
+        # function returns: bool True if edge is detected or bool False otherwise
         return GPIO.event_detected(self.sig)
 
     # function to wait for event
