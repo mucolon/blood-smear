@@ -39,7 +39,7 @@ class Input_io():
         # callback: function to call if event is detected
         #   None is selected by default for a callback function
         GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
-        GPIO.add_event_detect(self.sig, self.edge, callback)
+        GPIO.add_event_detect(self.sig, self.edge, callback = None)
 
     # function to read input
     def read(self):

@@ -101,7 +101,7 @@ if __name__ == "__main__":
     print("Initializing Pins")
     slide.init_pins()
     near_switch.init_pin()
-    # far_switch.init_pin()
+    far_switch.init_pin()
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     # asking to repeat process
     while True:
         try:
-            cont = input("Press enter to repeat\nOR\nPress n to stop: ")
+            cont = str(input("Press enter to repeat\nOR\nPress n to stop: "))
         except ValueError:
             print("Error: Invalid Value")
             continue
