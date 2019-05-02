@@ -38,7 +38,7 @@ class Input_io():
     # function to initialize pin
     def init_pin(self):
         GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
-        return self.sig, self.edge
+        return (self.sig, self.edge)
 
     # function to read input
     def read(self):

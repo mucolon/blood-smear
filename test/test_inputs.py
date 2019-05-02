@@ -39,7 +39,7 @@ if __name__ == "__main__":
     near_pin = near_info[0]
     far_pin = far_info[0]
     near_edge = near_info[1]
-    far_edge = far_edge[1]
+    far_edge = far_info[1]
 
     GPIO.add_event_detect(near_pin, near_edge, callback = test())
 
