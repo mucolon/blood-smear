@@ -87,7 +87,8 @@ def main():
     # input_dir = slide_ui.direction()
     input_dir = ccw
 
-    time.sleep(1.5)
+    # time.sleep(1.5)
+    input("Press any key after blood has wicked")
     # print(input_dir[1])
     print("Smearing blood")
     # slide.rotate(input_rot, rpm, input_dir[0])
