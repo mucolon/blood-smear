@@ -1,4 +1,7 @@
 # This is test code for reading inputs from test code
+#
+# run program with this line of code below form home directory (/~)
+# sudo python3 blood-smear/test/test_inputs.py
 
 
 # importing libraries
@@ -23,6 +26,8 @@ input("Press any key after motors are connected to power.")
 # reading inputs
 for x in range(30):
     print("Near switch: ", near_switch.read())
+    # print("Near switch: ", near_switch.read(), "\n")
+    # print("Far switch: ", far_switch.read())
     print("Far switch: ", far_switch.read(), "\n")
     # print("Near switch: ", GPIO.input(config.limit_near_pin["sig"]))
     # print("Far switch: ", GPIO.input(config.limit_far_pin["sig"]), "\n")

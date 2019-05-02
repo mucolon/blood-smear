@@ -1,6 +1,6 @@
-# This is the user input code for testing differnt motor paramenters
+# This is the user input code for testing different motor paramenters
 #
-# run program with this line of code below
+# run program with this line of code below form home directory (/~)
 # sudo python3 blood-smear/test/test_slide.py
 
 

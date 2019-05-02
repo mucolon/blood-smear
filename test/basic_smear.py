@@ -1,7 +1,7 @@
 # This is the test code for a basic smear
 #
-# run program with this line of code below
-# sudo python3 blood-smear/test/test_inputs.py
+# run program with this line of code below form home directory (/~)
+# sudo python3 blood-smear/test/basic_smear.py
 
 
 # importing libraries
@@ -27,10 +27,15 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 # function to move motor to linear guide home
 def home():
-    read_value = 0
-    while read_value != 1:
-        slide.move_steps(1, 50, ccw)
-        read_value = far_switch.read()
+    far_switch.init_pin()
+    far_switch.wait()
+    while far_switch.event() != True:
+        lide.move_steps(1, 50, ccw)
+    far_switch.remove_event()
+    # read_value = 0
+    # while read_value != 1:
+    #     slide.move_steps(1, 50, ccw)
+    #     read_value = far_switch.read()
     print("Home Position")
 
 
@@ -96,7 +101,7 @@ if __name__ == "__main__":
     print("Initializing Pins")
     slide.init_pins()
     near_switch.init_pin()
-    far_switch.init_pin()
+    # far_switch.init_pin()
 
     # confirming power
     input("Press any key after motors are connected to power")

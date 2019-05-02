@@ -9,35 +9,57 @@ import Adafruit_BBIO.GPIO as GPIO
 class Input_io():
 
     # intitial class function
-    def __init__(self, pin, read_state):
+    def __init__(self, pin, read_state, resist = None):
         # pin: dictionary containing used input pin
-        # read_state: rise, fall, both
+        # read_state: edge detection for pin either ("rise", "fall", "both")
+        # resist: input pin resistor configuration ("pull_up", "pull_down", None)
+        #   None is selected by default
         self.sig = pin["sig"]
         if read_state == "rise":
             self.edge = GPIO.RISING
-            self.initial = GPIO.LOW
         elif read_state == "fall":
             self.edge = GPIO.FALLING
-            self.initial = GPIO.HIGH
         elif read_state == "both":
             self.edge = GPIO.BOTH
+        else:
+            print("Error: Invalid read_state input (\"rise\", \"fall\", \"both\")")
+            print("Please include quotation marks")
+        if resist == "pull_up":
+            self.resistor = GPIO.PUD_UP
+        elif resist == "pull_down":
+            self.resistor = GPIO.PUD_DOWN
+        elif resist == None:
+            self.resistor = GPIO.PUD_OFF
+        else:
+            print("Error: Invalid resist input (\"pull_up\", \"pull_down\", None)")
+            print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self):
-        GPIO.setup(self.sig, GPIO.IN, self.initial)
-        GPIO.add_event_detect(self.sig, self.edge)
+    def init_pin(self, callback = None):
+        # callback: function to call if event is detected
+        #   None is selected by default for a callback function
+        GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
+        GPIO.add_event_detect(self.sig, self.edge, callback)
 
     # function to read input
     def read(self):
+        # function returns:
     	return GPIO.input(self.sig)
 
     # function to detect event
     def event(self):
-        GPIO.event_detected(self.sig)
+        # function returns:
+        return GPIO.event_detected(self.sig)
+
+    # function to wait for event
+    def wait(self):
+        GPIO.wait_for_edge(self.sig, self.edge)
+
+    # function to remove event detection
+    def remove_event(self):
+        GPIO.remove_event_detect(self.sig)
 
     # function to clean up pin
     def cleanup(self):
         GPIO.remove_event_detect(self.sig)
         GPIO.cleanup()
-
-
