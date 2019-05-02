@@ -35,11 +35,11 @@ class Input_io():
             print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self, callback = None):
+    def init_pin(self): #, callback = None):
         # callback: function to call if event is detected
         #   None is selected by default for a callback function
         GPIO.setup(self.sig, GPIO.IN, self.resistor)
-        GPIO.add_event_detect(self.sig, self.edge, &callback)
+        GPIO.add_event_detect(self.sig, self.edge) #, callback)
 
     # function to read input
     def read(self):
