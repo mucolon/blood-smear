@@ -9,11 +9,12 @@ import Adafruit_BBIO.GPIO as GPIO
 class Input_io():
 
     # intitial class function
-    def __init__(self, pin, read_state, resist = None):
+    def __init__(self, pin, read_state, resist = "off"):
         # pin: dictionary containing used input pin
         # read_state: edge detection for pin either ("rise", "fall", "both")
-        # resist: input pin resistor configuration ("pull_up", "pull_down", None)
-        #   None is selected by default
+        # resist: onboard pin resistor configuration you wish to add
+        #   ("pull_up", "pull_down", "off")
+        #   "off" is selected by default
         self.sig = pin["sig"]
         if read_state == "rise":
             self.edge = GPIO.RISING
@@ -22,24 +23,24 @@ class Input_io():
         elif read_state == "both":
             self.edge = GPIO.BOTH
         else:
-            print("Error: Invalid read_state input (\"rise\", \"fall\", \"both\")")
+            print("\nError: Invalid read_state input (\"rise\", \"fall\", \"both\")")
             print("Please include quotation marks")
         if resist == "pull_up":
             self.resistor = GPIO.PUD_UP
         elif resist == "pull_down":
             self.resistor = GPIO.PUD_DOWN
-        elif resist == None:
+        elif resist == "off":
             self.resistor = GPIO.PUD_OFF
         else:
-            print("Error: Invalid resist input (\"pull_up\", \"pull_down\", None)")
+            print("\nError: Invalid resist input (\"pull_up\", \"pull_down\", \"off\")")
             print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self): #, callback = None):
-        # callback: function to call if event is detected
+    def init_pin(self, call = None):
+        # call: function to call if event is detected
         #   None is selected by default for a callback function
-        GPIO.setup(self.sig, GPIO.IN, self.resistor)
-        GPIO.add_event_detect(self.sig, self.edge) #, callback)
+        GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
+        GPIO.add_event_detect(self.sig, self.edge, callback = call)
 
     # function to read input
     def read(self):

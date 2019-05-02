@@ -10,7 +10,7 @@ class UserI:
             try:
                 self.linSpeed = float(input("Enter linear travel speed [0-200 mm/s]: "))
             except ValueError:
-                print("Error: Invalid Value")
+                print("Error: Invalid Input")
                 continue
             if self.linSpeed > 200:
                 print("Error: Max linear speed is 200 mm/s")
@@ -28,7 +28,7 @@ class UserI:
             try:
                 self.rot = float(input("Enter amount of motor rotations [0-2.9]: "))
             except ValueError:
-                print("Error: Invalid Value")
+                print("Error: Invalid Input")
                 continue
             if self.rot > 2.9:
                 print("Error: Max rotations is 2.9")
@@ -46,7 +46,7 @@ class UserI:
             try:
                 self.string_dir = str(input("Enter motor direction [cw or ccw]: "))
             except ValueError:
-                print("Error: Invalid Value")
+                print("Error: Invalid Input")
                 continue
             if (self.string_dir != "cw") or (self.string_dir != "ccw"):
                 print("Error: Invalid input\ncw for clockwise\nccw for counterclockwise")
@@ -67,7 +67,7 @@ class UserI:
             try:
                 self.microStep = int(input("Enter motor micro steps (type 0 for help): "))
             except ValueError:
-                print("Error: Invalid Value")
+                print("Error: Invalid Input")
                 continue
             if self.microStep == 0:
                 print("1 micro step = 200 pulses")
@@ -90,7 +90,7 @@ class UserI:
             try:
                 self.dist = int(input("Enter linear distance [0-210 mm]: "))
             except ValueError:
-                print("Error: Invalid Value")
+                print("Error: Invalid Input")
                 continue
             if self.dist > 210:
                 print("Error: Max linear distance is 210")

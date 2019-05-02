@@ -37,7 +37,7 @@ def home():
     while read_value != 1:
         slide.move_steps(1, 50, cw)
         read_value = near_switch.read()
-    print("Home Position")
+    print("\nHome Position")
 
 
 # main function to move motor
@@ -45,25 +45,25 @@ def main():
 
     slide.enable()
     # asking for linear spped
-    print("Please enter linear speed of smear")
+    print("\nPlease enter linear speed of smear")
     input_mms = slide_ui.linear_speed()
     input_rpm = input_mms * mms2rpm
 
     # slide loading interface
     print("\nPlease load slide")
-    input("Press any key after slide is loaded\n")
+    input("Press any key after slide is loaded")
 
     # moving motor to blood dispensing site
     # print("Moving to blood dispensing site")
     # slide.move_linear(100, 50, ccw, slide_circum)
-    print("Please dipense blood at target location")
+    print("\nPlease dipense blood at target location")
     input("Press any key after blood is dispensed")
 
     # moving motor for smearing stage
-    print("Preparing to wick blood")
+    print("\nPreparing to wick blood")
     # slide.move_linear(175, 80, cw, slide_circum)
     slide.move_linear(40, 90, cw, slide_circum)
-    print("Waiting for blood to wick\n")
+    print("Waiting for blood to wick")
 
     # input_mms = 100  # [mm/s]
     # input_mms = float(input("Enter linear travel speed [mm/s]: "))
@@ -90,18 +90,18 @@ def main():
     # time.sleep(1.5)
     input("Press any key after blood has wicked")
     # print(input_dir[1])
-    print("Smearing blood")
+    print("\nSmearing blood")
     # slide.rotate(input_rot, rpm, input_dir[0])
     slide.move_linear(60, input_rpm, input_dir, slide_circum)
-    print("Completed smear\n")
+    print("Completed smear")
 
     slide.disable()
     # asking to repeat process
     while True:
         try:
-            cont = str(input("Press enter if you're loading another slide\nOR\nPress n to stop: "))
+            cont = str(input("\nPress enter if you're loading another slide\nOR\nPress n to stop: "))
         except ValueError:
-            print("Error: Invalid Value")
+            print("\nError: Invalid Input")
             continue
         if cont == "":
             # home()
@@ -110,7 +110,7 @@ def main():
         elif cont == "n":
             break
         else:
-            print("Press enter to repeat\nOR\nPress n to stop: ")
+            print("\nError: Invalid Input")
             continue
 
 
@@ -144,8 +144,8 @@ if __name__ == "__main__":
     # home()
 
     # welcome introduction
-    print("Hi there, this a sample run for the Blood Smearing Device")
-    print("This run is only for a Proof of Concept Presentation\n")
+    print("\nHi there, this a sample run for the Blood Smearing Device")
+    print("This run is only for a Proof of Concept Presentation")
 
     # moving linear guide for smearing process
     # print("Preparing to make smear")
@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
     # cleaning up pins
     # print("Cleaning up pins.")
-    print("Closing Program")
+    print("\nClosing Program")
     slide.cleanup()
     near_switch.cleanup()
     far_switch.cleanup()
