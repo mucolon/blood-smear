@@ -54,10 +54,14 @@ if __name__ == "__main__":
     # time.sleep(10)
 
     # testing interrupts
-    read_value = 0
-    while read_value != 1:
-        read_value = near_switch.read()
-    print("\nTest 1")
+    # read_value = 1
+    # while read_value != 0:
+    #     read_value = near_switch.read()
+    # print("\nTest 1")
+
+    for x in range(10):
+        near_switch.read()
+        time.sleep(.5)
 
     # cleaning up pins
     print("\nCleaning up pins.")
