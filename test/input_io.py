@@ -4,6 +4,8 @@
 
 # importing libraries
 import Adafruit_BBIO.GPIO as GPIO
+import numpy as numpy
+import time
 
 
 # declaring Input_io class to handle GPIO inputs
@@ -58,6 +60,20 @@ class Input_io():
     # function to remove event detection
     def remove_event(self):
         GPIO.remove_event_detect(self.sig)
+
+    # function to set up input interrupt
+    def interrupt(self, num_samples, freq, func):
+        # sleep = float(1/freq)
+        num_samples = int(num_samples)
+        samples = np.array([0]*num_samples)
+        i = 0
+        while np.sum(samples) != num_samples:
+            samples[i] = self.read()
+            i += 1
+            # time.sleep(sleep)
+            func
+            if i == (num_samples - 1):
+                i = 0
 
     # function to clean up pin
     def cleanup(self):
