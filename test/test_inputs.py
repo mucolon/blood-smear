@@ -1,3 +1,4 @@
+# test_inputs.py
 # This is test code for reading inputs from test code
 #
 # run program with this line of code below form home directory (/~)
@@ -11,8 +12,8 @@ import config
 import time
 
 
-def test():
-    print("\nTest function")
+# def test():
+#     print("\nTest function")
 
 
 # reading inputs
@@ -41,18 +42,22 @@ if __name__ == "__main__":
     near_edge = near_info[1]
     far_edge = far_info[1]
 
-    GPIO.add_event_detect(near_pin, near_edge, callback = test())
+    GPIO.add_event_detect(near_pin, near_edge)
 
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    time.sleep(10)
+    while GPIO.event_detected(near_pin) == False:
+        print("False")
+    print("Event Detected!")
 
-    # testing interrupts
-    read_value = 0
-    while read_value != 1:
-        read_value = near_switch.read()
-    print("\nTest 1")
+    # time.sleep(10)
+
+    # # testing interrupts
+    # read_value = 0
+    # while read_value != 1:
+    #     read_value = near_switch.read()
+    # print("\nTest 1")
 
     # cleaning up pins
     print("\nCleaning up pins.")

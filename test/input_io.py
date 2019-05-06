@@ -1,3 +1,4 @@
+# input_io.py
 # This file declares a class to use GPIO pins as inputs
 
 
@@ -8,7 +9,7 @@ import Adafruit_BBIO.GPIO as GPIO
 # declaring Input_io class to handle GPIO inputs
 class Input_io():
 
-    # intitial class function
+    # initial class function
     def __init__(self, pin, read_state, resist = "off"):
         # pin: dictionary containing used input pin
         # read_state: edge detection for pin either ("rise", "fall", "both")

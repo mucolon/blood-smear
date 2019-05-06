@@ -1,3 +1,4 @@
+# ui.py
 # This file declares a class to take all user inputs
 
 
@@ -55,10 +56,10 @@ class UserI:
                 break
         if self.string_dir == "cw":
             self.dir = 1
-            # self.dir_text = "Spining Clockwise"
+            # self.dir_text = "Spinning Clockwise"
         else:
             self.dir = 0
-            # self.dir_text = "Spining Counterclockwise"
+            # self.dir_text = "Spinning Counterclockwise"
         return self.dir #, self.dir_text
 
     # function to ask for motor micro steps

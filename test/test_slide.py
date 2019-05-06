@@ -1,3 +1,4 @@
+# test_slide.py
 # This is the user input code for testing different motor paramenters
 #
 # run program with this line of code below form home directory (/~)

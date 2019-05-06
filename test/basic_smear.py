@@ -1,6 +1,7 @@
+# basic_smear.py
 # This is the test code for a basic smear
 #
-# run program with this line of code below form home directory (/~)
+# run program with this line of code below from home directory (/~)
 # sudo python3 blood-smear/test/basic_smear.py
 
 
@@ -44,7 +45,7 @@ def home():
 def main():
 
     slide.enable()
-    # asking for linear spped
+    # asking for linear speed
     print("\nPlease enter linear speed of smear")
     input_mms = slide_ui.linear_speed()
     input_rpm = input_mms * mms2rpm
@@ -56,13 +57,14 @@ def main():
     # moving motor to blood dispensing site
     # print("Moving to blood dispensing site")
     # slide.move_linear(100, 50, ccw, slide_circum)
-    print("\nPlease dipense blood at target location")
+    print("\nPlease dispense blood at target location")
     input("Press any key after blood is dispensed")
 
     # moving motor for smearing stage
     print("\nPreparing to wick blood")
     # slide.move_linear(175, 80, cw, slide_circum)
-    slide.move_linear(40, 90, cw, slide_circum)
+    # slide.move_linear(40, 90, cw, slide_circum)
+    slide.move_linear(10, 90, ccw, slide_circum)
     print("Waiting for blood to wick")
 
     # input_mms = 100  # [mm/s]
@@ -78,10 +80,10 @@ def main():
     # input_dir = input("Enter motor direction [cw or ccw]: ")
     # if input_dir == "cw":
     #     input_dir = cw
-    #     dir_text = "Spining Clockwise"
+    #     dir_text = "Spinning Clockwise"
     # elif input_dir == "ccw":
     #     input_dir = ccw
-    #     dir_text = "Spining Counterclockwise"
+    #     dir_text = "Spinning Counterclockwise"
     # else:
     #     print("Error: Invalid input. cw for clockwise. ccw for counterclockwise")
     # input_dir = slide_ui.direction()
@@ -92,7 +94,8 @@ def main():
     # print(input_dir[1])
     print("\nSmearing blood")
     # slide.rotate(input_rot, rpm, input_dir[0])
-    slide.move_linear(60, input_rpm, input_dir, slide_circum)
+    # slide.move_linear(60, input_rpm, input_dir, slide_circum)
+    slide.move_linear(60, input_rpm, cw, slide_circum)
     print("Completed smear")
 
     slide.disable()
@@ -117,7 +120,7 @@ def main():
 if __name__ == "__main__":
 
     # initializing  classes
-    # print("\n\nInitializing Classes")
+    # print("\nInitializing Classes")
     slide = Stepper(config.slide_pins)
     near_switch = Input_io(config.limit_near_pin, "fall", "pull_up")
     far_switch = Input_io(config.limit_far_pin, "fall", "pull_up")

@@ -1,3 +1,4 @@
+# stepper.py
 # This file declares a class to use any stepper motor
 
 
@@ -10,9 +11,9 @@ import math
 # declaring Stepper class to handle actuating a stepper motor
 class Stepper:
 
-    # intitial class function
+    # initial class function
     def __init__(self, pins):
-        # pins: dictionary containg used stepper motor pins
+        # pins: dictionary containing used stepper motor pins
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
@@ -46,7 +47,7 @@ class Stepper:
         else:
             print("Error: Invalid micro step value")
 
-    # fucntion to move motor by rotations
+    # function to move motor by rotations
     def rotate(self, rotations, rpm, direction):
         # rotations: float number to rotate motor
         # rpm: float number to describe motor's rpm
@@ -106,7 +107,7 @@ class Stepper:
     def disable(self):
         GPIO.output(self.ena, GPIO.HIGH)
 
-    # funtion to enable motor to send pulses
+    # function to enable motor to send pulses
     def enable(self):
         GPIO.output(self.ena, GPIO.LOW)
 

@@ -1,5 +1,6 @@
+# config.py
 # This file list all used pins for blood smearing device
-# Note: please leave pin labels alone, other files depend on those specfic labels
+# Note: please leave pin labels alone, other files depend on those specific labels
 
 
 # active output pins for linear guide
