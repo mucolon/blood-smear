@@ -35,12 +35,14 @@ if __name__ == "__main__":
 
     # initializing pins
     print("Initializing Pins")
-    near_info = near_switch.init_pin()
-    far_info = far_switch.init_pin()
-    near_pin = near_info[0]
-    far_pin = far_info[0]
-    near_edge = near_info[1]
-    far_edge = far_info[1]
+    # near_info = near_switch.init_pin()
+    # far_info = far_switch.init_pin()
+    near_switch.init_pin()
+    far_switch.init_pin()
+    # near_pin = near_info[0]
+    # far_pin = far_info[0]
+    # near_edge = near_info[1]
+    # far_edge = far_info[1]
 
     # GPIO.add_event_detect(near_pin, near_edge)
 
