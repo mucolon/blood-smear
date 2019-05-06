@@ -42,22 +42,22 @@ if __name__ == "__main__":
     near_edge = near_info[1]
     far_edge = far_info[1]
 
-    GPIO.add_event_detect(near_pin, near_edge)
+    # GPIO.add_event_detect(near_pin, near_edge)
 
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    while GPIO.event_detected(near_pin) == False:
-        print("False")
-    print("Event Detected!")
+    # while GPIO.event_detected(near_pin) == True:
+    #     print("False")
+    # print("Event Detected!")
 
     # time.sleep(10)
 
-    # # testing interrupts
-    # read_value = 0
-    # while read_value != 1:
-    #     read_value = near_switch.read()
-    # print("\nTest 1")
+    # testing interrupts
+    read_value = 0
+    while read_value != 1:
+        read_value = near_switch.read()
+    print("\nTest 1")
 
     # cleaning up pins
     print("\nCleaning up pins.")
