@@ -59,13 +59,14 @@ if __name__ == "__main__":
     #     read_value = near_switch.read()
     # print("\nTest 1")
 
-    for x in range(10):
-        near_switch.read()
-        time.sleep(.5)
+    for x in range(30):
+        print("\nNear switch: ", near_switch.read())
+        print("Far switch: ", far_switch.read())
+        time.sleep(1)
 
     # cleaning up pins
     print("\nCleaning up pins.")
-    near_switch.remove_event()
-    far_switch.remove_event()
+    # near_switch.remove_event()
+    # far_switch.remove_event()
     near_switch.cleanup()
     far_switch.cleanup()
