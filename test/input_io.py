@@ -4,7 +4,7 @@
 
 # importing libraries
 import Adafruit_BBIO.GPIO as GPIO
-import numpy as numpy
+import numpy as np
 import time
 
 
@@ -40,6 +40,8 @@ class Input_io():
 
     # function to initialize pin
     def init_pin(self):
+        # function retruns: sig - beaglebone input pin
+        #                   edge - pin edge detection
         GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
         return (self.sig, self.edge)
 
@@ -61,19 +63,39 @@ class Input_io():
     def remove_event(self):
         GPIO.remove_event_detect(self.sig)
 
-    # function to set up input interrupt
-    def interrupt(self, num_samples, freq, func):
-        # sleep = float(1/freq)
+    # # function to set up input interrupt
+    # def interrupt(self, num_samples, freq, func):
+    #     # sleep = float(1/freq)
+    #     num_samples = int(num_samples)
+    #     samples = np.array([0]*num_samples)
+    #     i = 0
+    #     while np.sum(samples) != num_samples:
+    #         samples[i] = self.read()
+    #         i += 1
+    #         # time.sleep(sleep)
+    #         func
+    #         if i == (num_samples - 1):
+    #             i = 0
+
+    # function to read input accurately
+    def read2(self, num_samples, freq, success_rate):
+        # num_samples: int number of samples
+        # freq: sampling rate in [Hz]
+        # success_rate: percentage of correct read inputs [%]
+        # function returns: bool True if read input is correct
+        #                   bool False if read input is incorrect
         num_samples = int(num_samples)
         samples = np.array([0]*num_samples)
-        i = 0
-        while np.sum(samples) != num_samples:
+        sleepTime = float(1/freq)
+        sr = float(success_rate/100)
+        for i in range(num_samples):
             samples[i] = self.read()
-            i += 1
-            # time.sleep(sleep)
-            func
-            if i == (num_samples - 1):
-                i = 0
+            time.sleep(sleepTime)
+        if np.sum(samples) >= (sr * num_samples):
+            return True
+        else:
+            return False
+
 
     # function to clean up pin
     def cleanup(self):

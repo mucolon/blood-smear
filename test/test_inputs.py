@@ -7,27 +7,28 @@
 
 # importing libraries
 from input_io import Input_io
-import Adafruit_BBIO.GPIO as GPIO
+# import Adafruit_BBIO.GPIO as GPIO
 import config
-import time
+# import time
 # import threading
-from stepper import Stepper
+# from stepper import Stepper
+# from math import pi
 
 
 # declaring constants
-cw = 1  # clockwise
-ccw = 0 # counterclockwise
-slide_circum = 72
+# cw = 1  # clockwise
+# ccw = 0 # counterclockwise
+# slide_circum = 72
 
 
 # conversion factors
 # radius = 13.3         # [mm] from CAD
-radius = slide_circum / (pi * 2)  # [mm] from manufacturer
-mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
+# radius = slide_circum / (pi * 2)  # [mm] from manufacturer
+# mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
 # def test():
-#     print("\nTest function")
+    # print("\nTest function")
 
 
 # reading inputs
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     print("\nInitializing Classes")
     near_switch = Input_io(config.limit_near_pin, "fall")
     far_switch = Input_io(config.limit_far_pin, "fall")
-    slide = Stepper(config.slide_pins)
+    # slide = Stepper(config.slide_pins)
 
     # initializing pins
     print("Initializing Pins")
@@ -54,9 +55,9 @@ if __name__ == "__main__":
     # far_info = far_switch.init_pin()
     near_switch.init_pin()
     far_switch.init_pin()
-    slide.init_pins()
-    input_micro = 1
-    slide.micro_steps(input_micro)
+    # slide.init_pins()
+    # input_micro = 1
+    # slide.micro_steps(input_micro)
     # near_pin = near_info[0]
     # far_pin = far_info[0]
     # near_edge = near_info[1]
@@ -67,7 +68,11 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    far_switch.interrupt(5, 25, slide.move_steps(1, 70, ccw))
+    while far_switch.read2(10, 100, 80) == False:
+        print("False")
+    print("\nTrue")
+
+    # far_switch.interrupt(5, 25, slide.move_steps(1, 70, ccw))
 
     # while GPIO.event_detected(near_pin) == True:
     #     print("False")
@@ -92,4 +97,4 @@ if __name__ == "__main__":
     # far_switch.remove_event()
     near_switch.cleanup()
     far_switch.cleanup()
-    slide.cleanup()
+    # slide.cleanup()
