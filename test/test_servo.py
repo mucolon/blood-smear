@@ -7,6 +7,8 @@
 
 # importing libraries
 from servo import Servo
+from stepper import Stepper
+from input_io import Input_io
 import config
 
 
