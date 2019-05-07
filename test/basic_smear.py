@@ -27,16 +27,19 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
 # function to move motor to linear guide home
-def home():
-    while near_switch.read2(10, 100, 80) == False:
-        slide.move_steps(1, 60, cw)
-    print("\nHome Position")
+# def home():
+#     while near_switch.read2(10, 100, 80) == False:
+#         slide.move_steps(1, 60, cw)
+#     print("\nHome Position")
 
 
 # main function to move motor
 def main():
     # slide.enable()
-    home()
+    # home()
+    while near_switch.read2(10, 100, 80) == False:
+        slide.move_steps(1, 60, cw)
+    print("\nHome Position")
 
     # asking for linear speed
     print("\nPlease enter linear speed of smear")
