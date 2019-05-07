@@ -116,20 +116,20 @@ def main():
 if __name__ == "__main__":
 
     # initializing  classes
-    # print("\nInitializing Classes")
+    print("\nInitializing Classes")
     slide = Stepper(config.slide_pins)
-    near_switch = Input_io(config.limit_near_pin, "fall", "pull_up")
-    far_switch = Input_io(config.limit_far_pin, "fall", "pull_up")
+    near_switch = Input_io(config.limit_near_pin, "fall")
+    far_switch = Input_io(config.limit_far_pin, "fall")
     slide_ui = UserI()
 
     # initializing pins
-    # print("Initializing Pins")
+    print("Initializing Pins")
     slide.init_pins()
     near_switch.init_pin()
     far_switch.init_pin()
 
     # confirming power
-    # input("Press any key after motors are connected to power")
+    input("Press any key after motors are connected to power")
 
     # setting stepper motor micro steps
     # print("Setting Micro Steps for linear guide")
