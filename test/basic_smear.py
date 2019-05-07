@@ -27,19 +27,19 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
 # function to move motor to linear guide home
-# def home():
-#     while near_switch.read2(10, 100, 80) == False:
-#         slide.move_steps(1, 60, cw)
-#     print("\nHome Position")
+def home():
+    while near_switch.read2(5, 200, 80) == False:
+        slide.move_steps(1, 90, cw)
+    print("\nHome Position")
 
 
 # main function to move motor
 def main():
     # slide.enable()
-    # home()
-    while near_switch.read2(10, 100, 80) == False:
-        slide.move_steps(1, 60, cw)
-    print("\nHome Position")
+    home()
+    # while near_switch.read2(10, 100, 80) == False:
+    #     slide.move_steps(1, 60, cw)
+    # print("\nHome Position")
 
     # asking for linear speed
     print("\nPlease enter linear speed of smear")
@@ -116,14 +116,14 @@ def main():
 if __name__ == "__main__":
 
     # initializing  classes
-    print("\nInitializing Classes")
+    # print("\nInitializing Classes")
     slide = Stepper(config.slide_pins)
     near_switch = Input_io(config.limit_near_pin, "fall")
     far_switch = Input_io(config.limit_far_pin, "fall")
     slide_ui = UserI()
 
     # initializing pins
-    print("Initializing Pins")
+    # print("Initializing Pins")
     slide.init_pins()
     near_switch.init_pin()
     far_switch.init_pin()
