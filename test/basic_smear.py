@@ -28,8 +28,8 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 # function to move motor to linear guide home
 def home():
-    while near_switch.read2(5, 200, 80) == False:
-        slide.move_steps(1, 90, cw)
+    while near_switch.read2(5, 500, 80) == False:
+        slide.move_steps(1, 100, cw)
     print("\nHome Position")
 
 
