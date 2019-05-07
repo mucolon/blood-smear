@@ -28,23 +28,16 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 # function to move motor to linear guide home
 def home():
-    # near_switch.init_pin()
-    # near_switch.wait()
-    # while near_switch.event() == False:
-        # slide.move_steps(1, 50, cw)
-    # near_switch.remove_event()
-
-    read_value = 0
-    while read_value != 1:
-        slide.move_steps(1, 50, cw)
-        read_value = near_switch.read()
+    while near_switch.read2(10, 100, 80) == False:
+        slide.move_steps(1, 60, cw)
     print("\nHome Position")
 
 
 # main function to move motor
 def main():
+    # slide.enable()
+    home()
 
-    slide.enable()
     # asking for linear speed
     print("\nPlease enter linear speed of smear")
     input_mms = slide_ui.linear_speed()
@@ -64,7 +57,7 @@ def main():
     print("\nPreparing to wick blood")
     # slide.move_linear(175, 80, cw, slide_circum)
     # slide.move_linear(40, 90, cw, slide_circum)
-    slide.move_linear(10, 90, ccw, slide_circum)
+    slide.move_linear(190, 90, ccw, slide_circum)
     print("Waiting for blood to wick")
 
     # input_mms = 100  # [mm/s]
@@ -87,7 +80,7 @@ def main():
     # else:
     #     print("Error: Invalid input. cw for clockwise. ccw for counterclockwise")
     # input_dir = slide_ui.direction()
-    input_dir = ccw
+    input_dir = cw
 
     # time.sleep(1.5)
     input("Press any key after blood has wicked")
@@ -95,10 +88,10 @@ def main():
     print("\nSmearing blood")
     # slide.rotate(input_rot, rpm, input_dir[0])
     # slide.move_linear(60, input_rpm, input_dir, slide_circum)
-    slide.move_linear(60, input_rpm, cw, slide_circum)
+    slide.move_linear(60, input_rpm, input_dir, slide_circum)
     print("Completed smear")
 
-    slide.disable()
+    # slide.disable()
     # asking to repeat process
     while True:
         try:

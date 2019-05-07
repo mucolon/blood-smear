@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    while far_switch.read2(10, 100, 80) == False:
+    while near_switch.read2(10, 100, 80) == False:
         print("False")
     print("\nTrue")
 
