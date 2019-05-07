@@ -5,7 +5,6 @@
 # importing libraries
 import Adafruit_BBIO.GPIO as GPIO
 import time
-import math
 
 
 # declaring Stepper class to handle actuating a stepper motor

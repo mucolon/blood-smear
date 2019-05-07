@@ -7,6 +7,7 @@
 
 # importing libraries
 from stepper import Stepper
+from servo import Servo
 from input_io import Input_io
 from ui import UserI
 import time
@@ -28,8 +29,8 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 # function to move motor to linear guide home
 def home():
-    while near_switch.read2(5, 500, 80) == False:
-        slide.move_steps(1, 100, cw)
+    while near_switch.read2(5, 750, 80) == False:
+        slide.move_steps(1, 150, cw)
     print("\nHome Position")
 
 

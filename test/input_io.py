@@ -63,20 +63,6 @@ class Input_io():
     def remove_event(self):
         GPIO.remove_event_detect(self.sig)
 
-    # # function to set up input interrupt
-    # def interrupt(self, num_samples, freq, func):
-    #     # sleep = float(1/freq)
-    #     num_samples = int(num_samples)
-    #     samples = np.array([0]*num_samples)
-    #     i = 0
-    #     while np.sum(samples) != num_samples:
-    #         samples[i] = self.read()
-    #         i += 1
-    #         # time.sleep(sleep)
-    #         func
-    #         if i == (num_samples - 1):
-    #             i = 0
-
     # function to read input accurately
     def read2(self, num_samples, freq, success_rate):
         # num_samples: int number of samples
@@ -95,7 +81,6 @@ class Input_io():
             return True
         else:
             return False
-
 
     # function to clean up pin
     def cleanup(self):

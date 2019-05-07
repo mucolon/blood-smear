@@ -11,3 +11,6 @@ limit_far_pin = {"sig": "P8_12"}
 
 # active input pin for near limit switch
 limit_near_pin = {"sig": "P8_14"}
+
+# active output pin for unloading servo
+unload_pin = {"pul": "P8_13"}
