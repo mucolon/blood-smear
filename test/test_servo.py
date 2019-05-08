@@ -14,19 +14,23 @@ import config
 
 # main test function
 def main():
+    duty = 0
     while True:
         try:
             # angle = str(input("\nEnter servo motor angle (n to exit): "))
-            duty = str(input("\nEnter servo duty cycle [0-100] (n to exit): "))
+            # duty = str(input("\nEnter servo duty cycle [0-100] (n to exit): "))
+            duty = str(input("\nPress enter to increase duty cycle by 1 (n to exit): "))
         except ValueError:
             print("Error: Invalid Input")
             continue
         # if angle == "n":
         if duty == "n":
             break
+        elif duty == "":
+            duty += 1
         # angle_f = float(angle)
         # servo.change_angle(angle_f)
-        duty = int(duty)
+        # duty = int(duty)
         servo.change_duty(duty)
         # print("Current servo angle: ", angle_f)
         print("Cureent servo duty cycle: ", duty)
@@ -42,6 +46,7 @@ if __name__ == "__main__":
 
     # initializing pins
     servo.start(5, 10, 50, 0)
+    servo.change_duty(0)
     near_switch.init_pin()
     far_switch.init_pin()
     slide.init_pins()
