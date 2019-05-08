@@ -35,6 +35,12 @@ The `basic_smear.py` file commands the linear guide for a Proof of Concept prese
 References
 ---------------------------
 I used this collection of code to built up my current repository.
+
+This repository contains the library used to interface with the Beaglebone GPIO pins.
 ```
-https://github.com/mucolon/BBB/tree/master/stepper
+https://github.com/adafruit/adafruit-beaglebone-io-python
+```
+The repository below used the Adafruit_BBIO library to build a custom stepper motor library to actuate a stepper motor. I used this code as point to build from.
+```
+https://github.com/limbeckengineering/BBB
 ```
