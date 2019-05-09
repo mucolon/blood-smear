@@ -29,8 +29,8 @@ mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 # function to move motor to linear guide home
 def home():
-    while near_switch.read2(5, 750, 80) == False:
-        slide.move_steps(1, 150, cw)
+    while near_switch.read2(6, 1000, 80) == False:
+        slide.move_steps(1, 200, cw)
     print("\nHome Position")
 
 
@@ -61,7 +61,7 @@ def main():
     print("\nPreparing to wick blood")
     # slide.move_linear(175, 80, cw, slide_circum)
     # slide.move_linear(40, 90, cw, slide_circum)
-    slide.move_linear(190, 90, ccw, slide_circum)
+    slide.move_linear(185, 90, ccw, slide_circum)
     print("Waiting for blood to wick")
 
     # input_mms = 100  # [mm/s]
@@ -122,12 +122,15 @@ if __name__ == "__main__":
     near_switch = Input_io(config.limit_near_pin, "fall")
     far_switch = Input_io(config.limit_far_pin, "fall")
     slide_ui = UserI()
+    servo = Servo(config.unload_pin)
+
 
     # initializing pins
     # print("Initializing Pins")
     slide.init_pins()
     near_switch.init_pin()
     far_switch.init_pin()
+    servo.disable()
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -179,3 +182,4 @@ if __name__ == "__main__":
     slide.cleanup()
     near_switch.cleanup()
     far_switch.cleanup()
+    servo.cleanup()

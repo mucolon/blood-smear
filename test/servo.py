@@ -40,6 +40,10 @@ class Servo:
         duty = (angle + 90) * self.span / 180 + self.min
         self.change_duty(duty)
 
+    # function to disable servo motor
+    def disable(self):
+        PWM.stop(self.pul)
+
     # function to cleanup servo PWM pin
     def cleanup(self):
         PWM.stop(self.pul)
