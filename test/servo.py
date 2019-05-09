@@ -44,4 +44,3 @@ class Servo:
     def cleanup(self):
         PWM.stop(self.pul)
         PWM.cleanup()
-
