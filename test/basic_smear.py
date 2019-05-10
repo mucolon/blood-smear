@@ -122,7 +122,7 @@ if __name__ == "__main__":
     near_switch = Input_io(config.limit_near_pin, "fall")
     far_switch = Input_io(config.limit_far_pin, "fall")
     slide_ui = UserI()
-    servo = Servo(config.unload_pin)
+    # servo = Servo(config.unload_pin)
 
 
     # initializing pins
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     slide.init_pins()
     near_switch.init_pin()
     far_switch.init_pin()
-    servo.disable()
+    # servo.disable()
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -182,4 +182,4 @@ if __name__ == "__main__":
     slide.cleanup()
     near_switch.cleanup()
     far_switch.cleanup()
-    servo.cleanup()
+    # servo.cleanup()
