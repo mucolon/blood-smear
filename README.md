@@ -1,4 +1,4 @@
-blood-smear: A complete repository for a prototype hematology blood smearing machine
+blood-smear: A complete repository for a prototype Hematology blood smearing machine
 ======================
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for hematology studies. A BeagleBone Black Wireless, stepper motors, TB6600 stepper motor drivers, and python 3.5.3 was used to control this device.
 
