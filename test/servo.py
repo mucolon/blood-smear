@@ -26,7 +26,8 @@ class Servo:
         self.min = int(duty_min)
         self.max = int(duty_max)
         self.span = duty_max - duty_min
-        duty = self.span / 2 + self.min
+        # duty = self.span / 2 + self.min
+        duty = self.min
         PWM.start(self.pul, duty, freq, polarity)
 
     # function to change servo duty cycle
@@ -36,8 +37,8 @@ class Servo:
 
     # function to set servo angle
     def change_angle(self, angle):
-        # angle: float servo angle from (-90,90) degrees
-        duty = (angle + 90) * self.span / 180 + self.min
+        # angle: float servo angle from (0, 180) degrees
+        duty = angle * self.span / 180 + self.min
         self.change_duty(duty)
 
     # function to disable servo motor
