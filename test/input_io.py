@@ -64,20 +64,22 @@ class Input_io():
         GPIO.remove_event_detect(self.sig)
 
     # function to read input accurately
-    def read2(self, num_samples, freq, success_rate):
+    def read2(self, num_samples, correct_samples, freq):
         # num_samples: int number of samples
-        # freq: sampling rate in [Hz]
-        # success_rate: percentage of correct read inputs [%]
+        # correct_samples: int number of correct samples
+        # freq: float sampling rate in [Hz]
         # function returns: bool True if read input is correct
         #                   bool False if read input is incorrect
         num_samples = int(num_samples)
+        correct_samples = int(correct_samples)
+        if correct_samples > num_samples:
+            print("Error: correct_samples cannot be higher than num_samples")
         samples = np.array([0]*num_samples)
         sleepTime = float(1/freq)
-        sr = float(success_rate/100)
         for i in range(num_samples):
             samples[i] = self.read()
             time.sleep(sleepTime)
-        if np.sum(samples) >= (sr * num_samples):
+        if np.sum(samples) >= correct_samples:
             return True
         else:
             return False
