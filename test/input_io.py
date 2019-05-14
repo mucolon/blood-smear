@@ -42,7 +42,7 @@ class Input_io():
     def init_pin(self, func, freq = 1):
         # function retruns: sig - beaglebone input pin
         #                   edge - pin edge detection
-        bouncetime = float(1E3/freq)
+        bouncetime = int(1E3/freq)
         GPIO.setup(self.sig, GPIO.IN, self.resistor)
         GPIO.add_event_detect(self.sig, self.edge, func, bouncetime)
         return (self.sig, self.edge)
