@@ -39,10 +39,12 @@ class Input_io():
             print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self):
+    def init_pin(self, func, freq = 1):
         # function retruns: sig - beaglebone input pin
         #                   edge - pin edge detection
+        bouncetime = float(1E3/freq)
         GPIO.setup(self.sig, GPIO.IN, pull_up_down = self.resistor)
+        GPIO.add_event_detect(self.pin, self.edge, func, bouncetime)
         return (self.sig, self.edge)
 
     # function to read input

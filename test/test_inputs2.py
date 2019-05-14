@@ -1,14 +1,19 @@
-# test_inputs1.py
-# This is test code for reading inductive sensor inputs
+# test_inputs2.py
+# This is test code for testing sensor interrupts
 #
 # run program with this line of code below form home directory (/~)
-# sudo python3 blood-smear/test/test_inputs1.py
+# sudo python3 blood-smear/test/test_inputs2.py
 
 
 # importing libraries
 from input_io import Input_io
 import config
 import time
+
+
+# test function
+def test():
+    print("Test Function!")
 
 
 if __name__ == "__main__":
@@ -19,16 +24,16 @@ if __name__ == "__main__":
 
     # initializing pins
     print("Initializing Pins")
-    near_switch.init_pin()
-    far_switch.init_pin()
+    near_switch.init_pin(test())
+    far_switch.init_pin(test())
 
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    for x in range(30):
-        print("\nNear switch: ", near_switch.read())
-        print("Far switch: ", far_switch.read())
-        time.sleep(1)
+    time.sleep(30)
+
+    # near_switch.event()
+    # far_switch.event()
 
     # cleaning up pins
     print("\nCleaning up pins.")
