@@ -13,7 +13,7 @@ import time
 
 # test function
 def test():
-    print("Test Function!")
+    print("\nTest Function!")
 
 
 if __name__ == "__main__":
