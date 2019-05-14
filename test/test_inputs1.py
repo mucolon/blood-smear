@@ -1,8 +1,8 @@
 # test_inputs.py
-# This is test code for testing read2 function
+# This is test code for reading inductive sensor inputs
 #
 # run program with this line of code below form home directory (/~)
-# sudo python3 blood-smear/test/test_inputs.py
+# sudo python3 blood-smear/test/test_inputs1.py
 
 
 # importing libraries
@@ -25,9 +25,10 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    while near_switch.read2(10, 9, 100) == False:
-        print("False")
-    print("\nTrue")
+    for x in range(30):
+        print("\nNear switch: ", near_switch.read())
+        print("Far switch: ", far_switch.read())
+        time.sleep(1)
 
     # cleaning up pins
     print("\nCleaning up pins.")
