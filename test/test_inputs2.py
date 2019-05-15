@@ -12,7 +12,7 @@ import time
 
 
 # test function
-def test:
+def test(self):
     print("\nTest Function!")
 
 
@@ -30,10 +30,9 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    time.sleep(30)
-
-    # near_switch.event()
-    # far_switch.event()
+    for i in range(10,0,-1):
+        print(i, "secs left")
+        time.sleep(1)
 
     # cleaning up pins
     print("\nCleaning up pins.")

@@ -39,11 +39,13 @@ class Input_io():
             print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self, func, freq = 1):
+    def init_pin(self, func, freq = 0):
         # function retruns: sig - beaglebone input pin
         #                   edge - pin edge detection
-        if freq == 1:
+        if freq == 0:
             bounce = 0
+        elif freq < 0:
+            print("\nError: freq cannot be negative")
         else:
             bounce = int(1E3/freq)
         GPIO.setup(self.sig, GPIO.IN, self.resistor)
