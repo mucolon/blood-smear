@@ -12,7 +12,7 @@ import time
 
 
 # test function
-def test():
+def test:
     print("\nTest Function!")
 
 
@@ -24,8 +24,8 @@ if __name__ == "__main__":
 
     # initializing pins
     print("Initializing Pins")
-    near_switch.init_pin(test())
-    far_switch.init_pin(test())
+    near_switch.init_pin(test)
+    far_switch.init_pin(test)
 
     # confirming power
     input("Press any key after motors are connected to power.")
