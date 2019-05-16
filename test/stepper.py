@@ -5,32 +5,24 @@
 # importing libraries
 import Adafruit_BBIO.GPIO as GPIO
 import time
+from math import pi
 
 
 # declaring Stepper class to handle actuating a stepper motor
 class Stepper:
 
     # initial class function
-    def __init__(self, pins):
+    def __init__(self, pins, circumference, microstep = 1):
         # pins: dictionary containing used stepper motor pins
+        # circumference: float number for distance traveled by one motor revolution
+        # microstep: int number for current microstep configuration for stepper motor
+        #   by default the micro step amount is 1
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
-
-    # function to initialize pins
-    def init_pins(self):
-        GPIO.setup(self.pul, GPIO.OUT, initial = GPIO.LOW)
-        GPIO.setup(self.dir, GPIO.OUT)
-        GPIO.setup(self.ena, GPIO.OUT, initial = GPIO.LOW)
-
-    # function to step motor
-    def step(self):
-        GPIO.output(self.pul, GPIO.HIGH)
-
-    # function to set stepper motor micro steps
-    def micro_steps(self, microStep = 1):
-        # microStep: the amount of microsteps the stepper motor is set to
-        #   by default the micro step amount is 1
+        self.circum = circumference
+        self.radius = self.circum / (pi * 2)
+        self.mms2rpm = 30 / (self.radius * pi)
         if microStep == 1:
             self.pulses = 200    # 1 micro step = 200 pulses
         elif microStep == 2:
@@ -46,71 +38,89 @@ class Stepper:
         else:
             print("Error: Invalid micro step value")
 
+    # function to initialize pins
+    def init_pins(self):
+        GPIO.setup(self.pul, GPIO.OUT, initial = GPIO.LOW)
+        GPIO.setup(self.dir, GPIO.OUT)
+        GPIO.setup(self.ena, GPIO.OUT, initial = GPIO.LOW)
+
+    # function to step motor
+    def step(self):
+        GPIO.output(self.pul, GPIO.HIGH)
+
+    # function to stop steping motor
+    def stop(self):
+        GPIO.output(self.pul, GPIO.LOW)
+
+    # function to convert linear velocity [mm/s] to rotational velocity [rpm]
+    def convert_mms2rpm(self, mms):
+        # mms: float number of motor load's linear velocity [mm/s]
+        # function return: float number to motor's rotational velocity [rpm]
+        return (mms * self.mms2rpm)
+
     # function to move motor by rotations
     def rotate(self, rotations, rpm, direction):
-        # rotations: float number to rotate motor
-        # rpm: float number to describe motor's rpm
-        # direction: 1 is for clockwise and 0 is for counterclockwise
+        # rotations: float number of motor rotations
+        # rpm: float number of motor's rpm
+        # direction: str "cw" for clockwise and str "ccw" for counterclockwise
         sleep_time = float(0.3 / rpm)
-        steps = int(rotations * self.pulses)
-        if self.pulses == None:
-            print("Stepper motor pulses has been set to 200 by default")
-            print("Please run function micro_steps to change default setting")
-        if direction == 1:
+        steps = round(rotations * self.pulses)
+        if direction == "cw":
             GPIO.output(self.dir, GPIO.HIGH)
-            for x in range(0, steps):
+            for x in range(steps):
                 self.step()
                 time.sleep(sleep_time)
                 GPIO.output(self.pul, GPIO.LOW)
-        elif direction == 0:
+        elif direction == "ccw":
             GPIO.output(self.dir, GPIO.LOW)
-            for x in range(0, steps):
+            for x in range(steps):
                 self.step()
                 time.sleep(sleep_time)
                 GPIO.output(self.pul, GPIO.LOW)
         else:
-            print("Error: Invalid direction value [1 for cw or 0 for ccw]")
+            print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print("Please include quotation marks")
 
+    # function to move motor by amount of steps
     def move_steps(self, numberOfSteps, rpm, direction):
-        # numberOfSteps: int number of amount of steps motor will turn
-        # rpm: float number to describe motor's rpm
-        # dir: 1 is for clockwise and 0 is for counterclockwise
-        sleep_time = float(0.3 / rpm)
-        if self.pulses == None:
-            print("Stepper motor pulses has been set to 200 by default")
-            print("Please run function micro_steps to change default setting")
-        if direction == 1:
-            GPIO.output(self.dir, GPIO.HIGH)
-            for x in range(0, numberOfSteps):
-                self.step()
-                time.sleep(sleep_time)
-                GPIO.output(self.pul, GPIO.LOW)
-        elif direction == 0:
-            GPIO.output(self.dir, GPIO.LOW)
-            for x in range(0, numberOfSteps):
-                self.step()
-                time.sleep(sleep_time)
-                GPIO.output(self.pul, GPIO.LOW)
-        else:
-            print("Error: Invalid direction value [1 for cw or 0 for ccw]")
+        # numberOfSteps: int number of steps motor will turn
+        # rpm: float number of motor's rpm
+        # dir: str "cw" for clockwise and str "ccw" for counterclockwise
+        rotations = numberOfSteps/self.pulses
+        self.rotate(rotations, rpm, direction)
+        # sleep_time = float(0.3 / rpm)
+        # if direction == "cw":
+        #     GPIO.output(self.dir, GPIO.HIGH)
+        #     for x in range(numberOfSteps):
+        #         self.step()
+        #         time.sleep(sleep_time)
+        #         GPIO.output(self.pul, GPIO.LOW)
+        # elif direction == "ccw":
+        #     GPIO.output(self.dir, GPIO.LOW)
+        #     for x in range(numberOfSteps):
+        #         self.step()
+        #         time.sleep(sleep_time)
+        #         GPIO.output(self.pul, GPIO.LOW)
+        # else:
+        #     print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+        #     print("Please include quotation marks")
 
-    def move_linear(self, dist, rpm, direction, circum):
-        # dist: linear distance to move motor [mm]
-        # rpm: float number to describe motor's rpm
-        # direction: 1 is for clockwise and 0 is for counterclockwise
-        # circum: circumference of motor [mm]
-        rot = dist / circum
-        self.rotate(rot, rpm, direction)
+    def move_linear(self, dist, rpm, direction):
+        # dist: float number of motor's linear distance to travel [mm]
+        # rpm: float number of motor's rpm
+        # direction: "cw" for clockwise and "ccw" for counterclockwise
+        rotations = dist / self.circum
+        self.rotate(rotations, rpm, direction)
 
     # function to disable motor from sending pulses
-    def disable(self):
+    def disable_pulse(self):
         GPIO.output(self.ena, GPIO.HIGH)
 
     # function to enable motor to send pulses
-    def enable(self):
+    def enable_pulse(self):
         GPIO.output(self.ena, GPIO.LOW)
 
     # function to cleanup up pins from use
     def cleanup(self):
-        self.disable()
+        self.disable_pulses()
         GPIO.cleanup()

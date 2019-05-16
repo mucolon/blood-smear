@@ -39,7 +39,10 @@ class Input_io():
             print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self, func, freq = 0):
+    def init_pin(self, func = None, freq = 0):
+        # func: interrrupt function to be used when input is triggered
+        #   None by default
+        # freq: float number time until func is activated [Hz]
         # function retruns: sig - beaglebone input pin
         #                   edge - pin edge detection
         if freq == 0:
