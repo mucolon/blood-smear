@@ -69,6 +69,12 @@ def dry(distance, wait_time, manual = "no"):
         print("\"yes\" to manaully proceed after blood has visually dried")
         print("Please use quotation marks")
 
+# function to unload slide
+def eject():
+    unload.change_angle(90)
+    time.sleep(2)
+    unload.change_angle(0)
+
 # main function for complete smearing process
 def main():
     # moving slide to start position
@@ -112,6 +118,9 @@ def main():
     slide.enable_pulse()
     move2near_side()
 
+    # unloading slide
+    print("\nUnloading slide")
+    eject()
 
 
 if __name__ == "__main__":
@@ -127,7 +136,7 @@ if __name__ == "__main__":
     slide.init_pins()
     near_switch.init_pin(slide.disable_pulse())
     far_switch.init_pin(slide.disable_pulse())
-    unload.disable()
+    unload.start(3, 14)
 
     # confirming power
     input("Press any key after motors are connected to power")

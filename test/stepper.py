@@ -23,17 +23,17 @@ class Stepper:
         self.circum = circumference
         self.radius = self.circum / (pi * 2)
         self.mms2rpm = 30 / (self.radius * pi)
-        if microStep == 1:
+        if microstep == 1:
             self.pulses = 200    # 1 micro step = 200 pulses
-        elif microStep == 2:
+        elif microstep == 2:
             self.pulses == 400   # 2 micro steps = 400 pulses
-        elif microStep == 4:
+        elif microstep == 4:
             self.pulses = 800    # 4 micro steps = 800 pulses
-        elif microStep == 8:
+        elif microstep == 8:
             self.pulses = 1600   # 8 micro steps = 1600 pulses
-        elif microStep == 16:
+        elif microstep == 16:
             self.pulses = 3200   # 16 micro steps = 3200 pulses
-        elif microStep == 32:
+        elif microstep == 32:
             self.pulses = 6400   # 32 micro steps = 6400 pulses
         else:
             print("Error: Invalid micro step value")
