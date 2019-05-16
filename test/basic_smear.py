@@ -23,6 +23,9 @@ slide_circum = 72
 # radius = slide_circum / (pi * 2)  # [mm] from manufacturer
 # mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
+# function to stop slide from moving
+def stop():
+    slide.disable_pulse()
 
 # function to move slide to linear guide motor
 def move2near_side():
@@ -134,8 +137,8 @@ if __name__ == "__main__":
 
     # initializing pins
     slide.init_pins()
-    near_switch.init_pin(slide.disable_pulse())
-    far_switch.init_pin(slide.disable_pulse())
+    near_switch.init_pin(stop)
+    far_switch.init_pin(stop)
     unload.start(3, 14)
 
     # confirming power

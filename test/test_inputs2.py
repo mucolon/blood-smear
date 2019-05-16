@@ -28,13 +28,13 @@ if __name__ == "__main__":
     far_switch.init_pin(test)
 
     # confirming power
-    input("Press any key after motors are connected to power.")
+    input("Press any key after motors are connected to power")
 
     for i in range(10,0,-1):
         print(i, "secs left")
         time.sleep(1)
 
     # cleaning up pins
-    print("\nCleaning up pins.")
+    print("\nCleaning up pins")
     near_switch.cleanup()
     far_switch.cleanup()
