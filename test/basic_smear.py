@@ -23,17 +23,18 @@ slide_circum = 72
 # radius = slide_circum / (pi * 2)  # [mm] from manufacturer
 # mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
-# function to stop slide from moving
-def stop():
-    slide.disable_pulse()
 
 # function to move slide to linear guide motor
 def move2near_side():
-    slide.move_linear(210, 90, "cw")
+    # slide.move_linear(210, 90, "cw")
+    while near_switch.read() != 1:
+        slide.move_steps(1, 90, "cw")
 
 # function to move slide to linear guide end
 def move2far_side():
-    slide.move_linear(210, 90, "ccw")
+    # slide.move_linear(210, 90, "ccw")
+    while far_switch.read() != 1:
+        slide.move_steps(1, 90, "ccw")
 
 # function to handle wicking
 def wick(wait_time, manual = "no"):
@@ -137,8 +138,8 @@ if __name__ == "__main__":
 
     # initializing pins
     slide.init_pins()
-    near_switch.init_pin(stop)
-    far_switch.init_pin(stop)
+    near_switch.init_pin()
+    far_switch.init_pin()
     unload.start(3, 14)
 
     # confirming power
