@@ -1,6 +1,6 @@
 blood-smear: A complete repository for a prototype Hematology blood smearing machine
 ======================
-UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for hematology studies. A BeagleBone Black Wireless, stepper motors, TB6600 stepper motor drivers, and python 3.5.3 was used to control this device.
+UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a stepper motor, a TB6600 stepper motor driver, servos, and python 3.5.3 was used to control this device.
 
 
 Installation
@@ -14,22 +14,32 @@ git clone git://github.com/mucolon/blood-smear.git
 Code Methodology
 --------------------------------
 ### Overview
-A configuration file is used to declare all the used GPIO pins. A stepper motor class library allows for easy setup and actuation for any number of stepper motors. A GPIO input class library sets up and reads pins. A user-interface class library deals with possible user inputs. Finally, a main script is used to command all of the different motors for the automated smearing process.
+A configuration file is used to declare all the used GPIO pins. Stepper and Servo motor class libraries allows for easy setup and actuation for any number of stepper and servo motors. A GPIO input class library sets up and reads pins. A user-interface class library deals with possible user inputs. Finally, a main script is used to command all of the different motors for the automated smearing process.
 
 ### File Descriptions
 The `config.py` file list all the GPIO pins being used for the blood smearing device.
 
 The `stepper.py` file declares a class with functions to actuate any stepper motor.
 
+The `servo.py` file declares a class with functions to actuate any servo motor.
+
 The `input_io.py` file declares a class with functions to setup up pins as inputs.
 
 The `ui.py` file declares a class with functions to handle all user-friendly interface.
 
-The `test_inputs.py` file tests if the `input_io.py` library is working correctly.
+The `test_inputs.py` file reads binary data from inductive sensors.
+
+The `test_inputs1.py` file tests if the `read2` function in `input_io.py` is working.
+
+The `test_inputs2.py` file tests if sensor interrupts are working.
+
+The `test_servo.py` file tests a servo motor's duty cycle range.
+
+The `test_servo1.py` file tests a servo motor's rotation by angle inputs.
 
 The `test_slide.py` file tests different motor parameters with a user-friendly interface for the linear guide's smearing process.
 
-The `basic_smear.py` file commands the linear guide for a Proof of Concept presentation.
+The `basic_smear.py` file commands all the motors in the assembly for making a quality smear.
 
 
 References
