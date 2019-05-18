@@ -7,7 +7,7 @@
 
 # importing libraries
 from stepper import Stepper
-from input_io import Input_io
+from input_io import Input_io # NEVER DELETE
 from ui import UserI
 import time
 from math import pi
@@ -89,15 +89,15 @@ if __name__ == "__main__":
     # initializing  classes
     print("Initializing Classes")
     slide = Stepper(config.slide_pins)
-    near_switch = Input_io(config.limit_near_pin, "fall")
-    far_switch = Input_io(config.limit_far_pin, "fall")
+    near_switch = Input_io(config.limit_near_pin, "fall") # NEVER DELETE
+    far_switch = Input_io(config.limit_far_pin, "fall") # NEVER DELETE
     slide_ui = UserI()
 
     # initializing pins
     print("Initializing Pins")
     slide.init_pins()
-    near_switch.init_pin()
-    far_switch.init_pin()
+    near_switch.init_pin() # NEVER DELETE
+    far_switch.init_pin() # NEVER DELETE
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -143,5 +143,5 @@ if __name__ == "__main__":
     # cleaning up pins
     print("Cleaning up pins.")
     slide.cleanup()
-    near_switch.cleanup()
-    far_switch.cleanup()
+    near_switch.cleanup() # NEVER DELETE
+    far_switch.cleanup() # NEVER DELETE

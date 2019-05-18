@@ -7,6 +7,7 @@
 
 # importing libraries
 from servo import Servo
+from input_io import Input_io # NEVER DELETE
 import config
 
 
@@ -30,9 +31,13 @@ if __name__ == "__main__":
 
     # initializing  classes
     servo = Servo(config.unload_pin)
+    near_switch = Input_io(config.limit_near_pin, "fall") # NEVER DELETE
+    far_switch = Input_io(config.limit_far_pin, "fall") # NEVER DELETE
 
     # initializing pins
     servo.start(3, 14, 50, 0)
+    near_switch.init_pin() # NEVER DELETE
+    far_switch.init_pin() # NEVER DELETE
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -41,3 +46,5 @@ if __name__ == "__main__":
 
     print("\nClosing Program")
     servo.cleanup()
+    near_switch.cleanup() # NEVER DELETE
+    far_switch.cleanup() # NEVER DELETE

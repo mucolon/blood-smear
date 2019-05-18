@@ -122,5 +122,5 @@ class Stepper:
 
     # function to cleanup up pins from use
     def cleanup(self):
-        self.disable_pulses()
+        self.disable_pulse()
         GPIO.cleanup()

@@ -39,20 +39,20 @@ class Input_io():
             print("Please include quotation marks")
 
     # function to initialize pin
-    def init_pin(self, func = None, freq = 0):
+    def init_pin(self)#, func = None, freq = 0):
         # func: interrrupt function to be used when input is triggered
         #   None by default
         # freq: float number time until func is activated [Hz]
         # function retruns: sig - beaglebone input pin
         #                   edge - pin edge detection
-        if freq == 0:
-            bounce = 0
-        elif freq < 0:
-            print("\nError: freq cannot be negative")
-        else:
-            bounce = int(1E3/freq)
+        # if freq == 0:
+        #     bounce = 0
+        # elif freq < 0:
+        #     print("\nError: freq cannot be negative")
+        # else:
+        #     bounce = int(1E3/freq)
         GPIO.setup(self.sig, GPIO.IN, self.resistor)
-        GPIO.add_event_detect(self.sig, self.edge, callback = func, bouncetime = bounce)
+        # GPIO.add_event_detect(self.sig, self.edge, callback = func, bouncetime = bounce)
         return (self.sig, self.edge)
 
     # function to read input

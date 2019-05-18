@@ -8,7 +8,7 @@
 # importing libraries
 from stepper import Stepper
 from servo import Servo
-from input_io import Input_io
+from input_io import Input_io # NEVER DELETE
 from ui import UserI
 import time
 import config
@@ -55,6 +55,7 @@ def smear(mms_speed):
     # mms_speed: float number of motor load's linear velocity [mm/s]
     rpm = slide.convert_mms2rpm(mms_speed)
     slide.move_linear(60, rpm, "cw")
+    time.sleep(2)
 
 # function to move slide to heater
 def dry(distance, wait_time, manual = "no"):
@@ -62,7 +63,7 @@ def dry(distance, wait_time, manual = "no"):
     # wait_time: float number for time to dry blood slide [sec]
     # manual: "no" allows time to dry to be preselected ie. wait_time, "yes" allows user to
     #   press any key to finish drying process
-    slide.move_linear(40, 90, "cw")
+    slide.move_linear(distance, 90, "cw")
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
@@ -75,7 +76,7 @@ def dry(distance, wait_time, manual = "no"):
 
 # function to unload slide
 def eject():
-    unload.change_angle(90)
+    unload.change_angle(95)
     time.sleep(2)
     unload.change_angle(0)
 
@@ -115,7 +116,7 @@ def main():
     # drying blood
     print("\nMoving to drying station")
     print("Drying blood")
-    dry(40, 3, "yes")
+    dry(25, 3, "yes")
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
@@ -131,15 +132,15 @@ if __name__ == "__main__":
 
     # initializing  classes
     slide = Stepper(config.slide_pins, slide_circum, 1)
-    near_switch = Input_io(config.limit_near_pin, "fall")
-    far_switch = Input_io(config.limit_far_pin, "fall")
+    near_switch = Input_io(config.limit_near_pin, "fall") # NEVER DELETE
+    far_switch = Input_io(config.limit_far_pin, "fall") # NEVER DELETE
     slide_ui = UserI()
     unload = Servo(config.unload_pin)
 
     # initializing pins
     slide.init_pins()
-    near_switch.init_pin()
-    far_switch.init_pin()
+    near_switch.init_pin() # NEVER DELETE
+    far_switch.init_pin() # NEVER DELETE
     unload.start(3, 14)
 
     # confirming power
@@ -167,6 +168,6 @@ if __name__ == "__main__":
     # cleaning up pins
     print("\nClosing Program")
     slide.cleanup()
-    near_switch.cleanup()
-    far_switch.cleanup()
+    near_switch.cleanup() # NEVER DELETE
+    far_switch.cleanup() # NEVER DELETE
     unload.cleanup()

@@ -23,8 +23,8 @@ class Servo:
         #   50 Hz by default
         # polarity: int defines whether the duty affects the PWM waveform
         #   0 by default (rising edge), 1 (falling edge)
-        self.min = int(duty_min)
-        self.max = int(duty_max)
+        self.min = float(duty_min)
+        self.max = float(duty_max)
         self.span = duty_max - duty_min
         # duty = self.span / 2 + self.min
         duty = self.min
