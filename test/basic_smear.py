@@ -18,8 +18,10 @@ import config
 slide_circum = 72 # [mm]
 blade_dist = 150 # [mm] ccw
 wick_dist = 35 # [mm] cw
+wick_time = 3 # [sec]
 smear_dist = 45 # [mm] ccw
 dry_dist = 60 # [mm] cw
+dry_time = 60 # [sec]
 
 
 # conversion factors
@@ -45,10 +47,11 @@ def blade(distance): # WIP
 
 # function to move to wicking site and wait for wait to finish
 def wick(distance, wait_time, manual = "no"):
-    # distance: float number of slide linear distance to wicking site
-    # wait_time: float number of time for blood to wick onto smearing blade
+    # distance: float number of slide linear distance to wicking site [mm]
+    # wait_time: float number of time for blood to wick onto smearing blade [sec]
     # manual: "no" allows time to wick to be preselected
     #         "yes" for manual override
+    slide.move_linear(distance, 45, "cw")
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
@@ -87,7 +90,7 @@ def dry(distance, wait_time, manual = "no"):
 # function to unload slide
 def eject():
     unload.change_angle(95)
-    time.sleep(2)
+    time.sleep(1.5)
     unload.change_angle(0)
 
 # main function for complete smearing process
@@ -116,7 +119,7 @@ def main():
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
-    wick(wick_dist ,3, "yes")
+    wick(wick_dist, wick_time, "yes")
 
     # smearing blood
     print("\nSmearing blood")
@@ -126,7 +129,7 @@ def main():
     # drying blood
     print("\nMoving to drying station")
     print("Drying blood")
-    dry(dry_dist, 3, "yes")
+    dry(dry_dist, dry_time, "yes")
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
