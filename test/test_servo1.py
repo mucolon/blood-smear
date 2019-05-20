@@ -1,5 +1,5 @@
 # test_servo.py
-# This is test code for testing a servo motor rotation
+# This is test code for testing a servo motor rotation by angle inputs
 #
 # run program with this line of code below form home directory (/~)
 # sudo python3 blood-smear/test/test_servo.py
@@ -7,7 +7,7 @@
 
 # importing libraries
 from servo import Servo
-from input_io import Input_io # NEVER DELETE
+from io import Io # NEVER DELETE
 import config
 
 
@@ -31,8 +31,8 @@ if __name__ == "__main__":
 
     # initializing  classes
     servo = Servo(config.unload_pin)
-    near_switch = Input_io(config.limit_near_pin, "fall") # NEVER DELETE
-    far_switch = Input_io(config.limit_far_pin, "fall") # NEVER DELETE
+    near_switch = Io(config.limit_near_pin, "in") # NEVER DELETE
+    far_switch = Io(config.limit_far_pin, "in") # NEVER DELETE
 
     # initializing pins
     servo.start(3, 14, 50, 0)

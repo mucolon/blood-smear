@@ -8,14 +8,18 @@
 # importing libraries
 from stepper import Stepper
 from servo import Servo
-from input_io import Input_io # NEVER DELETE
+from io import Io # NEVER DELETE
 from ui import UserI
 import time
 import config
 
 
 # declaring constants
-slide_circum = 72
+slide_circum = 72 # [mm]
+blade_dist = 150 # [mm] ccw
+wick_dist = 35 # [mm] cw
+smear_dist = 45 # [mm] ccw
+dry_dist = 60 # [mm] cw
 
 
 # conversion factors
@@ -26,35 +30,41 @@ slide_circum = 72
 
 # function to move slide to linear guide motor
 def move2near_side():
-    # slide.move_linear(210, 90, "cw")
     while near_switch.read() != 1:
         slide.move_steps(1, 90, "cw")
 
 # function to move slide to linear guide end
 def move2far_side():
-    # slide.move_linear(210, 90, "ccw")
     while far_switch.read() != 1:
         slide.move_steps(1, 90, "ccw")
 
-# function to handle wicking
-def wick(wait_time, manual = "no"):
+# function to move to smearing blade extension site and extend blade
+def blade(distance): # WIP
+    # distance: float number of slide linear distance to smearing blade extension site
+    slide.move_linear(distance, 90, "ccw")
+
+# function to move to wicking site and wait for wait to finish
+def wick(distance, wait_time, manual = "no"):
+    # distance: float number of slide linear distance to wicking site
     # wait_time: float number of time for blood to wick onto smearing blade
-    # manual: "no" allows time to wick to be preselected, "yes"
+    # manual: "no" allows time to wick to be preselected
+    #         "yes" for manual override
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
         input("\nPress any key after blood has wicked")
     else:
-        print("\nError: Invalid string")
+        print("\nError: Invalid string for manual")
         print("\"no\" to use preselected wicking wait time")
         print("\"yes\" to manaully proceed after blood has visually wicked")
         print("Please use quotation marks")
 
 # function to move slide for smear
-def smear(mms_speed):
+def smear(distance, mms_speed):
+    # distance: float number of slide linear distance for smear [mm]
     # mms_speed: float number of motor load's linear velocity [mm/s]
     rpm = slide.convert_mms2rpm(mms_speed)
-    slide.move_linear(60, rpm, "cw")
+    slide.move_linear(distance, rpm, "ccw")
     time.sleep(2)
 
 # function to move slide to heater
@@ -62,14 +72,14 @@ def dry(distance, wait_time, manual = "no"):
     # distance: float number of slide linear distance after smear to heater [mm]
     # wait_time: float number for time to dry blood slide [sec]
     # manual: "no" allows time to dry to be preselected ie. wait_time, "yes" allows user to
-    #   press any key to finish drying process
+    #         press any key to finish drying process
     slide.move_linear(distance, 90, "cw")
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
         input("\nPress any key after blood has dried")
     else:
-        print("\nError: Invalid string")
+        print("\nError: Invalid string for manual")
         print("\"no\" to use preselected drying wait time")
         print("\"yes\" to manaully proceed after blood has visually dried")
         print("Please use quotation marks")
@@ -100,23 +110,23 @@ def main():
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
-    # slide.move_linear(185, 90, ccw, slide_circum)
     slide.enable_pulse()
-    move2far_side()
+    # move2far_side()
+    blade(blade_dist)
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
-    wick(3, "yes")
+    wick(wick_dist ,3, "yes")
 
     # smearing blood
     print("\nSmearing blood")
-    smear(input_mms)
+    smear(smear_dist, input_mms)
     print("Completed smear")
 
     # drying blood
     print("\nMoving to drying station")
     print("Drying blood")
-    dry(25, 3, "yes")
+    dry(dry_dist, 3, "yes")
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
@@ -132,8 +142,8 @@ if __name__ == "__main__":
 
     # initializing  classes
     slide = Stepper(config.slide_pins, slide_circum, 1)
-    near_switch = Input_io(config.limit_near_pin, "fall") # NEVER DELETE
-    far_switch = Input_io(config.limit_far_pin, "fall") # NEVER DELETE
+    near_switch = Io(config.limit_near_pin, "in") # NEVER DELETE
+    far_switch = Io(config.limit_far_pin, "in") # NEVER DELETE
     slide_ui = UserI()
     unload = Servo(config.unload_pin)
 
@@ -162,7 +172,6 @@ if __name__ == "__main__":
         elif cont == "n":
             break
         else:
-            print("Press enter to repeat\nOR\nPress n to stop: ")
             continue
 
     # cleaning up pins
