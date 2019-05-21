@@ -23,13 +23,13 @@ The `stepper.py` file declares a class with functions to actuate any stepper mot
 
 The `servo.py` file declares a class with functions to actuate any servo motor.
 
-The `io.py` file declares a class with functions to setup up pins as inputs or outputs.
+The `digital_io.py` file declares a class with functions to setup up GPIO pins as inputs or outputs.
 
 The `ui.py` file declares a class with functions to handle all user-friendly interface.
 
 The `test_inputs.py` file reads binary data from inductive sensors.
 
-The `test_inputs1.py` file tests if the `read2` function in `io.py` is working.
+The `test_inputs1.py` file tests if the `read2` function in `digital_io.py` is working.
 
 The `test_inputs2.py` file tests if sensor interrupts are working.
 
