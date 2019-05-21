@@ -14,7 +14,7 @@ git clone git://github.com/mucolon/blood-smear.git
 Code Methodology
 --------------------------------
 ### Overview
-A configuration file is used to declare all the used GPIO pins. Stepper and Servo motor class libraries allows for easy setup and actuation for any number of stepper and servo motors. A GPIO input class library sets up and reads pins. A user-interface class library deals with possible user inputs. Finally, a main script is used to command all of the different motors for the automated smearing process.
+A configuration file is used to declare all the used pins on the BeagleBone Black Wireless. Stepper and Servo motor class libraries allows for easy setup and actuation for any number of stepper and servo motors. A GPIO input/output class library sets up pins to output 3.3V or to read binary data. A user-interface class library deals with possible user inputs. Finally, a main script is used to command all of the different motors for the automated smearing process.
 
 ### File Descriptions
 The `config.py` file list all the GPIO pins being used for the blood smearing device.
