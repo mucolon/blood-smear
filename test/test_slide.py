@@ -7,7 +7,7 @@
 
 # importing libraries
 from stepper import Stepper
-from io import Io # NEVER DELETE
+from digital_io import Digital_Io # NEVER DELETE
 from ui import UserI
 import time
 from math import pi
@@ -89,8 +89,8 @@ if __name__ == "__main__":
     # initializing  classes
     print("Initializing Classes")
     slide = Stepper(config.slide_pins)
-    near_switch = Io(config.limit_near_pin, "in") # NEVER DELETE
-    far_switch = Io(config.limit_far_pin, "in") # NEVER DELETE
+    near_switch = Digital_Io(config.limit_near_pin, "in") # NEVER DELETE
+    far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
     slide_ui = UserI()
 
     # initializing pins

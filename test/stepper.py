@@ -48,7 +48,7 @@ class Stepper:
     def step(self):
         GPIO.output(self.pul, GPIO.HIGH)
 
-    # function to stop steping motor
+    # function to stop stepping motor
     def stop(self):
         GPIO.output(self.pul, GPIO.LOW)
 
@@ -85,25 +85,9 @@ class Stepper:
     def move_steps(self, numberOfSteps, rpm, direction):
         # numberOfSteps: int number of steps motor will turn
         # rpm: float number of motor's rpm
-        # dir: str "cw" for clockwise and str "ccw" for counterclockwise
+        # direction: str "cw" for clockwise and str "ccw" for counterclockwise
         rotations = numberOfSteps/self.pulses
         self.rotate(rotations, rpm, direction)
-        # sleep_time = float(0.3 / rpm)
-        # if direction == "cw":
-        #     GPIO.output(self.dir, GPIO.HIGH)
-        #     for x in range(numberOfSteps):
-        #         self.step()
-        #         time.sleep(sleep_time)
-        #         GPIO.output(self.pul, GPIO.LOW)
-        # elif direction == "ccw":
-        #     GPIO.output(self.dir, GPIO.LOW)
-        #     for x in range(numberOfSteps):
-        #         self.step()
-        #         time.sleep(sleep_time)
-        #         GPIO.output(self.pul, GPIO.LOW)
-        # else:
-        #     print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
-        #     print("Please include quotation marks")
 
     def move_linear(self, dist, rpm, direction):
         # dist: float number of motor's linear distance to travel [mm]

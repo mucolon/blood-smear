@@ -6,7 +6,7 @@
 
 
 # importing libraries
-from io import Io # NEVER DELETE
+from digital_io import Digital_Io # NEVER DELETE
 import config
 import time
 
@@ -14,8 +14,8 @@ import time
 if __name__ == "__main__":
     # initializing  classes
     print("\nInitializing Classes")
-    near_switch = Io(config.limit_near_pin, "in") # NEVER DELETE
-    far_switch = Io(config.limit_far_pin, "in") # NEVER DELETE
+    near_switch = Digital_Io(config.limit_near_pin, "in") # NEVER DELETE
+    far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
 
     # initializing pins
     print("Initializing Pins")
