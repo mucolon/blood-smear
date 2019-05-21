@@ -1,7 +1,7 @@
 blood-smear: A complete repository for a prototype Hematology blood smearing machine
 ======================
 
-![alt text](https://raw.githubusercontent.com/mucolon/blood-smear/master/Media/Annotated%20Overall%20Design.png)
+![alt text](https://raw.githubusercontent.com/mucolon/blood-smear/master/Media/Annotated%20Overall%20Design.png?raw=true)
 
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a stepper motor, a TB6600 stepper motor driver, servos, and Python 3.5.3 was used to control this device.
 
@@ -18,6 +18,11 @@ Code Methodology
 --------------------------------
 ### Overview
 A configuration file is used to declare all the used pins on the BeagleBone Black Wireless. Stepper and Servo motor class libraries allows for easy setup and actuation for any number of stepper and servo motors. A GPIO input/output class library sets up pins to output 3.3V or to read binary data. A user-interface class library deals with possible user inputs. Finally, a main script is used to command all of the different motors for the automated smearing process.
+
+### Flowchart
+![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Overall%20Smear%20Process%20Flowchart%202.0.png?raw=true)
+This is a flowchart of the `basic_smear.py` file.
+
 
 ### File Descriptions
 The `config.py` file list all the GPIO pins being used for the blood smearing device.
@@ -42,7 +47,7 @@ The `test_servo1.py` file tests a servo motor's rotation by angle inputs.
 
 The `test_slide.py` file tests different motor parameters with a user-friendly interface for the linear guide's smearing process.
 
-The `basic_smear.py` file commands all the motors in the assembly for making a quality smear.
+The `basic_smear.py` file commands all the motors in the assembly for making a quality smear. This file is shown as a flowchart above.
 
 
 References
