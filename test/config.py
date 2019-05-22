@@ -11,10 +11,10 @@
 # "pul": digital HIGH then LOW turns motor one step
 slide_pins = {"ena": "P8_11", "dir": "P8_15", "pul": "P8_17"}
 
-# active digital input pin for far limit switch
+# active digital input pin for far (opposite side of stepper motor) limit switch
 limit_far_pin = {"sig": "P8_12"}
 
-# active digital input pin for near limit switch
+# active digital input pin for near (same side as stepper motor) limit switch
 limit_near_pin = {"sig": "P8_14"}
 
 # active output pulse pin for unloading servo

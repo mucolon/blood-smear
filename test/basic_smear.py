@@ -12,16 +12,20 @@ from digital_io import Digital_Io # NEVER DELETE
 from ui import UserI
 import time
 import config
+from math import pi
 
 
 # declaring constants
 slide_circum = 72 # [mm]
+slide_step = 1 # micro step configuration
 blade_dist = 150 # [mm] ccw
 wick_dist = 35 # [mm] cw
 wick_time = 3 # [sec]
 smear_dist = 45 # [mm] ccw
 dry_dist = 60 # [mm] cw
 dry_time = 120 # [sec]
+force_diameter = 25.4E-3 # [m]
+force_area = pi * ((force_diameter / 2) ** 2) # [m^2]
 
 
 # conversion factors
@@ -31,14 +35,28 @@ dry_time = 120 # [sec]
 
 
 # function to move slide to linear guide motor
-def move2near_side():
+def move2near_side(frequency = 600):
+    # frequency: float number to represent the occurence of sensor readings [Hz]
+    #            by default 600Hz is selected
+    slide.set_direction("cw")
+    time_sleep = 1/frequency
     while near_switch.read() != 1:
-        slide.move_steps(1, 90, "cw")
+        # slide.move_steps(1, 90, "cw")
+        slide.step()
+        time.sleep(time_sleep)
+        slide.stop()
 
 # function to move slide to linear guide end
-def move2far_side():
+def move2far_side(delay):
+    # frequency: float number to represent the occurence of sensor readings [Hz]
+    #            by default 600Hz is selected
+    slide.set_direction("ccw")
+    time_sleep = 1/frequency
     while far_switch.read() != 1:
-        slide.move_steps(1, 90, "ccw")
+        # slide.move_steps(1, 90, "ccw")
+        slide.step()
+        time.sleep(time_sleep)
+        slide.stop()
 
 # function to move to smearing blade extension site and extend blade
 def blade(distance): # WIP
@@ -143,17 +161,14 @@ def main():
 
 if __name__ == "__main__":
 
-    # initializing  classes
-    slide = Stepper(config.slide_pins, slide_circum, 1)
+    # initializing  classes and pins
+    slide = Stepper(config.slide_pins, slide_circum, slide_step)
     near_switch = Digital_Io(config.limit_near_pin, "in") # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
     slide_ui = UserI()
     unload = Servo(config.unload_pin)
 
     # initializing pins
-    slide.init_pins()
-    near_switch.init_pin() # NEVER DELETE
-    far_switch.init_pin() # NEVER DELETE
     unload.start(3, 14)
 
     # confirming power

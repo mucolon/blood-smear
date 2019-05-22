@@ -41,8 +41,6 @@ if __name__ == "__main__":
 
     # initializing pins
     servo.start(3, 14, 50, 0)
-    near_switch.init_pin() # NEVER DELETE
-    far_switch.init_pin() # NEVER DELETE
 
     # confirming power
     input("Press any key after motors are connected to power")

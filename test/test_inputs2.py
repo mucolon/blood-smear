@@ -17,15 +17,12 @@ def test(self):
 
 
 if __name__ == "__main__":
-    # initializing  classes
-    print("\nInitializing Classes")
+    # initializing  classes and pins
+    print("\nInitializing Classes & Pins")
     near_switch = Digital_Io(config.limit_near_pin, "in") # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
-
-    # initializing pins
-    print("Initializing Pins")
-    near_switch.init_pin(test) # NEVER DELETE
-    far_switch.init_pin(test) # NEVER DELETE
+    near_switch.add_event("fall")
+    far_switch.add_event("fall")
 
     # confirming power
     input("Press any key after motors are connected to power")

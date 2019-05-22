@@ -11,12 +11,12 @@ from math import pi
 # declaring Stepper class to handle actuating a stepper motor
 class Stepper:
 
-    # initial class function
+    # initial class function and pin start initialization
     def __init__(self, pins, circumference, microstep = 1):
         # pins: dictionary containing used stepper motor pins
         # circumference: float number for distance traveled by one motor revolution
         # microstep: int number for current microstep configuration for stepper motor
-        #   by default the micro step amount is 1
+        #            by default the micro step amount is 1
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
@@ -37,9 +37,6 @@ class Stepper:
             self.pulses = 6400   # 32 micro steps = 6400 pulses
         else:
             print("Error: Invalid micro step value")
-
-    # function to initialize pins
-    def init_pins(self):
         GPIO.setup(self.pul, GPIO.OUT, initial = GPIO.LOW)
         GPIO.setup(self.dir, GPIO.OUT)
         GPIO.setup(self.ena, GPIO.OUT, initial = GPIO.LOW)
@@ -52,6 +49,18 @@ class Stepper:
     def stop(self):
         GPIO.output(self.pul, GPIO.LOW)
 
+    # function to set motor rotation direction
+    def set_direction(self, direction):
+        # direction: string "cw" for clockwise rotation
+        #            string "ccw" for counter-clockwise rotation
+        if direction == "cw":
+            GPIO.output(self.pul, GPIO.HIGH)
+        elif direction == "ccw":
+            GPIO.output(self.dir, GPIO.LOW)
+        else:
+            print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print("Please include quotation marks")
+
     # function to convert linear velocity [mm/s] to rotational velocity [rpm]
     def convert_mms2rpm(self, mms):
         # mms: float number of motor load's linear velocity [mm/s]
@@ -62,7 +71,7 @@ class Stepper:
     def rotate(self, rotations, rpm, direction):
         # rotations: float number of motor rotations
         # rpm: float number of motor's rpm
-        # direction: str "cw" for clockwise and str "ccw" for counterclockwise
+        # direction: string "cw" for clockwise and string "ccw" for counter-clockwise
         sleep_time = float(0.3 / rpm)
         steps = round(rotations * self.pulses)
         if direction == "cw":
@@ -85,15 +94,15 @@ class Stepper:
     def move_steps(self, numberOfSteps, rpm, direction):
         # numberOfSteps: int number of steps motor will turn
         # rpm: float number of motor's rpm
-        # direction: str "cw" for clockwise and str "ccw" for counterclockwise
+        # direction: string "cw" for clockwise and string "ccw" for counter-clockwise
         rotations = numberOfSteps/self.pulses
         self.rotate(rotations, rpm, direction)
 
-    def move_linear(self, dist, rpm, direction):
-        # dist: float number of motor's linear distance to travel [mm]
+    def move_linear(self, distance, rpm, direction):
+        # distance: float number of motor's linear distance to travel [mm]
         # rpm: float number of motor's rpm
-        # direction: "cw" for clockwise and "ccw" for counterclockwise
-        rotations = dist / self.circum
+        # direction: string "cw" for clockwise and string "ccw" for counter-clockwise
+        rotations = distance / self.circum
         self.rotate(rotations, rpm, direction)
 
     # function to disable motor from sending pulses

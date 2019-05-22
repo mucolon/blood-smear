@@ -1,147 +1,200 @@
-# test_slide.py
-# This is the user input code for testing different motor paramenters
+# basic_smear.py
+# This is the test code for a basic smear
 #
-# run program with this line of code below form home directory (/~)
-# sudo python3 blood-smear/test/test_slide.py
+# run program with this line of code below from home directory (/~)
+# sudo python3 blood-smear/test/basic_smear.py
 
 
 # importing libraries
 from stepper import Stepper
+from servo import Servo
 from digital_io import Digital_Io # NEVER DELETE
 from ui import UserI
 import time
-from math import pi
 import config
+from math import pi
 
 
 # declaring constants
-cw = 1  # clockwise
-ccw = 0 # counterclockwise
-slide_circum = 72
+slide_circum = 72 # [mm]
+slide_step = 1 # micro step configuration
+blade_dist = 150 # [mm] ccw
+wick_dist = 35 # [mm] cw
+wick_time = 3 # [sec]
+smear_dist = 45 # [mm] ccw
+dry_dist = 60 # [mm] cw
+dry_time = 120 # [sec]
+force_diameter = 25.4E-3 # [m]
+force_area = pi * ((force_diameter / 2) ** 2) # [m^2]
 
 
 # conversion factors
 # radius = 13.3         # [mm] from CAD
-radius = slide_circum / (pi * 2)  # [mm] from manufacturer
-mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
+# radius = slide_circum / (pi * 2)  # [mm] from manufacturer
+# mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
-# function to move motor to linear guide home
-def home():
-    read_value = 0
-    while read_value != 1:
-        slide.move_steps(1, 30, ccw)
-        read_value = far_switch.read()
-    print("Home Position")
+# function to move slide to linear guide motor
+def move2near_side(frequency = 600):
+    # frequency: float number to represent the occurence of sensor readings [Hz]
+    #            by default 600Hz is selected
+    slide.set_direction("cw")
+    time_sleep = 1/frequency
+    while near_switch.read() != 1:
+        # slide.move_steps(1, 90, "cw")
+        slide.step()
+        time.sleep(time_sleep)
+        slide.stop()
 
+# function to move slide to linear guide end
+def move2far_side(delay):
+    # frequency: float number to represent the occurence of sensor readings [Hz]
+    #            by default 600Hz is selected
+    slide.set_direction("ccw")
+    time_sleep = 1/frequency
+    while far_switch.read() != 1:
+        # slide.move_steps(1, 90, "ccw")
+        slide.step()
+        time.sleep(time_sleep)
+        slide.stop()
 
-# main function to move motor
+# function to move to smearing blade extension site and extend blade
+def blade(distance): # WIP
+    # distance: float number of slide linear distance to smearing blade extension site
+    slide.move_linear(distance, 90, "ccw")
+
+# function to move to wicking site and wait for wait to finish
+def wick(distance, wait_time, manual = "no"):
+    # distance: float number of slide linear distance to wicking site [mm]
+    # wait_time: float number of time for blood to wick onto smearing blade [sec]
+    # manual: "no" allows time to wick to be preselected
+    #         "yes" for manual override
+    slide.move_linear(distance, 45, "cw")
+    if manual == "no":
+        time.sleep(wait_time)
+    elif manual == "yes":
+        input("\nPress any key after blood has wicked")
+    else:
+        print("\nError: Invalid string for manual")
+        print("\"no\" to use preselected wicking wait time")
+        print("\"yes\" to manaully proceed after blood has visually wicked")
+        print("Please use quotation marks")
+
+# function to move slide for smear
+def smear(distance, mms_speed):
+    # distance: float number of slide linear distance for smear [mm]
+    # mms_speed: float number of motor load's linear velocity [mm/s]
+    rpm = slide.convert_mms2rpm(mms_speed)
+    slide.move_linear(distance, rpm, "ccw")
+    time.sleep(2)
+
+# function to move slide to heater
+def dry(distance, wait_time, manual = "no"):
+    # distance: float number of slide linear distance after smear to heater [mm]
+    # wait_time: float number for time to dry blood slide [sec]
+    # manual: "no" allows time to dry to be preselected ie. wait_time, "yes" allows user to
+    #         press any key to finish drying process
+    slide.move_linear(distance, 90, "cw")
+    if manual == "no":
+        time.sleep(wait_time)
+    elif manual == "yes":
+        input("\nPress any key after blood has dried")
+    else:
+        print("\nError: Invalid string for manual")
+        print("\"no\" to use preselected drying wait time")
+        print("\"yes\" to manaully proceed after blood has visually dried")
+        print("Please use quotation marks")
+
+# function to unload slide
+def eject():
+    unload.change_angle(95)
+    time.sleep(1.5)
+    unload.change_angle(0)
+
+# main function for complete smearing process
 def main():
+    # moving slide to start position
+    slide.enable_pulse()
+    move2near_side()
 
-    # asking for linear spped
-    print("Please enter linear speed of smear")
+    # asking for linear speed
+    print("\nPlease enter linear speed of smear")
     input_mms = slide_ui.linear_speed()
-    input_rpm = input_mms * mms2rpm
 
-    # moving motor to blood dispensing site
-    print("Moving to blood dispensing site")
-    slide.move_linear(200, 50, cw, slide_circum)
-    print("Please dipense blood at target location")
+    # slide loading interface
+    print("\nPlease load slide")
+    input("Press any key after slide is loaded")
+
+    # blood dispensing interface
+    print("\nPlease dispense blood at target location")
     input("Press any key after blood is dispensed")
 
-    # moving motor for smearing stage
-    print("Preparing for smear")
-    print("Wicking blood")
-    slide.move_linear(35, 40, cw, slide_circum)
+    # moving slide to smearing station
+    print("\nMoving blood slide to smearing blade")
+    slide.enable_pulse()
+    # move2far_side()
+    blade(blade_dist)
 
-    # input_mms = 100  # [mm/s]
-    # input_mms = float(input("Enter linear travel speed [mm/s]: "))
-    # input_mms = slide_ui.linear_speed()
-    # rpm = input_mms * mms2rpm
-    # rpm = 75
+    # blood wicking interface
+    print("\nWaiting for blood to wick")
+    wick(wick_dist, wick_time, "yes")
 
-    # input_rot = float(input("Enter amount of motor rotations: "))
-    # input_rot = slide_ui.rotations()
-    # input_rot = .7
-
-    # input_dir = input("Enter motor direction [cw or ccw]: ")
-    # if input_dir == "cw":
-    #     input_dir = cw
-    #     dir_text = "Spining Clockwise"
-    # elif input_dir == "ccw":
-    #     input_dir = ccw
-    #     dir_text = "Spining Counterclockwise"
-    # else:
-    #     print("Error: Invalid input. cw for clockwise. ccw for counterclockwise")
-    # input_dir = slide_ui.direction()
-    input_dir = ccw
-
-    time.sleep(3)
-    # print(input_dir[1])
-    print("Smearing blood")
-    # slide.rotate(input_rot, rpm, input_dir[0])
-    slide.move_linear(50, input_rpm, input_dir, slide_circum)
+    # smearing blood
+    print("\nSmearing blood")
+    smear(smear_dist, input_mms)
     print("Completed smear")
+
+    # drying blood
+    print("\nMoving to drying station")
+    print("Drying blood")
+    dry(dry_dist, dry_time, "yes")
+
+    # moving slide to unloading site
+    print("\nMoving slide to unloading site")
+    slide.enable_pulse()
+    move2near_side()
+
+    # unloading slide
+    print("\nUnloading slide")
+    eject()
 
 
 if __name__ == "__main__":
 
-    # initializing  classes
-    print("Initializing Classes")
-    slide = Stepper(config.slide_pins)
+    # initializing  classes and pins
+    slide = Stepper(config.slide_pins, slide_circum, slide_step)
     near_switch = Digital_Io(config.limit_near_pin, "in") # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
     slide_ui = UserI()
+    unload = Servo(config.unload_pin)
 
     # initializing pins
-    print("Initializing Pins")
-    slide.init_pins()
-    near_switch.init_pin() # NEVER DELETE
-    far_switch.init_pin() # NEVER DELETE
+    unload.start(3, 14)
 
     # confirming power
     input("Press any key after motors are connected to power")
 
-    # setting stepper motor micro steps
-    print("Setting Micro Steps for linear guide")
-    # input_micro = int(input("Enter motor micro steps: "))
-    # input_micro = slide_ui.micro_steps()
-    input_micro = 1
-    slide.micro_steps(input_micro)
-
-    # moving to origin
-    print("Moving to home position")
-    home()
-
-    # moving linear guide for smearing process
-    print("Preparing to make smear")
-    print("Please load slide")
-    input("Press any key after slide is loaded")
+    # complete smearing process
     main()
-
-    # moving linear guide to start position
-    # print("Moving linear guide to start position")
-    # slide.move_linear(185, 40, ccw, slide_circum)
 
     # asking to repeat process
     while True:
         try:
-            cont = input("Press enter to repeat.\nOR\nPress n to stop: ")
+            cont = str(input("Press enter if you're loading another slide\nOR\nPress n to stop: "))
         except ValueError:
-            print("Sorry, I didn't understand that.\nTry again")
+            print("Error: Invalid Value")
             continue
         if cont == "":
-            # home()
             main()
             break
         elif cont == "n":
             break
         else:
-            print("Press enter to repeat.\nOR\nPress n to stop: ")
             continue
 
     # cleaning up pins
-    print("Cleaning up pins.")
+    print("\nClosing Program")
     slide.cleanup()
     near_switch.cleanup() # NEVER DELETE
     far_switch.cleanup() # NEVER DELETE
+    unload.cleanup()

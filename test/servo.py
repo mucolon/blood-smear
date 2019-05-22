@@ -20,13 +20,12 @@ class Servo:
         # duty_min: int PWM duty cycle for -90 degrees
         # duty_max: int PWM duty cycle for +90 degrees
         # freq: int PWM frequency [Hz], must be > 0
-        #   50 Hz by default
+        #       50 Hz by default
         # polarity: int defines whether the duty affects the PWM waveform
-        #   0 by default (rising edge), 1 (falling edge)
+        #           0 by default (rising edge), 1 (falling edge)
         self.min = float(duty_min)
         self.max = float(duty_max)
         self.span = duty_max - duty_min
-        # duty = self.span / 2 + self.min
         duty = self.min
         PWM.start(self.pul, duty, freq, polarity)
 

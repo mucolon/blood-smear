@@ -1,5 +1,5 @@
 # digital_io.py
-# This file declares a class to use GPIO pins as inputs/outputs
+# This file declares a class to use digital GPIO pins as inputs/outputs
 
 
 # importing libraries
@@ -8,10 +8,10 @@ import numpy as np
 import time
 
 
-# declaring Io class to handle GPIO inputs/outputs
+# declaring Digital_Io class to handle GPIO inputs/outputs
 class Digital_Io:
 
-    # initial class function
+    # initial class function and pin start initialization
     def __init__(self, pin, direction):
         # pin: dictionary containing used input/output pin
         # direction: string "in" to set up pin as an input or
@@ -25,9 +25,6 @@ class Digital_Io:
             print("\nError: Invalid string direction input (\"in\" or \"out\")
             print("\"in\" for input pin or \"out\" for output pin")
             print("Please include quotation marks")
-
-    # function to initialize pin
-    def init_pin(self):
         GPIO.setup(self.sig, self.dir)
 
     # function to read input
@@ -70,10 +67,10 @@ class Digital_Io:
         GPIO.remove_event_detect(self.sig)
 
     # function to read input accurately
-    def read2(self, num_samples, correct_samples, freq):
+    def read2(self, num_samples, correct_samples, frequency):
         # num_samples: int number of samples
         # correct_samples: int number of correct samples
-        # freq: float sampling rate in [Hz]
+        # frequency: float sampling rate in [Hz]
         # function returns: bool True if read input is correct
         #                   bool False if read input is incorrect
         num_samples = int(num_samples)
@@ -81,7 +78,7 @@ class Digital_Io:
         if correct_samples > num_samples:
             print("Error: correct_samples cannot be higher than num_samples")
         samples = np.array([0]*num_samples)
-        sleepTime = float(1/freq)
+        sleepTime = float(1/frequency)
         for i in range(num_samples):
             samples[i] = self.read()
             time.sleep(sleepTime)
