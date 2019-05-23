@@ -8,6 +8,7 @@
 # importing libraries
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
+from stepper import Stepper
 import config
 
 
@@ -20,8 +21,8 @@ def main():
     # function: main test function
     while True:
         try:
-            angle = str(input("\nEnter servo motor angle from [0-180] degrees \
-                (n to exit): "))
+            angle = str(
+                input("\nEnter servo motor angle from [0-180] degrees (n to exit): "))
         except ValueError:
             print("Error: Invalid Input")
             continue
@@ -42,6 +43,7 @@ if __name__ == "__main__":
     servo = Servo(config.unload_pin, 180)
     near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
+    slide = Stepper(config.slide_pins, 72)
 
     # initializing pins
     servo.start(start, end, 50)
@@ -55,3 +57,4 @@ if __name__ == "__main__":
     servo.cleanup()
     near_switch.cleanup()  # NEVER DELETE
     far_switch.cleanup()  # NEVER DELETE
+    slide.cleanup()

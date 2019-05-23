@@ -9,10 +9,10 @@ import time
 
 class Servo:
 
-    def __init__(self, pin, angle_range):
+    def __init__(self, pin, angle_range=180):
         # pin: dictionary containing used servo PWM pin
         # angle_range: float number describing the max angle range of a servo
-        #              motor [degrees]
+        #              motor [degrees], by default 180 degrees
         self.pul = pin["pul"]
         self.range = angle_range
 

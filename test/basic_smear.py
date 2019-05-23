@@ -13,7 +13,7 @@ from digital_io import Digital_Io  # NEVER DELETE
 from ui import UserI
 import time
 import config
-from math import pi
+# from math import pi
 
 
 # declaring constants
@@ -25,8 +25,8 @@ wick_time = 3  # [sec]
 smear_dist = 45  # [mm] ccw
 dry_dist = 60  # [mm] cw
 dry_time = 120  # [sec]
-force_diameter = 25.4E-3  # [m]
-force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
+# force_diameter = 25.4E-3  # [m]
+# force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
 
 
 # conversion factors
@@ -35,28 +35,30 @@ force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
 # mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
-def move2near_side(frequency=600):
+def move2near_side():  # frequency=100):
     # function: move slide to linear guide motor
     # frequency: float number to represent the occurrence of sensor
-    #            readings [Hz], by default 600Hz
-    slide.set_direction("cw")
-    time_sleep = 1 / frequency
+    #            readings [Hz], by default 100Hz
+    # slide.set_direction("cw")
+    # time_sleep = 1 / frequency
     while near_switch.read() != 1:
-        slide.step()
-        time.sleep(time_sleep)
-        slide.stop()
+        slide.move_steps(1, 90, "cw")
+        # slide.step()
+        # time.sleep(time_sleep)
+        # slide.stop()
 
 
-def move2far_side(frequency=600):
+def move2far_side():  # frequency=100):
     # function: move slide to linear guide end
     # frequency: float number to represent the occurrence of sensor
-    #            readings [Hz], by default 600Hz
-    slide.set_direction("ccw")
-    time_sleep = 1 / frequency
+    #            readings [Hz], by default 100Hz
+    # slide.set_direction("ccw")
+    # time_sleep = 1 / frequency
     while far_switch.read() != 1:
-        slide.step()
-        time.sleep(time_sleep)
-        slide.stop()
+        slide.move_steps(1, 90, "ccw")
+        # slide.step()
+        # time.sleep(time_sleep)
+        # slide.stop()
 
 
 def blade(distance):  # WIP
@@ -64,6 +66,22 @@ def blade(distance):  # WIP
     # distance: float number of slide linear distance to smearing blade
     #           extension site
     slide.move_linear(distance, 90, "ccw")
+    time.sleep(2)
+    linear.update_duty(5)
+    time.sleep(2)
+    pulley.update_duty(7.1)
+    while True:
+        try:
+            stop = str(input("\nPress enter to stop"))
+        except ValueError:
+            print("Error: Invalid Value")
+            continue
+        if stop == "":
+            pulley.update_duty(0)
+            linear.update_duty(10)
+            break
+        else:
+            continue
 
 
 def wick(distance, wait_time, manual="no"):
@@ -104,7 +122,14 @@ def dry(distance, wait_time, manual="no"):
     #         ie. wait_time or
     #         "yes" for manual override
     slide.move_linear(distance, 90, "cw")
+    fan.output(1)
+    rotate.change_angle(0, 90)
+    pulley.update_duty(5)
+    time.sleep(15)
+    pulley.update_duty(0)
+    rotate.change_angle(90, 0)
     if manual == "no":
+
         time.sleep(wait_time)
     elif manual == "yes":
         input("\nPress any key after blood has dried")
@@ -117,9 +142,9 @@ def dry(distance, wait_time, manual="no"):
 
 def eject():
     # function: unload slide
-    unload.update_angle(95)
+    unload.change_angle(0, 100)
     time.sleep(1.5)
-    unload.update_angle(0)
+    unload.change_angle(100, 0)
 
 
 def main():
@@ -179,9 +204,16 @@ if __name__ == "__main__":
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
     slide_ui = UserI()
     unload = Servo(config.unload_pin, 180)
+    linear = Servo(config.linear_pin)
+    pulley = Servo(config.pulley_pin)
+    rotate = Servo(config.rotation_pin, 180)
+    fan = Digital_Io(config.fan_pin, "out", 0)
 
     # initializing pins
-    unload.start(3, 14, 50)
+    rotate.start(2, 12.8, 50)
+    linear.start(10, 5, 50)
+    pulley.start(0, 7.1, 50)
+    unload.start(2.8, 14, 50)
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -193,8 +225,7 @@ if __name__ == "__main__":
     while True:
         try:
             cont = str(
-                input("Press enter if you're loading another slide\nOR\n\
-                    Press n to stop: "))
+                input("Press enter if you're loading another slide\nOR\n Press n to stop: "))
         except ValueError:
             print("Error: Invalid Value")
             continue
@@ -212,3 +243,7 @@ if __name__ == "__main__":
     near_switch.cleanup()  # NEVER DELETE
     far_switch.cleanup()  # NEVER DELETE
     unload.cleanup()
+    linear.cleanup()
+    pulley.cleanup()
+    rotate.cleanup()
+    fan.cleanup()

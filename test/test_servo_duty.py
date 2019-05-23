@@ -8,6 +8,7 @@
 # importing libraries
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
+from stepper import Stepper
 import config
 
 
@@ -21,8 +22,8 @@ def main():
     duty = start
     while True:
         try:
-            input_duty = str(input("\nEnter servo duty cycle [0-100] (n to \
-                exit or enter to increase by 0.5): "))
+            input_duty = str(input(
+                "\nEnter servo duty cycle [0-100] (n to exit or enter to increase by 0.5): "))
         except ValueError:
             print("Error: Invalid Input")
             continue
@@ -46,13 +47,14 @@ if __name__ == "__main__":
     servo = Servo(config.unload_pin, 180)
     near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
+    slide = Stepper(config.slide_pins, 72)
 
     # initializing pins
     servo.start(start, end, 50)
     # unload servo duty: 2.8 - 14 @ 50Hz
     # smear assembly servo: 2 - 12.8 @ 50Hz (2.5 straight)
-    # pulley servo: @ 50Hz
-    # linear servo: @ 50Hz
+    # pulley servo: 0 stops, 7.1 good slow speed @ 50Hz
+    # linear servo: 5 extended, 10 retracted @ 50Hz
 
     # confirming power
     input("Press any key after motors are connected to power")
@@ -63,3 +65,4 @@ if __name__ == "__main__":
     servo.cleanup()
     near_switch.cleanup()  # NEVER DELETE
     far_switch.cleanup()  # NEVER DELETE
+    slide.cleanup()
