@@ -11,8 +11,13 @@ from digital_io import Digital_Io  # NEVER DELETE
 import config
 
 
-# main test function
+# declaring constants
+start = 3
+end = 14
+
+
 def main():
+    # function: main test function
     while True:
         try:
             angle = str(input("\nEnter servo motor angle from [0-180] degrees \
@@ -22,10 +27,13 @@ def main():
             continue
         if angle == "n":
             break
-        else:
+        elif float(angle) >= 0:
             angle_f = float(angle)
             servo.update_angle(angle_f)
             print("Current servo angle: ", angle_f)
+            continue
+        else:
+            continue
 
 
 if __name__ == "__main__":
@@ -36,7 +44,7 @@ if __name__ == "__main__":
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
 
     # initializing pins
-    servo.start(3, 14, 50)
+    servo.start(start, end, 50)
 
     # confirming power
     input("Press any key after motors are connected to power")

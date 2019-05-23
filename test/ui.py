@@ -2,14 +2,14 @@
 # This file declares a class to take all user inputs
 
 
-# declaring UI class to handle user inputs
 class UserI:
 
-    # function to ask for motor load's speed
     def linear_speed(self):
+        # function: ask for motor load's speed
         while True:
             try:
-                self.linSpeed = float(input("\nEnter linear travel speed of the motor's load [0-200 mm/s]: "))
+                self.linSpeed = float(input("\nEnter linear travel speed of \
+                    the motor's load [0-200 mm/s]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -23,11 +23,12 @@ class UserI:
                 break
         return self.linSpeed
 
-    # function to ask for motor rotations
     def rotations(self):
+        # function: ask for motor rotations
         while True:
             try:
-                self.rot = float(input("\nEnter amount of motor rotations [0-2.9]: "))
+                self.rot = float(input("\nEnter amount of motor rotations \
+                    [0-2.9]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -41,8 +42,8 @@ class UserI:
                 break
         return self.rot
 
-    # function to ask for motor direction
     def direction(self):
+        # function: ask for motor direction
         while True:
             try:
                 print("\nNo quotation marks necessary")
@@ -55,15 +56,17 @@ class UserI:
             elif self.dir == "ccw":
                 break
             else:
-                print("Error: Invalid input\ncw for clockwise\nccw for counterclockwise")
+                print("Error: Invalid input\ncw for clockwise\nccw for \
+                    counter-clockwise")
                 continue
         return self.dir
 
-    # function to ask for motor micro step count
     def micro_steps(self):
+        # function: ask for motor micro step count
         while True:
             try:
-                self.microStep = int(input("\nEnter motor micro step count (enter 0 for help): "))
+                self.microStep = int(input("\nEnter motor micro step count \
+                    (enter 0 for help): "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -83,16 +86,17 @@ class UserI:
                 break
         return self.microStep
 
-    # function to ask for the motor's load linear travel distance
     def linear_dist(self):
+        # function: ask for the motor's load linear travel distance
         while True:
             try:
-                self.dist = float(input("Enter linear travel distance of motor's load [0-210 mm]: "))
+                self.dist = float(input("Enter linear travel distance of \
+                    motor's load [0-210 mm]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
             if self.dist > 210:
-                print("Error: Max linear tavel distance is 210")
+                print("Error: Max linear travel distance is 210")
                 continue
             elif self.rot < 0:
                 print("Error: Linear travel distance cannot be negative")

@@ -10,7 +10,7 @@ from math import pi
 
 class Stepper:
 
-    # class initialization also initalizes motor
+    # class initialization also initializes motor
     def __init__(self, pins, circumference, microstep=1):
         # pins: dictionary containing used stepper motor pins
         # circumference: float number for distance traveled by one motor

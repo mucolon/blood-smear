@@ -21,3 +21,6 @@ limit_near_pin = {"sig": "P8_14"}
 
 # active output pulse pin for unloading servo
 unload_pin = {"pul": "P8_13"}
+
+# active digital output pin for activating drying fan
+fan_pin = {"sig": "P8_16"}

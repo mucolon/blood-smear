@@ -10,27 +10,46 @@ import time
 
 class Digital_Io:
 
-    # class initialization also initalizes pin
-    def __init__(self, pin, direction):
+    # class initialization also initializes pin
+    def __init__(self, pin, direction, value=None):
         # pin: dictionary containing used input/output pin
         # direction: string "in" to set up pin as an input or
         #            string "out" to set up pin as an output
+        # value: int 0 for initial LOW output or
+        #        int 1 for initial HIGH output
         self.sig = pin["sig"]
         if direction == "in":
             self.dir = GPIO.IN
+            GPIO.setup(self.sig, self.dir)
         elif direction == "out":
             self.dir = GPIO.OUT
+            if value == 0:
+                GPIO.setup(self.sig, self.dir, initial=GPIO.LOW)
+            elif value == 1:
+                GPIO.setup(self.sig, self.dir, initial=GPIO.HIGH)
+            else:
+                print("\nError: Invalid value input")
         else:
             print("\nError: Invalid string direction input (\"in\" or \"out\"")
             print("\"in\" for input pin or \"out\" for output pin")
             print("Please include quotation marks")
-        GPIO.setup(self.sig, self.dir)
 
     def read(self):
-        # function: read input
+        # function: read input voltage as HIGH or LOW
         # function returns: int 0 when nothing is detected and
         #                   int 1 when sensor is triggered
         return GPIO.input(self.sig)
+
+    def output(self, value):
+        # function: output 3.3V or 0V
+        # value: int 0 outputs 0V or
+        #        int 1 outputs 3.3V
+        if value == 0:
+            GPIO.output(self.sig, GPIO.LOW)
+        elif value == 1:
+            GPIO.output(self.sig, GPIO.HIGH)
+        else:
+            print("\nError: Invalid value input")
 
     def add_event(self, edge):
         # function: add event detection

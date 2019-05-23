@@ -37,7 +37,7 @@ force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
 
 def move2near_side(frequency=600):
     # function: move slide to linear guide motor
-    # frequency: float number to represent the occurence of sensor
+    # frequency: float number to represent the occurrence of sensor
     #            readings [Hz], by default 600Hz
     slide.set_direction("cw")
     time_sleep = 1 / frequency
@@ -49,7 +49,7 @@ def move2near_side(frequency=600):
 
 def move2far_side(frequency=600):
     # function: move slide to linear guide end
-    # frequency: float number to represent the occurence of sensor
+    # frequency: float number to represent the occurrence of sensor
     #            readings [Hz], by default 600Hz
     slide.set_direction("ccw")
     time_sleep = 1 / frequency
@@ -82,7 +82,7 @@ def wick(distance, wait_time, manual="no"):
     else:
         print("\nError: Invalid string for manual")
         print("\"no\" to use preselected wicking wait time")
-        print("\"yes\" to manaully proceed after blood has visually wicked")
+        print("\"yes\" to manually proceed after blood has visually wicked")
         print("Please use quotation marks")
 
 
@@ -102,7 +102,7 @@ def dry(distance, wait_time, manual="no"):
     # wait_time: float number for time to dry blood slide [sec]
     # manual: by default "no" allows time to dry to be preselected
     #         ie. wait_time or
-    #         "yes" for manaul override
+    #         "yes" for manual override
     slide.move_linear(distance, 90, "cw")
     if manual == "no":
         time.sleep(wait_time)
@@ -111,7 +111,7 @@ def dry(distance, wait_time, manual="no"):
     else:
         print("\nError: Invalid string for manual")
         print("\"no\" to use preselected drying wait time")
-        print("\"yes\" to manaully proceed after blood has visually dried")
+        print("\"yes\" to manually proceed after blood has visually dried")
         print("Please use quotation marks")
 
 

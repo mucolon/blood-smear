@@ -11,9 +11,14 @@ from digital_io import Digital_Io  # NEVER DELETE
 import config
 
 
+# declaring constants
+start = 3
+end = 14
+
+
 def main():
     # function: main test function
-    duty = 0
+    duty = start
     while True:
         try:
             input_duty = str(input("\nEnter servo duty cycle [0-100] (n to \
@@ -27,10 +32,12 @@ def main():
             duty += 0.5
             servo.update_duty(duty)
             print("Current servo duty cycle: ", duty)
+            continue
         else:
             duty = float(input_duty)
             servo.update_duty(duty)
             print("Current servo duty cycle: ", duty)
+            continue
 
 
 if __name__ == "__main__":
@@ -41,9 +48,9 @@ if __name__ == "__main__":
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
 
     # initializing pins
-    servo.start(3, 14, 50)
+    servo.start(start, end, 50)
     # unload servo duty: 2.8 - 14 @ 50Hz
-    # smear assembly servo: 2 - 12.8 @ 50Hz (2.5 striaght)
+    # smear assembly servo: 2 - 12.8 @ 50Hz (2.5 straight)
     # pulley servo: @ 50Hz
     # linear servo: @ 50Hz
 
