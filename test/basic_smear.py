@@ -67,9 +67,9 @@ def blade(distance):  # WIP
     #           extension site
     slide.move_linear(distance, 90, "ccw")
     time.sleep(2)
-    linear.update_duty(5)
+    linear.update_duty(5)  # extended
     time.sleep(2)
-    pulley.update_duty(7.1)
+    pulley.update_duty(7.1)  # slow speed
     while True:
         try:
             stop = str(input("\nPress enter to stop"))
@@ -77,8 +77,8 @@ def blade(distance):  # WIP
             print("Error: Invalid Value")
             continue
         if stop == "":
-            pulley.update_duty(0)
-            linear.update_duty(10)
+            pulley.update_duty(0)  # off
+            linear.update_duty(10)  # retracted
             break
         else:
             continue
@@ -122,17 +122,18 @@ def dry(distance, wait_time, manual="no"):
     #         ie. wait_time or
     #         "yes" for manual override
     slide.move_linear(distance, 90, "cw")
-    fan.output(1)
+    fan.output(1)  # on
     rotate.change_angle(0, 90)
-    pulley.update_duty(5)
+    pulley.update_duty(5)  # on
     time.sleep(15)
-    pulley.update_duty(0)
-    rotate.change_angle(90, 0)
+    pulley.update_duty(0)  # off
+    rotate.update_duty(2.5)  # neutral position
     if manual == "no":
-
         time.sleep(wait_time)
+        fan.output(0)  # off
     elif manual == "yes":
         input("\nPress any key after blood has dried")
+        fan.output(0)  # off
     else:
         print("\nError: Invalid string for manual")
         print("\"no\" to use preselected drying wait time")
@@ -144,7 +145,7 @@ def eject():
     # function: unload slide
     unload.change_angle(0, 100)
     time.sleep(1.5)
-    unload.change_angle(100, 0)
+    unload.update_angle(0)
 
 
 def main():
@@ -211,10 +212,13 @@ if __name__ == "__main__":
 
     # initializing pins
     rotate.start(2, 12.8, 50)
+    rotate.update_duty(2.5)
     linear.start(10, 5, 50)
+    linear.update_duty(10)
     pulley.start(0, 7.1, 50)
     pulley.update_duty(0)
     unload.start(2.8, 14, 50)
+    unload.update_duty(3)
 
     # confirming power
     input("Press any key after motors are connected to power")
