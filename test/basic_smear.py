@@ -41,7 +41,7 @@ def move2near_side():  # frequency=100):
     #            readings [Hz], by default 100Hz
     # slide.set_direction("cw")
     # time_sleep = 1 / frequency
-    while near_switch.read() != 1:
+    while near_switch.read() == 1:
         slide.move_steps(1, 90, "cw")
         # slide.step()
         # time.sleep(time_sleep)
@@ -54,7 +54,7 @@ def move2far_side():  # frequency=100):
     #            readings [Hz], by default 100Hz
     # slide.set_direction("ccw")
     # time_sleep = 1 / frequency
-    while far_switch.read() != 1:
+    while far_switch.read() == 1:
         slide.move_steps(1, 90, "ccw")
         # slide.step()
         # time.sleep(time_sleep)
@@ -213,6 +213,7 @@ if __name__ == "__main__":
     rotate.start(2, 12.8, 50)
     linear.start(10, 5, 50)
     pulley.start(0, 7.1, 50)
+    pulley.update_duty(0)
     unload.start(2.8, 14, 50)
 
     # confirming power

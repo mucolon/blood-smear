@@ -7,6 +7,7 @@
 
 # importing libraries
 from digital_io import Digital_Io  # NEVER DELETE
+from stepper import Stepper
 import config
 import time
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     print("\nInitializing Classes & Pins")
     near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
+    slide = Stepper(config.slide_pins, 72, 1)
 
     # confirming power
     input("Press any key after motors are connected to power.")
@@ -30,3 +32,4 @@ if __name__ == "__main__":
     print("\nCleaning up pins.")
     near_switch.cleanup()  # NEVER DELETE
     far_switch.cleanup()  # NEVER DELETE
+    slide.cleanup()
