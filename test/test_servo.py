@@ -24,12 +24,12 @@ def main():
             break
         elif input_duty == "":
             duty += 0.5
-            servo.change_duty(duty)
-            print("Cureent servo duty cycle: ", duty)
+            servo.update_duty(duty)
+            print("Current servo duty cycle: ", duty)
         else:
             duty = float(input_duty)
-            servo.change_duty(duty)
-            print("Cureent servo duty cycle: ", duty)
+            servo.update_duty(duty)
+            print("Current servo duty cycle: ", duty)
 
 
 if __name__ == "__main__":
@@ -40,7 +40,11 @@ if __name__ == "__main__":
     far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
 
     # initializing pins
-    servo.start(3, 14, 50, 0)
+    servo.start(3, 14, 50)
+    # unload servo duty: 2.8 - 14 @ 50Hz
+    # smear assembly servo: 2 - 12.8 @ 50Hz (2.5 striaght)
+    # pulley servo: @ 50Hz
+    # linear servo: @ 50Hz
 
     # confirming power
     input("Press any key after motors are connected to power")

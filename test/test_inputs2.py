@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after motors are connected to power")
 
-    for i in range(10,0,-1):
+    for i in range(10, 0, -1):
         print(i, "secs left")
         time.sleep(1)
 

@@ -22,7 +22,7 @@ class Digital_Io:
         elif direction == "out":
             self.dir = GPIO.OUT
         else:
-            print("\nError: Invalid string direction input (\"in\" or \"out\")
+            print("\nError: Invalid string direction input (\"in\" or \"out\"")
             print("\"in\" for input pin or \"out\" for output pin")
             print("Please include quotation marks")
         GPIO.setup(self.sig, self.dir)
@@ -30,7 +30,7 @@ class Digital_Io:
     # function to read input
     def read(self):
         # function returns: int 0 when nothing is detected and int 1 when sensor is triggered
-    	return GPIO.input(self.sig)
+        return GPIO.input(self.sig)
 
     # function to add event detection
     def add_event(self, edge):
@@ -51,7 +51,7 @@ class Digital_Io:
             print("\"rise\" for rising edge")
             print("\"fall\" for falling edge")
             print("\"both\" for both edges")
-            print("Please add quotation marks)
+            print("Please add quotation marks")
 
     # function to detect event
     def event(self):
@@ -77,8 +77,8 @@ class Digital_Io:
         correct_samples = int(correct_samples)
         if correct_samples > num_samples:
             print("Error: correct_samples cannot be higher than num_samples")
-        samples = np.array([0]*num_samples)
-        sleepTime = float(1/frequency)
+        samples = np.array([0] * num_samples)
+        sleepTime = float(1 / frequency)
         for i in range(num_samples):
             samples[i] = self.read()
             time.sleep(sleepTime)

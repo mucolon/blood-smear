@@ -23,7 +23,7 @@ def main():
             break
         else:
             angle_f = float(angle)
-            servo.change_angle(angle_f)
+            servo.update_angle(angle_f)
             print("Current servo angle: ", angle_f)
 
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
 
     # initializing pins
-    servo.start(3, 14, 50, 0)
+    servo.start(3, 14, 50)
 
     # confirming power
     input("Press any key after motors are connected to power")
