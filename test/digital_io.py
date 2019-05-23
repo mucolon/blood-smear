@@ -10,6 +10,7 @@ import time
 
 class Digital_Io:
 
+    # class initialization also initalizes pin
     def __init__(self, pin, direction):
         # pin: dictionary containing used input/output pin
         # direction: string "in" to set up pin as an input or
@@ -25,13 +26,14 @@ class Digital_Io:
             print("Please include quotation marks")
         GPIO.setup(self.sig, self.dir)
 
-    # function to read input
     def read(self):
-        # function returns: int 0 when nothing is detected and int 1 when sensor is triggered
+        # function: read input
+        # function returns: int 0 when nothing is detected and
+        #                   int 1 when sensor is triggered
         return GPIO.input(self.sig)
 
-    # function to add event detection
     def add_event(self, edge):
+        # function: add event detection
         # edge: string "rise" to detect rising edge
         #       string "fall" to detect falling edge
         #       string "both" to detect both edges
@@ -51,21 +53,22 @@ class Digital_Io:
             print("\"both\" for both edges")
             print("Please add quotation marks")
 
-    # function to detect event
     def event(self):
-        # function returns: bool True if edge is detected or bool False otherwise
+        # function: detect event
+        # function returns: bool True if edge is detected or
+        #                   bool False otherwise
         return GPIO.event_detected(self.sig)
 
-    # function to wait for event
     def wait(self):
+        # function: wait for event
         GPIO.wait_for_edge(self.sig, self.edge)
 
-    # function to remove event detection
     def remove_event(self):
+        # function: remove event detection
         GPIO.remove_event_detect(self.sig)
 
-    # function to read input accurately
     def read2(self, num_samples, correct_samples, frequency):
+        # function: read input by many samples
         # num_samples: int number of samples
         # correct_samples: int number of correct samples
         # frequency: float number sampling rate in [Hz]
@@ -85,7 +88,7 @@ class Digital_Io:
         else:
             return False
 
-    # function to clean up pin
     def cleanup(self):
+        # function: clean up pin
         GPIO.remove_event_detect(self.sig)
         GPIO.cleanup()

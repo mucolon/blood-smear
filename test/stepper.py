@@ -10,11 +10,13 @@ from math import pi
 
 class Stepper:
 
+    # class initialization also initalizes motor
     def __init__(self, pins, circumference, microstep=1):
         # pins: dictionary containing used stepper motor pins
-        # circumference: float number for distance traveled by one motor revolution
-        # microstep: int number for current microstep configuration for stepper motor
-        #            by default the micro step amount is 1
+        # circumference: float number for distance traveled by one motor
+        #                revolution
+        # microstep: int number for current microstep configuration for
+        #            stepper motor, by default microstep is 1
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
@@ -49,15 +51,15 @@ class Stepper:
 
     def set_direction(self, direction):
         # function: set motor rotation direction
-        # direction: string "cw" for clockwise rotation
+        # direction: string "cw" for clockwise rotation or
         #            string "ccw" for counter-clockwise rotation
         if direction == "cw":
             GPIO.output(self.pul, GPIO.HIGH)
         elif direction == "ccw":
             GPIO.output(self.dir, GPIO.LOW)
         else:
-            print(
-                "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" \
+                for ccw]")
             print("Please include quotation marks")
 
     def convert_mms2rpm(self, mms):
@@ -70,7 +72,8 @@ class Stepper:
         # function: move motor by rotations
         # rotations: float number of motor rotations
         # rpm: float number of motor's rpm
-        # direction: string "cw" for clockwise or string "ccw" for counter-clockwise
+        # direction: string "cw" for clockwise or
+        #            string "ccw" for counter-clockwise
         sleep_time = float(0.3 / rpm)
         steps = round(rotations * self.pulses)
         if direction == "cw":
@@ -86,15 +89,16 @@ class Stepper:
                 time.sleep(sleep_time)
                 GPIO.output(self.pul, GPIO.LOW)
         else:
-            print(
-                "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" \
+                for ccw]")
             print("Please include quotation marks")
 
     def move_steps(self, numberOfSteps, rpm, direction):
         # function: move motor by amount of steps
         # numberOfSteps: int number of steps motor will turn
         # rpm: float number of motor's rpm
-        # direction: string "cw" for clockwise or string "ccw" for counter-clockwise
+        # direction: string "cw" for clockwise or
+        #            string "ccw" for counter-clockwise
         rotations = numberOfSteps / self.pulses
         self.rotate(rotations, rpm, direction)
 
@@ -102,7 +106,8 @@ class Stepper:
         # function: move motor with respect to linear load distance
         # distance: float number of motor's linear distance to travel [mm]
         # rpm: float number of motor's rpm [rpm]
-        # direction: string "cw" for clockwise or string "ccw" for counter-clockwise
+        # direction: string "cw" for clockwise or
+        #            string "ccw" for counter-clockwise
         rotations = distance / self.circum
         self.rotate(rotations, rpm, direction)
 

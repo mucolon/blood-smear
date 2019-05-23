@@ -9,6 +9,7 @@
 from stepper import Stepper
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
+# from analog_in import Analog_In  # NEVER DELETE
 from ui import UserI
 import time
 import config
@@ -35,42 +36,43 @@ force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
 
 
 def move2near_side(frequency=600):
-    # function to move slide to linear guide motor
-    # frequency: float number to represent the occurence of sensor readings [Hz]
-    #            by default 600Hz is selected
+    # function: move slide to linear guide motor
+    # frequency: float number to represent the occurence of sensor
+    #            readings [Hz], by default 600Hz
     slide.set_direction("cw")
     time_sleep = 1 / frequency
     while near_switch.read() != 1:
-        # slide.move_steps(1, 90, "cw")
         slide.step()
         time.sleep(time_sleep)
         slide.stop()
 
 
 def move2far_side(frequency=600):
-    # function to move slide to linear guide end
-    # frequency: float number to represent the occurence of sensor readings [Hz]
-    #            by default 600Hz is selected
+    # function: move slide to linear guide end
+    # frequency: float number to represent the occurence of sensor
+    #            readings [Hz], by default 600Hz
     slide.set_direction("ccw")
     time_sleep = 1 / frequency
     while far_switch.read() != 1:
-        # slide.move_steps(1, 90, "ccw")
         slide.step()
         time.sleep(time_sleep)
         slide.stop()
 
 
 def blade(distance):  # WIP
-    # function to move to smearing blade extension site and extend blade
-    # distance: float number of slide linear distance to smearing blade extension site
+    # function: move to smearing blade extension site and extend blade
+    # distance: float number of slide linear distance to smearing blade
+    #           extension site
     slide.move_linear(distance, 90, "ccw")
 
 
 def wick(distance, wait_time, manual="no"):
-    # function to move to wicking site and wait for wait to finish
+    # function: move to wicking site and wait for wick to finish
     # distance: float number of slide linear distance to wicking site [mm]
-    # wait_time: float number of time for blood to wick onto smearing blade [sec]
-    # manual: "no" allows time to wick to be preselected
+    # wait_time: float number of time for blood to wick onto smearing
+    #            blade [sec]
+    # manual: by default "no" allows time to wick to be preselected
+    #         ie. wait_time or
     #         "yes" for manual override
     slide.move_linear(distance, 45, "cw")
     if manual == "no":
@@ -83,11 +85,9 @@ def wick(distance, wait_time, manual="no"):
         print("\"yes\" to manaully proceed after blood has visually wicked")
         print("Please use quotation marks")
 
-# function to move slide for smear
-
 
 def smear(distance, mms_speed):
-    # function to move slide for smear
+    # function: move slide for smear
     # distance: float number of slide linear distance for smear [mm]
     # mms_speed: float number of motor load's linear velocity [mm/s]
     rpm = slide.convert_mms2rpm(mms_speed)
@@ -96,11 +96,13 @@ def smear(distance, mms_speed):
 
 
 def dry(distance, wait_time, manual="no"):
-    # function to move slide to heater
-    # distance: float number of slide linear distance after smear to heater [mm]
+    # function: move slide to drying site and wait for blood to dry
+    # distance: float number of slide linear distance after smear to
+    #           heater [mm]
     # wait_time: float number for time to dry blood slide [sec]
-    # manual: "no" allows time to dry to be preselected ie. wait_time, "yes" allows user to
-    #         press any key to finish drying process
+    # manual: by default "no" allows time to dry to be preselected
+    #         ie. wait_time or
+    #         "yes" for manaul override
     slide.move_linear(distance, 90, "cw")
     if manual == "no":
         time.sleep(wait_time)
@@ -114,21 +116,21 @@ def dry(distance, wait_time, manual="no"):
 
 
 def eject():
-    # function to unload slide
+    # function: unload slide
     unload.update_angle(95)
     time.sleep(1.5)
     unload.update_angle(0)
 
 
 def main():
-    # main function for complete smearing process
+    # function: complete smearing process
 
     # moving slide to start position
     slide.enable_pulse()
     move2near_side()
 
     # asking for linear speed
-    print("\nPlease enter linear speed of smear")
+    print("\nPlease enter linear speed of smear below")
     input_mms = slide_ui.linear_speed()
 
     # slide loading interface
@@ -142,7 +144,6 @@ def main():
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
     slide.enable_pulse()
-    # move2far_side()
     blade(blade_dist)
 
     # blood wicking interface
@@ -158,6 +159,7 @@ def main():
     print("\nMoving to drying station")
     print("Drying blood")
     dry(dry_dist, dry_time, "yes")
+    print("Blood has dried")
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
@@ -176,7 +178,7 @@ if __name__ == "__main__":
     near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
     slide_ui = UserI()
-    unload = Servo(config.unload_pin)
+    unload = Servo(config.unload_pin, 180)
 
     # initializing pins
     unload.start(3, 14, 50)
@@ -191,7 +193,8 @@ if __name__ == "__main__":
     while True:
         try:
             cont = str(
-                input("Press enter if you're loading another slide\nOR\nPress n to stop: "))
+                input("Press enter if you're loading another slide\nOR\n\
+                    Press n to stop: "))
         except ValueError:
             print("Error: Invalid Value")
             continue

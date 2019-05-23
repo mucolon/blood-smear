@@ -11,18 +11,18 @@ class Servo:
 
     def __init__(self, pin, angle_range):
         # pin: dictionary containing used servo PWM pin
-        # angle_range: float number describing the max angle range of a servo motor [degrees]
+        # angle_range: float number describing the max angle range of a servo
+        #              motor [degrees]
         self.pul = pin["pul"]
         self.range = angle_range
 
     def start(self, duty_min, duty_max, frequency=50, polarity=0):
-        # function: start servo
-        # duty_min: int PWM duty cycle for 0 [degrees]
-        # duty_max: int PWM duty cycle for angle range [degrees]
-        # frequency: float PWM frequency [Hz], must be > 0
-        #       50 Hz by default
+        # function: start/initialize servo
+        # duty_min: float PWM duty cycle for 0 [degrees]
+        # duty_max: float PWM duty cycle for angle range [degrees]
+        # frequency: float PWM frequency [Hz], must be > 0, by default 50Hz
         # polarity: int defines whether the duty affects the PWM waveform
-        #           0 by default (rising edge), 1 (falling edge)
+        #           by default 0 (rising edge), 1 (falling edge)
         self.min = float(duty_min)
         self.max = float(duty_max)
         self.span = duty_max - duty_min
@@ -31,7 +31,7 @@ class Servo:
 
     def update_duty(self, duty):
         # function: change servo duty cycle
-        # duty: int PWM duty cycle from 0-100
+        # duty: float PWM duty cycle from 0-100
         PWM.set_duty_cycle(self.pul, duty)
 
     def update_angle(self, angle):
@@ -40,11 +40,11 @@ class Servo:
         duty = angle * self.span / self.range + self.min
         self.update_duty(duty)
 
-    def change_angle(self, start, end, frequency):
+    def change_angle(self, start, end, frequency=100):
         # function: move servo from a start angle to an end angle
         # start: float number for starting angle position [degrees]
         # end: float number for ending angle position [degrees]
-        # frequency: float number rate of angle change [Hz]
+        # frequency: float number rate of angle change [Hz], by default 100Hz
         time_sleep = 1 / frequency
         angle = start
         if end > start:

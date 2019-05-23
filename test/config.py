@@ -1,6 +1,7 @@
 # config.py
 # This file list all used pins for blood smearing device
-# Note: please leave pin labels alone, other files depend on those specific labels
+# Note: please leave pin labels alone, other files depend on those specific
+#       labels
 
 
 # active output pins for linear guide
@@ -11,7 +12,8 @@
 # "pul": digital HIGH then LOW turns motor one step
 slide_pins = {"ena": "P8_11", "dir": "P8_15", "pul": "P8_17"}
 
-# active digital input pin for far (opposite side of stepper motor) limit switch
+# active digital input pin for far (opposite side of stepper motor) limit
+# switch
 limit_far_pin = {"sig": "P8_12"}
 
 # active digital input pin for near (same side as stepper motor) limit switch
