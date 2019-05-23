@@ -7,6 +7,8 @@
 # importing libraries
 from digital_io import Digital_Io  # NEVER DELETE
 # from analog_in import Analog_In  # NEVER DELETE
+from stepper import Stepper
+from servo import Servo
 import config
 
 
@@ -36,7 +38,10 @@ if __name__ == "__main__":
     print("\nInitializing Classes & Pins")
     near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
     far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
-    fan = Digital_Io(config.fan_pin, "out", 1)
+    fan = Digital_Io(config.fan_pin, "out", 0)
+    slide = Stepper(config.slide_pins, 72, 1)
+    unload = Servo(config.unload_pin, 180)
+    unload.start(3, 14, 50)
 
     # confirming power
     input("Press any key after motors are connected to power.")
@@ -48,3 +53,5 @@ if __name__ == "__main__":
     near_switch.cleanup()  # NEVER DELETE
     far_switch.cleanup()  # NEVER DELETE
     fan.cleanup()
+    slide.cleanup()
+    unload.cleanup()
