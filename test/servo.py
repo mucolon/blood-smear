@@ -19,7 +19,7 @@ class Servo:
         # function: start servo
         # duty_min: int PWM duty cycle for 0 [degrees]
         # duty_max: int PWM duty cycle for angle range [degrees]
-        # frequency: int PWM frequency [Hz], must be > 0
+        # frequency: float PWM frequency [Hz], must be > 0
         #       50 Hz by default
         # polarity: int defines whether the duty affects the PWM waveform
         #           0 by default (rising edge), 1 (falling edge)
@@ -44,7 +44,19 @@ class Servo:
         # function: move servo from a start angle to an end angle
         # start: float number for starting angle position [degrees]
         # end: float number for ending angle position [degrees]
-        # frequency:
+        # frequency: float number rate of angle change [Hz]
+        time_sleep = 1 / frequency
+        angle = start
+        if end > start:
+            while angle <= end:
+                self.update_angle(angle)
+                time.sleep(time_sleep)
+                angle += 1
+        else:
+            while angle <= end:
+                self.update_angle(angle)
+                time.sleep(time_sleep)
+                angle -= 1
 
     def disable(self):
         # function: disable servo motor

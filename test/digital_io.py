@@ -8,10 +8,8 @@ import numpy as np
 import time
 
 
-# declaring Digital_Io class to handle GPIO inputs/outputs
 class Digital_Io:
 
-    # initial class function and pin start initialization
     def __init__(self, pin, direction):
         # pin: dictionary containing used input/output pin
         # direction: string "in" to set up pin as an input or
@@ -70,7 +68,7 @@ class Digital_Io:
     def read2(self, num_samples, correct_samples, frequency):
         # num_samples: int number of samples
         # correct_samples: int number of correct samples
-        # frequency: float sampling rate in [Hz]
+        # frequency: float number sampling rate in [Hz]
         # function returns: bool True if read input is correct
         #                   bool False if read input is incorrect
         num_samples = int(num_samples)

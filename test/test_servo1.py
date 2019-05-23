@@ -7,7 +7,7 @@
 
 # importing libraries
 from servo import Servo
-from digital_io import Digital_Io # NEVER DELETE
+from digital_io import Digital_Io  # NEVER DELETE
 import config
 
 
@@ -15,7 +15,8 @@ import config
 def main():
     while True:
         try:
-            angle = str(input("\nEnter servo motor angle from [0-180] degrees (n to exit): "))
+            angle = str(
+                input("\nEnter servo motor angle from [0-180] degrees (n to exit): "))
         except ValueError:
             print("Error: Invalid Input")
             continue
@@ -30,9 +31,9 @@ def main():
 if __name__ == "__main__":
 
     # initializing  classes
-    servo = Servo(config.unload_pin)
-    near_switch = Digital_Io(config.limit_near_pin, "in") # NEVER DELETE
-    far_switch = Digital_Io(config.limit_far_pin, "in") # NEVER DELETE
+    servo = Servo(config.unload_pin, 180)
+    near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
+    far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
 
     # initializing pins
     servo.start(3, 14, 50)
@@ -44,5 +45,5 @@ if __name__ == "__main__":
 
     print("\nClosing Program")
     servo.cleanup()
-    near_switch.cleanup() # NEVER DELETE
-    far_switch.cleanup() # NEVER DELETE
+    near_switch.cleanup()  # NEVER DELETE
+    far_switch.cleanup()  # NEVER DELETE
