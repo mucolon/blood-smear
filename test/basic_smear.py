@@ -229,8 +229,8 @@ if __name__ == "__main__":
     # asking to repeat process
     while True:
         try:
-            cont = str(
-                input("Press enter if you're loading another slide\nOR\n Press n to stop: "))
+            cont = str(input(
+                "Press enter if you're loading another slide\nOR\n Press n to stop: "))
         except ValueError:
             print("Error: Invalid Value")
             continue
