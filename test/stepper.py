@@ -54,11 +54,12 @@ class Stepper:
         # direction: string "cw" for clockwise rotation or
         #            string "ccw" for counter-clockwise rotation
         if direction == "cw":
-            GPIO.output(self.pul, GPIO.HIGH)
+            GPIO.output(self.dir, GPIO.HIGH)
         elif direction == "ccw":
             GPIO.output(self.dir, GPIO.LOW)
         else:
-            print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print(
+                "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
             print("Please include quotation marks")
 
     def convert_mms2rpm(self, mms):
@@ -88,7 +89,8 @@ class Stepper:
                 time.sleep(sleep_time)
                 GPIO.output(self.pul, GPIO.LOW)
         else:
-            print("Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print(
+                "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
             print("Please include quotation marks")
 
     def move_steps(self, numberOfSteps, rpm, direction):

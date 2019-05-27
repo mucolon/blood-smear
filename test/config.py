@@ -20,16 +20,16 @@ limit_far_pin = {"sig": "P8_12"}
 limit_near_pin = {"sig": "P8_14"}
 
 # active output pulse pin for unloading servo
-unload_pin = {"pul": "P8_13"}
+unload_pin = {"pul": "P8_13"}  # 5V
 
 # active digital output pin for activating drying fan
 fan_pin = {"sig": "P8_16"}
 
 # active output pulse pin for blade ejection linear servo
-linear_pin = {"pul": "P8_19"}
+linear_pin = {"pul": "P8_19"}  # 6V
 
 # active output pulse pin for blade ejection pulley servo
-pulley_pin = {"pul": "P9_16"}
+pulley_pin = {"pul": "P9_16"}  # 6V
 
 # active output pulse pin for blade ejection rotation servo
-rotation_pin = {"pul": "P9_14"}
+rotation_pin = {"pul": "P9_14"}  # 6V
