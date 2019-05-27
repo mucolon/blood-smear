@@ -14,17 +14,17 @@ if __name__ == "__main__":
 
     # initializing  classes and pins
     print("\nInitializing Classes & Pins")
-    near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
-    far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
+    home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
+    end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
 
     # confirming power
     input("Press any key after motors are connected to power.")
 
-    while near_switch.read2(10, 9, 100) is not False:
+    while home_switch.read2(10, 9, 100) is not False:
         print("False")
     print("\nTrue")
 
     # cleaning up pins
     print("\nCleaning up pins.")
-    near_switch.cleanup()  # NEVER DELETE
-    far_switch.cleanup()  # NEVER DELETE
+    home_switch.cleanup()  # NEVER DELETE
+    end_switch.cleanup()  # NEVER DELETE

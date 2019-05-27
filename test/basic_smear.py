@@ -35,26 +35,26 @@ dry_time = 120  # [sec]
 # mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
 
 
-def move2near_side():  # frequency=100):
+def move2home():  # frequency=100):
     # function: move slide to linear guide motor
     # frequency: float number to represent the occurrence of sensor
     #            readings [Hz], by default 100Hz
     # slide.set_direction("cw")
     # time_sleep = 1 / frequency
-    while near_switch.read() == 1:
+    while home_switch.read() == 1:
         slide.move_steps(1, 90, "cw")
         # slide.step()
         # time.sleep(time_sleep)
         # slide.stop()
 
 
-def move2far_side():  # frequency=100):
+def move2end():  # frequency=100):
     # function: move slide to linear guide end
     # frequency: float number to represent the occurrence of sensor
     #            readings [Hz], by default 100Hz
     # slide.set_direction("ccw")
     # time_sleep = 1 / frequency
-    while far_switch.read() == 1:
+    while end_switch.read() == 1:
         slide.move_steps(1, 90, "ccw")
         # slide.step()
         # time.sleep(time_sleep)
@@ -153,7 +153,7 @@ def main():
 
     # moving slide to start position
     slide.enable_pulse()
-    move2near_side()
+    move2home()
 
     # asking for linear speed
     print("\nPlease enter linear speed of smear below")
@@ -190,7 +190,7 @@ def main():
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
     slide.enable_pulse()
-    move2near_side()
+    move2home()
 
     # unloading slide
     print("\nUnloading slide")
@@ -201,8 +201,8 @@ if __name__ == "__main__":
 
     # initializing  classes and pins
     slide = Stepper(config.slide_pins, slide_circum, slide_step)
-    near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
-    far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
+    home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
+    end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
     slide_ui = UserI()
     unload = Servo(config.unload_pin, 180)
     linear = Servo(config.linear_pin)
@@ -245,8 +245,8 @@ if __name__ == "__main__":
     # cleaning up pins
     print("\nClosing Program")
     slide.cleanup()
-    near_switch.cleanup()  # NEVER DELETE
-    far_switch.cleanup()  # NEVER DELETE
+    home_switch.cleanup()  # NEVER DELETE
+    end_switch.cleanup()  # NEVER DELETE
     unload.cleanup()
     linear.cleanup()
     pulley.cleanup()

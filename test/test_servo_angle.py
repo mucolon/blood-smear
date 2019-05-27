@@ -41,8 +41,8 @@ if __name__ == "__main__":
 
     # initializing  classes
     servo = Servo(config.unload_pin, 180)
-    near_switch = Digital_Io(config.limit_near_pin, "in")  # NEVER DELETE
-    far_switch = Digital_Io(config.limit_far_pin, "in")  # NEVER DELETE
+    home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
+    end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
     slide = Stepper(config.slide_pins, 72)
 
     # initializing pins
@@ -55,6 +55,6 @@ if __name__ == "__main__":
 
     print("\nClosing Program")
     servo.cleanup()
-    near_switch.cleanup()  # NEVER DELETE
-    far_switch.cleanup()  # NEVER DELETE
+    home_switch.cleanup()  # NEVER DELETE
+    end_switch.cleanup()  # NEVER DELETE
     slide.cleanup()
