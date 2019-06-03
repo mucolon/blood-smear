@@ -14,26 +14,40 @@ import config
 
 # declaring constants
 stepper_circum = 72  # [mm]
-stepper_step = 1  # micro step configuration
+stepper_step = 4  # micro step configuration
 
+def move2home(mms):
+    rpm = slide.convert_mms2rpm(mms)
+    while home_switch.read() == 1:
+        slide.move_steps(1, rpm, "cw")
+    return 1
+
+def move2end(mms):
+    rpm = slide.convert_mms2rpm(mms)
+    while end_switch.read() == 1:
+        slide.move_steps(1, rpm, "ccw")
+    return 0
 
 def main():
     # function: main test function
+    home = 1
     while True:
         try:
-            input_dir = str(input(
-                "\nEnter 1 for clockwise rotation or 0 for counter-clockwise rotation \
-                \n OR n to exit"))
+            input_mms = str(input(
+                "\nEnter linear slide speed [0-200 mm/s] \
+                \n OR n to exit: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
-        if input_dir == "n":
+        if input_mms == "n":
             break
-        elif input_dir == "1":
-            slide.move_steps(5, 90, "cw")
+        elif home == 1:
+            mms = float(input_mms)
+            home = move2end(mms)
             continue
-        else:
-            slide.move_steps(5, 90, "ccw")
+        elif home == 0:
+            mms = float(input_mms)
+            home = move2home(mms)
             continue
 
 
@@ -48,6 +62,8 @@ if __name__ == "__main__":
 
     # confirming power
     input("Press any key after motors are connected to power")
+
+    move2home(100)
 
     main()
 

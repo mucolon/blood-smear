@@ -11,18 +11,19 @@ from math import pi
 class Stepper:
 
     # class initialization also initializes motor
-    def __init__(self, pins, circumference, microstep=1):
+    def __init__(self, pins, circumference, microstep=8):
         # pins: dictionary containing used stepper motor pins
         # circumference: float number for distance traveled by one motor
         #                revolution
         # microstep: int number for current microstep configuration for
-        #            stepper motor, by default microstep is 1
+        #            stepper motor, by default microstep is 8
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
         self.circum = circumference
         self.radius = self.circum / (pi * 2)
         self.mms2rpm = 30 / (self.radius * pi)
+        self.micro = microstep
         if microstep == 1:
             self.pulses = 200    # 1 micro step = 200 pulses
         elif microstep == 2:
@@ -74,7 +75,7 @@ class Stepper:
         # rpm: float number of motor's rpm
         # direction: string "cw" for clockwise or
         #            string "ccw" for counter-clockwise
-        sleep_time = float(0.3 / rpm)
+        sleep_time = float(0.3 * 1.34 / (rpm * self.micro))
         steps = round(rotations * self.pulses)
         if direction == "cw":
             GPIO.output(self.dir, GPIO.HIGH)
