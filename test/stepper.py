@@ -11,12 +11,12 @@ from math import pi
 class Stepper:
 
     # class initialization also initializes motor
-    def __init__(self, pins, circumference, microstep=8):
+    def __init__(self, pins, circumference, microstep=4):
         # pins: dictionary containing used stepper motor pins
         # circumference: float number for distance traveled by one motor
         #                revolution
         # microstep: int number for current microstep configuration for
-        #            stepper motor, by default microstep is 8
+        #            stepper motor, by default microstep is 4
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]

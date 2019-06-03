@@ -17,59 +17,55 @@ import config
 
 
 # declaring constants
+# default parameters
 slide_circum = 72  # [mm]
-slide_step = 1  # micro step configuration
-blade_dist = 150  # [mm] ccw
-wick_dist = 35  # [mm] cw
+slide_step = 4  # micro step configuration
+default_speed = 120  # [mm/s]
+
+# blade dispensing parameters
+dist2blade = 150  # [mm] ccw
+
+# wick parameters
+dist2wick = 35  # [mm] cw
+wick_speed = 70  # [mm/s]
 wick_time = 3  # [sec]
+
+# smear parameters
 smear_dist = 45  # [mm] ccw
-dry_dist = 60  # [mm] cw
+
+# fan parameters
+dist2fan = 60  # [mm] cw
 dry_time = 120  # [sec]
+
 # force_diameter = 25.4E-3  # [m]
 # force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
 
 
-# conversion factors
-# radius = 13.3         # [mm] from CAD
-# radius = slide_circum / (pi * 2)  # [mm] from manufacturer
-# mms2rpm = 30 / (radius * pi)  # [s/(mm*min)]
-
-
-def move2home():  # frequency=100):
+def move2home():
     # function: move slide to linear guide motor
-    # frequency: float number to represent the occurrence of sensor
-    #            readings [Hz], by default 100Hz
-    # slide.set_direction("cw")
-    # time_sleep = 1 / frequency
+    slide.enable_pulse()
     while home_switch.read() == 1:
-        slide.move_steps(1, 90, "cw")
-        # slide.step()
-        # time.sleep(time_sleep)
-        # slide.stop()
+        slide.move_steps(1, default_speed, "cw")
+    slide.disable_pulse()
 
 
-def move2end():  # frequency=100):
+def move2end():
     # function: move slide to linear guide end
-    # frequency: float number to represent the occurrence of sensor
-    #            readings [Hz], by default 100Hz
-    # slide.set_direction("ccw")
-    # time_sleep = 1 / frequency
+    slide.enable_pulse()
     while end_switch.read() == 1:
-        slide.move_steps(1, 90, "ccw")
-        # slide.step()
-        # time.sleep(time_sleep)
-        # slide.stop()
+        slide.move_steps(1, default_speed, "ccw")
+    slide.disable_pulse()
 
 
-def blade(distance):  # WIP
+def blade(distance):
     # function: move to smearing blade extension site and extend blade
     # distance: float number of slide linear distance to smearing blade
-    #           extension site
-    slide.move_linear(distance, 90, "ccw")
+    #           extension site [mm]
+    slide.enable_pulse()
+    slide.move_linear(distance, default_speed, "ccw")
     time.sleep(2)
     linear.update_duty(5)  # extended
-    time.sleep(2)
-    pulley.update_duty(7.1)  # slow speed
+    pulley.update_duty(7)  # slow speed
     while True:
         try:
             stop = str(input("\nPress enter to stop"))
@@ -82,6 +78,7 @@ def blade(distance):  # WIP
             break
         else:
             continue
+    slide.disable_pulse()
 
 
 def wick(distance, wait_time, manual="no"):
@@ -92,7 +89,8 @@ def wick(distance, wait_time, manual="no"):
     # manual: by default "no" allows time to wick to be preselected
     #         ie. wait_time or
     #         "yes" for manual override
-    slide.move_linear(distance, 45, "cw")
+    slide.enable_pulse()
+    slide.move_linear(distance, wick_speed, "cw")
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
@@ -102,15 +100,18 @@ def wick(distance, wait_time, manual="no"):
         print("\"no\" to use preselected wicking wait time")
         print("\"yes\" to manually proceed after blood has visually wicked")
         print("Please use quotation marks")
+    slide.disable_pulse()
 
 
 def smear(distance, mms_speed):
     # function: move slide for smear
     # distance: float number of slide linear distance for smear [mm]
     # mms_speed: float number of motor load's linear velocity [mm/s]
+    slide.enable_pulse()
     rpm = slide.convert_mms2rpm(mms_speed)
     slide.move_linear(distance, rpm, "ccw")
     time.sleep(2)
+    slide.disable_pulse()
 
 
 def dry(distance, wait_time, manual="no"):
@@ -121,13 +122,14 @@ def dry(distance, wait_time, manual="no"):
     # manual: by default "no" allows time to dry to be preselected
     #         ie. wait_time or
     #         "yes" for manual override
-    slide.move_linear(distance, 90, "cw")
+    slide.enable_pulse()
+    slide.move_linear(distance, default_speed, "cw")
     fan.output(1)  # on
-    rotate.change_angle(0, 90)
+    rotate.update_duty(5)  # turns ccw
     pulley.update_duty(5)  # on
-    time.sleep(15)
+    time.sleep(5)
     pulley.update_duty(0)  # off
-    rotate.update_duty(2.5)  # neutral position
+    rotate.update_duty(2.6)  # neutral position
     if manual == "no":
         time.sleep(wait_time)
         fan.output(0)  # off
@@ -139,20 +141,20 @@ def dry(distance, wait_time, manual="no"):
         print("\"no\" to use preselected drying wait time")
         print("\"yes\" to manually proceed after blood has visually dried")
         print("Please use quotation marks")
+    slide.disable_pulse()
 
 
 def eject():
     # function: unload slide
-    unload.change_angle(0, 100)
+    unload.update_duty(9)
     time.sleep(1.5)
-    unload.update_angle(0)
+    unload.update_duty(2.8)
 
 
 def main():
     # function: complete smearing process
 
     # moving slide to start position
-    slide.enable_pulse()
     move2home()
 
     # asking for linear speed
@@ -169,12 +171,11 @@ def main():
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
-    slide.enable_pulse()
-    blade(blade_dist)
+    blade(dist2blade)
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
-    wick(wick_dist, wick_time, "yes")
+    wick(dist2wick, wick_time, "yes")
 
     # smearing blood
     print("\nSmearing blood")
@@ -184,12 +185,11 @@ def main():
     # drying blood
     print("\nMoving to drying station")
     print("Drying blood")
-    dry(dry_dist, dry_time, "yes")
+    dry(dist2fan, dry_time, "yes")
     print("Blood has dried")
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
-    slide.enable_pulse()
     move2home()
 
     # unloading slide
@@ -213,14 +213,14 @@ if __name__ == "__main__":
     force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # initializing pins
-    rotate.start(2, 12.8, 50)
-    rotate.update_duty(2.5)
+    rotate.start(2.6, 12.8, 50)
+    rotate.update_duty(2.6)
     linear.start(10, 5, 50)
     linear.update_duty(10)
     pulley.start(0, 7.1, 50)
     pulley.update_duty(0)
-    unload.start(2.8, 14, 50)
-    unload.update_duty(3)
+    unload.start(2.8, 10, 50)
+    unload.update_duty(2.8)
 
     # confirming power
     input("Press any key after motors are connected to power")
