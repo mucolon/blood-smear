@@ -24,6 +24,7 @@ default_speed = 120  # [mm/s]
 
 # blade dispensing parameters
 dist2blade = 150  # [mm] ccw
+blade_neutral_duty = 2.6
 
 # wick parameters
 dist2wick = 35  # [mm] cw
@@ -33,9 +34,15 @@ wick_time = 3  # [sec]
 # smear parameters
 smear_dist = 45  # [mm] ccw
 
+# blade ejection parameters
+eject_duty = 5
+
 # fan parameters
 dist2fan = 60  # [mm] cw
 dry_time = 120  # [sec]
+
+# slide unload parameters
+unload_neutral_duty = 2.8
 
 # force_diameter = 25.4E-3  # [m]
 # force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
@@ -125,17 +132,19 @@ def dry(distance, wait_time, manual="no"):
     slide.enable_pulse()
     slide.move_linear(distance, default_speed, "cw")
     fan.output(1)  # on
-    rotate.update_duty(5)  # turns ccw
+    rotate.update_duty(eject_duty)  # turns ccw
     pulley.update_duty(5)  # on
     time.sleep(5)
     pulley.update_duty(0)  # off
-    rotate.update_duty(2.6)  # neutral position
+    rotate.update_duty(blade_neutral_duty)
     if manual == "no":
         time.sleep(wait_time)
         fan.output(0)  # off
+        print("Blood has dried")
     elif manual == "yes":
         input("\nPress any key after blood has dried")
         fan.output(0)  # off
+        print("Blood has dried")
     else:
         print("\nError: Invalid string for manual")
         print("\"no\" to use preselected drying wait time")
@@ -148,7 +157,7 @@ def eject():
     # function: unload slide
     unload.update_duty(9)
     time.sleep(1.5)
-    unload.update_duty(2.8)
+    unload.update_duty(unload_neutral_duty)
 
 
 def main():
@@ -162,12 +171,8 @@ def main():
     input_mms = slide_ui.linear_speed()
 
     # slide loading interface
-    print("\nPlease load slide")
+    print("\nPlease load slide with blood droplet")
     input("Press any key after slide is loaded")
-
-    # blood dispensing interface
-    print("\nPlease dispense blood at target location")
-    input("Press any key after blood is dispensed")
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
@@ -186,15 +191,15 @@ def main():
     print("\nMoving to drying station")
     print("Drying blood")
     dry(dist2fan, dry_time, "yes")
-    print("Blood has dried")
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
     move2home()
 
     # unloading slide
-    print("\nUnloading slide")
-    eject()
+    print("\nUnload slide")
+    input("Press any key after slide has been unloaded")
+    # eject()
 
 
 if __name__ == "__main__":
@@ -213,17 +218,17 @@ if __name__ == "__main__":
     force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # initializing pins
-    rotate.start(2.6, 12.8, 50)
-    rotate.update_duty(2.6)
+    rotate.start(blade_neutral_duty, 12.8, 50)
+    rotate.update_duty(blade_neutral_duty)
     linear.start(10, 5, 50)
     linear.update_duty(10)
     pulley.start(0, 7.1, 50)
     pulley.update_duty(0)
-    unload.start(2.8, 10, 50)
-    unload.update_duty(2.8)
+    unload.start(unload_neutral_duty, 10, 50)
+    unload.update_duty(unload_neutral_duty)
 
     # confirming power
-    input("Press any key after motors are connected to power")
+    input("Press any key after switch has been turned on")
 
     # complete smearing process
     main()
