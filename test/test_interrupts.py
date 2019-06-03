@@ -7,6 +7,7 @@
 
 # importing libraries
 from digital_io import Digital_Io  # NEVER DELETE
+from analog_in import Analog_In  # NEVER DELETE
 import config
 import time
 
@@ -24,6 +25,8 @@ if __name__ == "__main__":
     end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
     home_switch.add_event("fall")
     end_switch.add_event("fall")
+    force_pwr = Digital_Io(config.force_pins, "out", 0)
+    force_sig = Analog_In(config.force_pins)
 
     # confirming power
     input("Press any key after motors are connected to power")

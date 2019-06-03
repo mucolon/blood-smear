@@ -6,7 +6,7 @@
 
 # importing libraries
 from digital_io import Digital_Io  # NEVER DELETE
-# from analog_in import Analog_In  # NEVER DELETE
+from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 from servo import Servo
 import config
@@ -42,6 +42,8 @@ if __name__ == "__main__":
     slide = Stepper(config.slide_pins, 72, 1)
     unload = Servo(config.unload_pin, 180)
     unload.start(3, 14, 50)
+    force_pwr = Digital_Io(config.force_pins, "out", 0)  # NEVER DELETE
+    force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # confirming power
     input("Press any key after motors are connected to power.")

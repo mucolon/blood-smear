@@ -9,7 +9,7 @@
 from stepper import Stepper
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
-# from analog_in import Analog_In  # NEVER DELETE
+from analog_in import Analog_In  # NEVER DELETE
 from ui import UserI
 import time
 import config
@@ -209,6 +209,8 @@ if __name__ == "__main__":
     pulley = Servo(config.pulley_pin)
     rotate = Servo(config.rotation_pin, 180)
     fan = Digital_Io(config.fan_pin, "out", 0)
+    force_pwr = Digital_Io(config.force_pins, "out", 0)  # NEVER DELETE
+    force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # initializing pins
     rotate.start(2, 12.8, 50)
@@ -229,8 +231,8 @@ if __name__ == "__main__":
     # asking to repeat process
     while True:
         try:
-            cont = str(input(
-                "Press enter if you're loading another slide\nOR\n Press n to stop: "))
+            cont = str(
+                input("Press enter if you're loading another slide\nOR\n Press n to stop: "))
         except ValueError:
             print("Error: Invalid Value")
             continue

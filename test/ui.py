@@ -8,8 +8,7 @@ class UserI:
         # function: ask for motor load's speed
         while True:
             try:
-                self.linSpeed = float(input("\nEnter linear travel speed of \
-                    the motor's load [0-200 mm/s]: "))
+                self.linSpeed = float(input("\nEnter linear travel speed of the motor's load [0-200 mm/s]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -27,8 +26,7 @@ class UserI:
         # function: ask for motor rotations
         while True:
             try:
-                self.rot = float(input("\nEnter amount of motor rotations \
-                    [0-2.9]: "))
+                self.rot = float(input("\nEnter amount of motor rotations [0-2.9]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -56,8 +54,7 @@ class UserI:
             elif self.dir == "ccw":
                 break
             else:
-                print("Error: Invalid input\ncw for clockwise\nccw for \
-                    counter-clockwise")
+                print("Error: Invalid input\ncw for clockwise\nccw for counter-clockwise")
                 continue
         return self.dir
 
@@ -65,8 +62,7 @@ class UserI:
         # function: ask for motor micro step count
         while True:
             try:
-                self.microStep = int(input("\nEnter motor micro step count \
-                    (enter 0 for help): "))
+                self.microStep = int(input("\nEnter motor micro step count (enter 0 for help): "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -90,8 +86,7 @@ class UserI:
         # function: ask for the motor's load linear travel distance
         while True:
             try:
-                self.dist = float(input("Enter linear travel distance of \
-                    motor's load [0-210 mm]: "))
+                self.dist = float(input("Enter linear travel distance of motor's load [0-210 mm]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue

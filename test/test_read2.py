@@ -7,6 +7,7 @@
 
 # importing libraries
 from digital_io import Digital_Io  # NEVER DELETE
+from analog_in import Analog_In  # NEVER DELETE
 import config
 
 
@@ -16,6 +17,8 @@ if __name__ == "__main__":
     print("\nInitializing Classes & Pins")
     home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
     end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
+    force_pwr = Digital_Io(config.force_pins, "out", 0)  # NEVER DELETE
+    force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # confirming power
     input("Press any key after motors are connected to power.")
