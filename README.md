@@ -1,6 +1,6 @@
 # blood-smear: A complete repository for a prototype Hematology blood smearing machine (WIP)
 
-![alt text](https://raw.githubusercontent.com/mucolon/blood-smear/blob/master/Media/complete_final.JPG)
+![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/complete_final.JPG)
 
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a stepper motor, a TB6600 stepper motor driver, servos, and Python 3.5.3 was used to control this device.
 
