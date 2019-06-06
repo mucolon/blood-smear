@@ -29,7 +29,7 @@ class GUI():
         # writing text to introduce linear speed descriptions for different hematocrit levels
         label_speed = tk.Label(
             # frame2, text="Linear speeds for different Hematocrit levels are listed below their respective buttons").pack(fill="x")
-            self.master, text="Linear speeds for different Hematocrit percentages are listed below their respective buttons", font=("Verdana Bold", 16)).grid(row=1, columnspan=4, pady=20, padx=5)
+            self.master, text="Linear speeds for different Hematocrit percentages are listed below their respective buttons", font=("Verdana Bold", 16)).grid(row=1, columnspan=4, pady=20, padx=10)
         # making buttons for different hematocrit levels
         button1 = tk.Button(
             self.master, text="< 20%", font=("Verdana Bold", 18)).grid(row=2, column=0, ipady=15, ipadx=20, padx=15, pady=20)
