@@ -32,21 +32,21 @@ class GUI():
             self.master, text="Linear speeds for different Hematocrit levels are listed below their respective buttons", font=("Verdana Bold", 18)).grid(row=1, columnspan=4, pady=20)
         # making buttons for different hematocrit levels
         button1 = tk.Button(
-            self.master, text="Hematocrit 1", font=("Verdana Bold", 18)).grid(row=2, column=0, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 1", font=("Verdana Bold", 18)).grid(row=2, column=0, ipady=15, ipadx=25, padx=15, pady=20)
         button2 = tk.Button(
-            self.master, text="Hematocrit 2", font=("Verdana Bold", 18)).grid(row=2, column=1, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 2", font=("Verdana Bold", 18)).grid(row=2, column=1, ipady=15, ipadx=25, padx=15, pady=20)
         button3 = tk.Button(
-            self.master, text="Hematocrit 3", font=("Verdana Bold", 18)).grid(row=2, column=2, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 3", font=("Verdana Bold", 18)).grid(row=2, column=2, ipady=15, ipadx=25, padx=15, pady=20)
         button4 = tk.Button(
-            self.master, text="Hematocrit 4", font=("Verdana Bold", 18)).grid(row=2, column=3, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 4", font=("Verdana Bold", 18)).grid(row=2, column=3, ipady=15, ipadx=25, padx=15, pady=20)
         button5 = tk.Button(
-            self.master, text="Hematocrit 5", font=("Verdana Bold", 18)).grid(row=4, column=0, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 5", font=("Verdana Bold", 18)).grid(row=4, column=0, ipady=15, ipadx=25, padx=15, pady=20)
         button6 = tk.Button(
-            self.master, text="Hematocrit 6", font=("Verdana Bold", 18)).grid(row=4, column=1, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 6", font=("Verdana Bold", 18)).grid(row=4, column=1, ipady=15, ipadx=25, padx=15, pady=20)
         button7 = tk.Button(
-            self.master, text="Hematocrit 7", font=("Verdana Bold", 18)).grid(row=4, column=2, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 7", font=("Verdana Bold", 18)).grid(row=4, column=2, ipady=15, ipadx=25, padx=15, pady=20)
         button8 = tk.Button(
-            self.master, text="Hematocrit 8", font=("Verdana Bold", 18)).grid(row=4, column=3, ipady=15, ipadx=25, padx=20, pady=20)
+            self.master, text="Hematocrit 8", font=("Verdana Bold", 18)).grid(row=4, column=3, ipady=15, ipadx=25, padx=15, pady=20)
         # writing linear speed descriptions for each hematocrit level
         text1 = tk.Label(
             self.master, text="180 mm/s", font=("Verdana Bold", 18)).grid(row=3, column=0)
