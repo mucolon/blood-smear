@@ -61,7 +61,7 @@ if __name__ == "__main__":
             servo.update_duty(2.8)
             duty = 2.8
             break
-        # rotation servo: 1.98 - 12.85 @ 50Hz (2.6 straight)
+        # rotation servo: 1.98 - 12.85 @ 50Hz (7.415 straight)
         elif input_servo == "r":
             servo = Servo(config.rotation_pin, 180)
             servo.start(1.98, 12.85, 50)

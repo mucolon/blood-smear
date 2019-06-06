@@ -18,7 +18,7 @@ limit_home_pin = {"sig": "P9_11"}
 limit_end_pin = {"sig": "P9_12"}
 
 # active output pulse pin for unloading servo
-unload_pin = {"pul": "P8_13"}  # 6V
+# unload_pin = {"pul": "P8_13"}  # 6V
 
 # active digital output pin for activating drying fan
 fan_pin = {"sig": "P8_16"}
