@@ -1,3 +1,3 @@
 # Media
 
-This page includes images and videos of the Blood Smearing Device.
+This directory includes images and videos of the Blood Smearing Device.

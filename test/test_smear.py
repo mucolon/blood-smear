@@ -1,8 +1,8 @@
-# basic_smear.py
-# This is the test code for a basic smear
+# test_smear.py
+# This is test code for making a blood smear using a terminal interface
 #
 # run program with this line of code below from home directory (/~)
-# sudo python3 blood-smear/test/basic_smear.py
+# sudo python3 blood-smear/test/test_smear.py
 
 
 # importing libraries
@@ -14,6 +14,8 @@ from ui import UserI
 import time
 import config
 # from math import pi
+import sys
+sys.path.append("..")
 
 
 # declaring constants
@@ -23,26 +25,23 @@ slide_step = 4  # micro step configuration
 default_speed = 150  # [mm/s]
 
 # blade dispensing parameters
-dist2blade = 145  # [mm] ccw
+dist2blade = 145  # [mm] ccw (towards end)
 blade_neutral_duty = 2.6
 
 # wick parameters
-dist2wick = 12  # [mm] cw
+dist2wick = 12  # [mm] cw (towards home)
 wick_speed = 90  # [mm/s]
 wick_time = 3  # [sec]
 
 # smear parameters
-smear_dist = 45  # [mm] ccw
+smear_dist = 45  # [mm] ccw (towards end)
 
 # blade ejection parameters
 eject_duty = 5
 
 # fan parameters
-dist2fan = 50 + smear_dist / 2  # [mm] cw
+dist2fan = 50 + smear_dist / 2  # [mm] cw (towards home)
 dry_time = 20  # [sec] (optimal value: 150)
-
-# slide unload parameters
-# unload_neutral_duty = 2.4
 
 # force_diameter = 25.4E-3  # [m]
 # force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
@@ -153,13 +152,6 @@ def dry(distance, wait_time, manual="no"):
     slide.disable_pulse()
 
 
-# def eject():
-#     # function: unload slide
-#     unload.update_duty(9)
-#     time.sleep(1.5)
-#     unload.update_duty(unload_neutral_duty)
-
-
 def main():
     # function: complete smearing process
 
@@ -199,7 +191,17 @@ def main():
     # unloading slide
     print("\nUnload slide")
     input("Press any key after slide has been unloaded")
-    # eject()
+
+
+def cleanup():
+    # function: cleans up all used pins for motors and sensors
+    slide.cleanup()
+    home_switch.cleanup()  # NEVER DELETE
+    end_switch.cleanup()  # NEVER DELETE
+    linear.cleanup()
+    pulley.cleanup()
+    rotate.cleanup()
+    fan.cleanup()
 
 
 if __name__ == "__main__":
@@ -209,7 +211,6 @@ if __name__ == "__main__":
     home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
     end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
     slide_ui = UserI()
-    # unload = Servo(config.unload_pin, 180)
     linear = Servo(config.linear_pin)
     pulley = Servo(config.pulley_pin)
     rotate = Servo(config.rotation_pin, 180)
@@ -218,14 +219,12 @@ if __name__ == "__main__":
     force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # initializing pins
-    rotate.start(blade_neutral_duty, 12.8, 50)
+    rotate.start(1.98, 12.86, 50)
     rotate.update_duty(blade_neutral_duty)
     linear.start(10, 5, 50)
     linear.update_duty(10)
     pulley.start(0, 7.1, 50)
     pulley.update_duty(0)
-    # unload.start(unload_neutral_duty, 10, 50)
-    # unload.update_duty(unload_neutral_duty)
 
     # confirming power
     input("Press any key after switch has been turned on")
@@ -251,11 +250,4 @@ if __name__ == "__main__":
 
     # cleaning up pins
     print("\nClosing Program")
-    slide.cleanup()
-    home_switch.cleanup()  # NEVER DELETE
-    end_switch.cleanup()  # NEVER DELETE
-    # unload.cleanup()
-    linear.cleanup()
-    pulley.cleanup()
-    rotate.cleanup()
-    fan.cleanup()
+    cleanup()

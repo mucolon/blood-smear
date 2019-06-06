@@ -11,6 +11,8 @@ from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 import config
+import sys
+sys.path.append("..")
 
 
 def main(duty):
@@ -61,7 +63,7 @@ if __name__ == "__main__":
             servo.update_duty(2.8)
             duty = 2.8
             break
-        # rotation servo: 1.98 - 12.85 @ 50Hz (7.415 straight)
+        # rotation servo: 1.98 - 12.86 @ 50Hz (7.42 straight)
         elif input_servo == "r":
             servo = Servo(config.rotation_pin, 180)
             servo.start(1.98, 12.85, 50)

@@ -40,20 +40,22 @@ class Servo:
         duty = angle * self.span / self.range + self.min
         self.update_duty(duty)
 
-    def change_angle(self, start, end, frequency=100):
+    def change_angle(self, start, end, time2turn=2):
         # function: move servo from a start angle to an end angle
         # start: float number for starting angle position [degrees]
         # end: float number for ending angle position [degrees]
-        # frequency: float number rate of angle change [Hz], by default 100Hz
-        time_sleep = 1 / frequency
-        angle = start
+        # time2turn: float number for total time for servo to move
+        diff = abs(end - start)
+        time_sleep = time2turn / diff
         if end > start:
+            angle = start
             while angle <= end:
                 self.update_angle(angle)
                 time.sleep(time_sleep)
                 angle += 1
         else:
-            while angle <= end:
+            angle = end
+            while angle >= start:
                 self.update_angle(angle)
                 time.sleep(time_sleep)
                 angle -= 1

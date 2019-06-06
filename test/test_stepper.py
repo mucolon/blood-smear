@@ -10,11 +10,14 @@ from stepper import Stepper
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
 import config
+import sys
+sys.path.append("..")
 
 
 # declaring constants
 stepper_circum = 72  # [mm]
 stepper_step = 4  # micro step configuration
+
 
 def move2home(mms):
     rpm = slide.convert_mms2rpm(mms)
@@ -22,11 +25,13 @@ def move2home(mms):
         slide.move_steps(1, rpm, "cw")
     return 1
 
+
 def move2end(mms):
     rpm = slide.convert_mms2rpm(mms)
     while end_switch.read() == 1:
         slide.move_steps(1, rpm, "ccw")
     return 0
+
 
 def main():
     # function: main test function

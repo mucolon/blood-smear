@@ -10,6 +10,8 @@ from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 from servo import Servo
 import config
+import sys
+sys.path.append("..")
 
 
 def main():

@@ -11,6 +11,8 @@ from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 import config
 import time
+import sys
+sys.path.append("..")
 
 
 if __name__ == "__main__":
