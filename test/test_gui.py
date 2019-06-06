@@ -68,11 +68,11 @@ class GUI():
         self.quit_button.grid_forget()
         self.label_smear = tk.Label(
             self.master, text="Blood smear in progress", font=("Verdana Bold", 24))
-        self.label_smear.grid(row=0, columnspan=4, pady=30, padx=70)
+        self.label_smear.grid(row=0, columnspan=4, pady=70, padx=300)
         self.emergency_button = tk.Button(
             self.master, text="Emergency Shutoff", font=("Verdana Bold", 24), command=self.quit)
         self.emergency_button.grid(row=1, columnspan=4, pady=30,
-                                   padx=70, ipadx=20, ipady=15)
+                                   padx=300, ipadx=20, ipady=15)
 
     def button_press(self, button):
         # function: checks which button is pressed and passes on linear speed
