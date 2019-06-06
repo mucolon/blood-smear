@@ -20,15 +20,15 @@ import config
 # default parameters
 slide_circum = 72  # [mm]
 slide_step = 4  # micro step configuration
-default_speed = 120  # [mm/s]
+default_speed = 150  # [mm/s]
 
 # blade dispensing parameters
-dist2blade = 150  # [mm] ccw
+dist2blade = 145  # [mm] ccw
 blade_neutral_duty = 2.6
 
 # wick parameters
-dist2wick = 35  # [mm] cw
-wick_speed = 70  # [mm/s]
+dist2wick = 12  # [mm] cw
+wick_speed = 90  # [mm/s]
 wick_time = 3  # [sec]
 
 # smear parameters
@@ -38,11 +38,11 @@ smear_dist = 45  # [mm] ccw
 eject_duty = 5
 
 # fan parameters
-dist2fan = 60  # [mm] cw
-dry_time = 120  # [sec]
+dist2fan = 50 + smear_dist / 2  # [mm] cw
+dry_time = 20  # [sec] (optimal value: 150)
 
 # slide unload parameters
-unload_neutral_duty = 2.8
+unload_neutral_duty = 2.4
 
 # force_diameter = 25.4E-3  # [m]
 # force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
@@ -180,7 +180,7 @@ def main():
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
-    wick(dist2wick, wick_time, "yes")
+    wick(dist2wick, wick_time)
 
     # smearing blood
     print("\nSmearing blood")
@@ -190,7 +190,7 @@ def main():
     # drying blood
     print("\nMoving to drying station")
     print("Drying blood")
-    dry(dist2fan, dry_time, "yes")
+    dry(dist2fan, dry_time)
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
