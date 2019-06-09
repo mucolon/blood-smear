@@ -20,7 +20,7 @@ def main():
     while True:
         try:
             response = str(input("\nHold [ENTER] to output values \
-                \nOR press [n] to exit"))
+                \nOR press [n] to exit: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
