@@ -14,8 +14,20 @@ from analog_in import Analog_In  # NEVER DELETE
 import config
 
 
-def main():
-    # function: read analog values
+def read_nonstop():
+    # function: read analog values continuously
+    print("Press [CTRL + C] to exit\n")
+    force_pwr.output(1)
+    while True:
+        try:
+            print("Raw value: ", force_sig.read_raw())
+        except KeyboardInterrupt:
+            print('Exiting')
+            break
+
+
+def read():
+    # function: read analog values at every [ENTER] press
     force_pwr.output(1)
     while True:
         try:
@@ -31,6 +43,10 @@ def main():
             continue
 
 
+# def filter():
+    # function: read filtered analog values
+
+
 if __name__ == "__main__":
 
     # initializing  classes and pins
@@ -42,7 +58,28 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after switch has been turned on")
 
-    main()
+    while True:
+        try:
+            response = str(
+                input("\nEnter test name [r=read, f=filter read, rn=read nonstop] \
+                    \nOR [n] to exit program: "))
+        except ValueError:
+            print("Error: Invalid Input")
+            continue
+        if response == "r":
+            read()
+            continue
+        elif response == "f":
+            filter()
+            continue
+        elif response == "rn":
+            read_nonstop()
+            continue
+        elif response == "n":
+            break
+        else:
+            print("Error: Try again")
+            continue
 
     print("\nClosing Program")
     force_pwr.output(0)
