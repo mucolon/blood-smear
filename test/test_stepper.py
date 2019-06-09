@@ -106,7 +106,7 @@ def velocity():
     while True:
         try:
             response = str(input("\nEnter linear slide speed [0-10000 mm/s] \
-                \nOR [n] to back out"))
+                \nOR [n] to back out: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
