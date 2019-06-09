@@ -126,7 +126,7 @@ def velocity():
             time_diff = future - now
             print(time_diff, "seconds")
             print(stepper_circum / time_diff, "mm/s")
-            input("Press any key to redo test")
+            input("Press [ENTER] to redo test")
             move2home(defualt_speed_mms)
             continue
 
@@ -141,7 +141,7 @@ if __name__ == "__main__":
     force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # confirming power
-    input("Press any key after motors are connected to power")
+    input("Press [ENTER] after motors are connected to power")
 
     move2home(defualt_speed_mms)
 
