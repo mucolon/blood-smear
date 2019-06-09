@@ -15,14 +15,15 @@ import config
 
 
 # declaring constants
-stepper_circum = 72  # [mm]
-stepper_step = 32  # micro step configuration
-defualt_speed_mms = 120  # [mms]
-defualt_speed_rpm = 115  # [rpm]
+stepper_circum = 72.087  # [mm]
+stepper_step = 16  # micro step configuration
+defualt_speed_mms = 200  # [mms]
+defualt_speed_rpm = 190  # [rpm]
 
 
 def move2home(mms):
     # function: moves slide to home position
+    # mms: float number for linear travel speed
     # function return: int 1 to identify slide at home position
     rpm = slide.convert_mms2rpm(mms)
     while home_switch.read() == 1:
@@ -32,6 +33,7 @@ def move2home(mms):
 
 def move2end(mms):
     # function: moves slide to end position
+    # mms: float number for linear travel speed
     # function return: int 0 to identify slide at end position
     rpm = slide.convert_mms2rpm(mms)
     while end_switch.read() == 1:
@@ -45,8 +47,8 @@ def side2side():
     while True:
         try:
             input_mms = str(input(
-                "\nEnter linear slide speed [0-1000 mm/s] \
-                \n OR n to exit: "))
+                "\nEnter linear slide speed [0-10000 mm/s] \
+                \nOR [n] to back out: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
@@ -63,8 +65,11 @@ def side2side():
         elif float(input_mms) < 0:
             print("Error: Input speed cannot be negative")
             continue
-        elif float(input_mms) > 1000:
-            print("Error: Input speed cannot be greater than 1000 mm/s")
+        elif float(input_mms) > 10000:
+            print("Error: Input speed cannot be greater than 10000 mm/s")
+            continue
+        else:
+            print("Error: Try again")
             continue
 
 
@@ -76,22 +81,48 @@ def rotate():
                 "\nPress [ENTER] to move 1 revolution towards the end \
                 \nOR [b] to move 1 revolution towards home \
                 \nOR [h] to move back to home \
-                \nOR [n] to exit: "))
+                \nOR [n] to back out: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
         if response == "n":
             break
         elif response == "":
-            slide.rotate(1, defualt_speed_rpm, "cw")
+            slide.rotate(1, defualt_speed_rpm, "ccw")
             continue
         elif response == "b":
-            slide.rotate(1, defualt_speed_rpm, "ccw")
+            slide.rotate(1, defualt_speed_rpm, "cw")
             continue
         elif response == "h":
             move2home(defualt_speed_mms)
         else:
             print("Error: Try again")
+            continue
+
+
+def velocity(mms):
+    # function: moves slide one revolution at input linear velocity
+    # mms: float number for linear travel speed
+    while True:
+        try:
+            response = str(input("\nEnter linear slide speed [0-10000 mm/s] \
+                \nOR [n] to back out"))
+        except ValueError:
+            print("Error: Invalid Input")
+            continue
+        if response == "n":
+            break
+        elif float(response) < 0:
+            print("Error: Input speed cannot be negative")
+            continue
+        elif float(response) > 10000:
+            print("Error: Input speed cannot be greater than 10000 mm/s")
+            continue
+        else:
+            rpm = slide.convert_mms2rpm(float(response))
+            slide.rotate(1, rpm, "ccw")
+            input("Press any key to redo test")
+            move2home(defualt_speed_mms)
             continue
 
 
@@ -112,7 +143,8 @@ if __name__ == "__main__":
     while True:
         try:
             response = str(
-                input("\nEnter test name [s=side2side, r=rotation]: "))
+                input("\nEnter test name [s=side2side, r=rotation, v=velocity] \
+                    \nOR [n] to exit program: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
