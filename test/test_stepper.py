@@ -7,6 +7,7 @@
 
 # importing libraries
 import sys
+import time
 sys.path.insert(0, "/home/debian/blood-smear/lib")
 from stepper import Stepper
 from digital_io import Digital_Io  # NEVER DELETE
@@ -100,9 +101,8 @@ def rotate():
             continue
 
 
-def velocity(mms):
+def velocity():
     # function: moves slide one revolution at input linear velocity
-    # mms: float number for linear travel speed
     while True:
         try:
             response = str(input("\nEnter linear slide speed [0-10000 mm/s] \
@@ -120,7 +120,12 @@ def velocity(mms):
             continue
         else:
             rpm = slide.convert_mms2rpm(float(response))
+            now = time.time()
             slide.rotate(1, rpm, "ccw")
+            future = time.time()
+            time_diff = future - now
+            print(time_diff, "seconds")
+            print(stepper_circum / time_diff, "mm/s")
             input("Press any key to redo test")
             move2home(defualt_speed_mms)
             continue
@@ -150,9 +155,13 @@ if __name__ == "__main__":
             continue
         if response == "s":
             side2side()
-            break
+            continue
         elif response == "r":
             rotate()
+            continue
+        elif response == "v":
+            velocity()
+        elif response == "n":
             break
         else:
             print("Error: Try again")
