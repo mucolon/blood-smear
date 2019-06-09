@@ -11,12 +11,12 @@ from math import pi
 class Stepper:
 
     # class initialization also initializes motor
-    def __init__(self, pins, circumference, microstep=4):
+    def __init__(self, pins, circumference, microstep=32):
         # pins: dictionary containing used stepper motor pins
         # circumference: float number for distance traveled by one motor
         #                revolution
         # microstep: int number for current microstep configuration for
-        #            stepper motor, by default microstep is 4
+        #            stepper motor, by default microstep is 32
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
@@ -24,20 +24,7 @@ class Stepper:
         self.radius = self.circum / (pi * 2)
         self.mms2rpm = 30 / (self.radius * pi)
         self.micro = microstep
-        if microstep == 1:
-            self.pulses = 200    # 1 micro step = 200 pulses
-        elif microstep == 2:
-            self.pulses == 400   # 2 micro steps = 400 pulses
-        elif microstep == 4:
-            self.pulses = 800    # 4 micro steps = 800 pulses
-        elif microstep == 8:
-            self.pulses = 1600   # 8 micro steps = 1600 pulses
-        elif microstep == 16:
-            self.pulses = 3200   # 16 micro steps = 3200 pulses
-        elif microstep == 32:
-            self.pulses = 6400   # 32 micro steps = 6400 pulses
-        else:
-            print("Error: Invalid micro step value")
+        self.pulses = microstep * 200
         GPIO.setup(self.pul, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.dir, GPIO.OUT)
         GPIO.setup(self.ena, GPIO.OUT, initial=GPIO.LOW)

@@ -6,13 +6,13 @@
 
 
 # importing libraries
+import sys
+sys.path.insert(0, "~/blood-smear/lib")
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 import config
-import sys
-sys.path.append("..")
 
 
 def main(duty):
@@ -53,32 +53,32 @@ if __name__ == "__main__":
     while True:
         try:
             input_servo = str(input(
-                "\nEnter servo name [u= unload, r= rotation, l=linear, p=pulley]: "))
+                "\nEnter servo name [u=unload, r=rotation, l=linear, p=pulley]: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
         if input_servo == "u":  # unload servo duty: 2.8 - 10 @ 50Hz
             servo = Servo(config.unload_pin, 180)
-            servo.start(2.8, 10, 50)
+            servo.start(2.8, 10)
             servo.update_duty(2.8)
             duty = 2.8
             break
         # rotation servo: 1.98 - 12.86 @ 50Hz (7.42 straight)
         elif input_servo == "r":
             servo = Servo(config.rotation_pin, 180)
-            servo.start(1.98, 12.85, 50)
-            servo.update_duty(2.6)
+            servo.start(1.98, 12.86)
+            servo.update_duty(1.98)
             duty = 2.6
             break
         elif input_servo == "l":  # linear servo: 5 extended, 10 retracted @ 50Hz
             servo = Servo(config.linear_pin, 180)
-            servo.start(10, 5, 50)
+            servo.start(10, 5)
             servo.update_duty(10)
             duty = 10
             break
         elif input_servo == "p":  # pulley servo: 0 stops, 7.1 good slow speed @ 50Hz
             servo = Servo(config.pulley_pin, 180)
-            servo.start(0, 8, 50)
+            servo.start(0, 8)
             servo.update_duty(0)
             duty = 0
             break

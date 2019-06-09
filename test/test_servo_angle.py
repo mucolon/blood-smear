@@ -6,13 +6,13 @@
 
 
 # importing libraries
+import sys
+sys.path.append("~/blood-smear/lib")
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 import config
-import sys
-sys.path.append("..")
 
 
 # declaring constants

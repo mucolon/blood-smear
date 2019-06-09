@@ -6,13 +6,13 @@
 
 
 # importing libraries
+import time
+import sys
+sys.path.insert(0, "~/blood-smear/lib")
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
 from stepper import Stepper
 import config
-import time
-import sys
-sys.path.append("..")
 
 
 if __name__ == "__main__":

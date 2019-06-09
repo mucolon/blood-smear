@@ -6,42 +6,49 @@
 
 
 # importing libraries
+import time
+import sys
+sys.path.insert(0, "~/blood-smear/lib")
+from ui import UserI
 from stepper import Stepper
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
-from ui import UserI
-import time
 import config
-# from math import pi
-import sys
-sys.path.append("..")
 
 
 # declaring constants
 # default parameters
 slide_circum = 72  # [mm]
-slide_step = 4  # micro step configuration
-default_speed = 150  # [mm/s]
+slide_step = 8  # micro step configuration
+default_speed = 160  # [mm/s]
 
 # blade dispensing parameters
-dist2blade = 145  # [mm] ccw (towards end)
-blade_neutral_duty = 2.6
+blade_dist = 149.35  # [mm] ccw (towards end)
+rotate_neutral_duty = 1.98
+linear_blade_extend_duty = 5
+linear_blade_retract_duty = 10
+pulley_dispense_duty = 7
+pulley_off_duty = 0
 
 # wick parameters
-dist2wick = 12  # [mm] cw (towards home)
+wick_dist = 21  # [mm] cw (towards home)
 wick_speed = 90  # [mm/s]
-wick_time = 3  # [sec]
+wick_time = 4  # [sec]
 
 # smear parameters
-smear_dist = 45  # [mm] ccw (towards end)
+smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
-eject_duty = 5
+pulley_retract_duty = 12
+pulley_retract_time = 0.2
+pulley_eject_duty = 3
+pulley_eject_time = 3
+rotate_eject_duty = 7
 
 # fan parameters
-dist2fan = 50 + smear_dist / 2  # [mm] cw (towards home)
-dry_time = 20  # [sec] (optimal value: 150)
+dry_dist = 56 + smear_dist / 2  # [mm] cw (towards home)
+dry_time = 5  # [sec] (optimal value: 150)
 
 # force_diameter = 25.4E-3  # [m]
 # force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
@@ -70,8 +77,8 @@ def blade(distance):
     slide.enable_pulse()
     slide.move_linear(distance, default_speed, "ccw")
     time.sleep(2)
-    linear.update_duty(5)  # extended
-    pulley.update_duty(7)  # slow speed
+    linear.update_duty(linear_blade_extend_duty)
+    pulley.update_duty(pulley_dispense_duty)
     while True:
         try:
             stop = str(input("\nPress enter to stop"))
@@ -79,8 +86,7 @@ def blade(distance):
             print("Error: Invalid Value")
             continue
         if stop == "":
-            pulley.update_duty(0)  # off
-            linear.update_duty(10)  # retracted
+            pulley.update_duty(pulley_off_duty)
             break
         else:
             continue
@@ -117,6 +123,9 @@ def smear(distance, mms_speed):
     rpm = slide.convert_mms2rpm(mms_speed)
     slide.move_linear(distance, rpm, "ccw")
     time.sleep(2)
+    pulley.update_duty(pulley_retract_duty)
+    time.sleep(pulley_retract_time)
+    pulley.update_duty(pulley_off_duty)
     slide.disable_pulse()
 
 
@@ -131,11 +140,12 @@ def dry(distance, wait_time, manual="no"):
     slide.enable_pulse()
     slide.move_linear(distance, default_speed, "cw")
     fan.output(1)  # on
-    rotate.update_duty(eject_duty)  # turns ccw
-    pulley.update_duty(5)  # on
-    time.sleep(5)
-    pulley.update_duty(0)  # off
-    rotate.update_duty(blade_neutral_duty)
+    rotate.update_duty(rotate_eject_duty)
+    pulley.update_duty(pulley_eject_duty)
+    time.sleep(pulley_eject_time)
+    pulley.update_duty(pulley_off_duty)
+    rotate.update_duty(rotate_neutral_duty)
+    linear.update_duty(linear_blade_retract_duty)
     if manual == "no":
         time.sleep(wait_time)
         fan.output(0)  # off
@@ -168,11 +178,11 @@ def main():
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
-    blade(dist2blade)
+    blade(blade_dist)
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
-    wick(dist2wick, wick_time)
+    wick(wick_dist, wick_time)
 
     # smearing blood
     print("\nSmearing blood")
@@ -182,7 +192,7 @@ def main():
     # drying blood
     print("\nMoving to drying station")
     print("Drying blood")
-    dry(dist2fan, dry_time)
+    dry(dry_dist, dry_time)
 
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
@@ -219,12 +229,12 @@ if __name__ == "__main__":
     force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # initializing pins
-    rotate.start(1.98, 12.86, 50)
-    rotate.update_duty(blade_neutral_duty)
-    linear.start(10, 5, 50)
-    linear.update_duty(10)
-    pulley.start(0, 7.1, 50)
-    pulley.update_duty(0)
+    rotate.start(1.98, 12.86)
+    rotate.update_duty(rotate_neutral_duty)
+    linear.start(10, 5)
+    linear.update_duty(linear_blade_retract_duty)
+    pulley.start(0, 7.1)
+    pulley.update_duty(pulley_off_duty)
 
     # confirming power
     input("Press any key after switch has been turned on")
@@ -242,7 +252,7 @@ if __name__ == "__main__":
             continue
         if cont == "":
             main()
-            break
+            continue
         elif cont == "n":
             break
         else:
