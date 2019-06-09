@@ -17,12 +17,17 @@ import config
 def read_nonstop():
     # function: read analog values continuously
     print("Press [CTRL + C] to exit\n")
+    data = open(r"force_sensor_data.txt", "a")
+    data.write("\n")
     force_pwr.output(1)
     while True:
         try:
+            now = time.time()
             print("Raw value: ", force_sig.read_raw())
+            data.write("{} {}".format(now, force_sig.read_raw()))
         except KeyboardInterrupt:
             print('Exiting')
+            data.close()
             break
 
 
