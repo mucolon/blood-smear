@@ -17,6 +17,8 @@ import config
 # declaring constants
 stepper_circum = 72  # [mm]
 stepper_step = 32  # micro step configuration
+defualt_speed_mms = 120  # [mms]
+defualt_speed_rpm = 115  # [rpm]
 
 
 def move2home(mms):
@@ -71,18 +73,23 @@ def rotate():
     while True:
         try:
             response = str(input(
-                "\nPress [ENTER] to move 1 revolution towards the end or [b] to move 1 revolution towards home or [n] to exit: "))
+                "\nPress [ENTER] to move 1 revolution towards the end \
+                \nOR [b] to move 1 revolution towards home \
+                \nOR [h] to move back to home \
+                \nOR [n] to exit: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
         if response == "n":
             break
         elif response == "":
-            slide.rotate(1, 100, "cw")
+            slide.rotate(1, defualt_speed_rpm, "cw")
             continue
         elif response == "b":
-            slide.rotate(1, 100, "ccw")
+            slide.rotate(1, defualt_speed_rpm, "ccw")
             continue
+        elif response == "h":
+            move2home(defualt_speed_mms)
         else:
             print("Error: Try again")
             continue
@@ -100,7 +107,7 @@ if __name__ == "__main__":
     # confirming power
     input("Press any key after motors are connected to power")
 
-    move2home(100)
+    move2home(defualt_speed_mms)
 
     while True:
         try:

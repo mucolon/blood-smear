@@ -22,7 +22,9 @@ def main(duty):
         start = duty
         try:
             input_duty = str(input(
-                "\nEnter servo duty cycle [0-100] (n to exit or enter to increase by 0.5): "))
+                "\nEnter servo duty cycle [0-100] \
+                \nOR [n] to exit \
+                \nOR [Enter] to increase by 0.5: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
