@@ -7,7 +7,7 @@
 
 # importing libraries
 import sys
-sys.path.insert(0, "~/blood-smear/lib")
+sys.path.insert(0, "/home/debian/blood-smear/lib")
 from stepper import Stepper
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
@@ -16,7 +16,7 @@ import config
 
 # declaring constants
 stepper_circum = 72  # [mm]
-stepper_step = 4  # micro step configuration
+stepper_step = 32  # micro step configuration
 
 
 def move2home(mms):

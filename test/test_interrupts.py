@@ -8,7 +8,7 @@
 # importing libraries
 import time
 import sys
-sys.path.insert(0, "~/blood-smear/lib")
+sys.path.insert(0, "/home/debian/blood-smear/lib")
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
 import config

@@ -8,7 +8,7 @@
 # importing libraries
 import time
 import sys
-sys.path.insert(0, "~/blood-smear/lib")
+sys.path.insert(0, "/home/debian/blood-smear/lib")
 from ui import UserI
 from stepper import Stepper
 from servo import Servo
