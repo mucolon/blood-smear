@@ -20,4 +20,4 @@ The `test_servo_duty.py` file tests a servo motor's duty cycle range.
 
 The `test_smear.py` file uses all the motors and sensors in the assembly for making a quality smear. This file also uses a terminal interface.
 
-The `test_stepper.py` file tests the stepper motor at different input speeds.
+The `test_stepper.py` file tests the stepper motor at different input speeds and microstep configurations.

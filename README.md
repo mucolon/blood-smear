@@ -27,7 +27,7 @@ A configuration file is used to declare all the used pins on the BeagleBone Blac
 
 ### Flowchart
 ![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Overall%20Smear%20Process%20Flowchart%202.0.png?raw=true)
-This is a flowchart of the `basic_smear.py` file.
+This is a flowchart of the `smear.py` file.
 
 ### File Descriptions
 
