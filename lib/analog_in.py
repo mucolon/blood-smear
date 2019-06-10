@@ -20,5 +20,5 @@ class Analog_In:
 
     def read_raw(self):
         # function: read raw analog value
-        # function returns: float number from 0.0 to 4095.0
+        # function returns: float number from 0.0 to 1023.0
         return ADC.read_raw(self.sig)

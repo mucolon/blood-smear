@@ -11,12 +11,12 @@ from math import pi
 class Stepper:
 
     # class initialization also initializes motor
-    def __init__(self, pins, circumference, microstep=32):
+    def __init__(self, pins, circumference, microstep=4):
         # pins: dictionary containing used stepper motor pins
         # circumference: float number for distance traveled by one motor
-        #                revolution
+        #                revolution [mm]
         # microstep: int number for current microstep configuration for
-        #            stepper motor, by default microstep is 32
+        #            stepper motor, by default microstep is 4
         self.ena = pins["ena"]
         self.dir = pins["dir"]
         self.pul = pins["pul"]
@@ -58,8 +58,8 @@ class Stepper:
 
     def rotate(self, rotations, rpm, direction):
         # function: move motor by rotations
-        # rotations: float number of motor rotations
-        # rpm: float number of motor's rpm
+        # rotations: float number for motor rotations [rev]
+        # rpm: float number for motor's rpm
         # direction: string "cw" for clockwise or
         #            string "ccw" for counter-clockwise
         sleep_time = float(0.3 * 1.34 / (rpm * self.micro))
@@ -67,14 +67,38 @@ class Stepper:
         if direction == "cw":
             GPIO.output(self.dir, GPIO.HIGH)
             for x in range(steps):
-                self.step()
+                GPIO.output(self.pul, GPIO.HIGH)
                 time.sleep(sleep_time)
                 GPIO.output(self.pul, GPIO.LOW)
         elif direction == "ccw":
             GPIO.output(self.dir, GPIO.LOW)
             for x in range(steps):
-                self.step()
+                GPIO.output(self.pul, GPIO.HIGH)
                 time.sleep(sleep_time)
+                GPIO.output(self.pul, GPIO.LOW)
+        else:
+            print(
+                "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
+            print("Please include quotation marks")
+
+    def rotate2(self, rotations, delay, direction):
+        # function: move motor by rotations and set time delay
+        # rotations: float number for motor rotations [rev]
+        # delay: float number for motor pulse time delay [ms]
+        # direction: string "cw" for clockwise or
+        #            string "ccw" for counter-clockwise
+        steps = round(rotations * self.pulses)
+        if direction == "cw":
+            GPIO.output(self.dir, GPIO.HIGH)
+            for x in range(steps):
+                GPIO.output(self.pul, GPIO.HIGH)
+                time.sleep(delay)
+                GPIO.output(self.pul, GPIO.LOW)
+        elif direction == "ccw":
+            GPIO.output(self.dir, GPIO.LOW)
+            for x in range(steps):
+                GPIO.output(self.pul, GPIO.HIGH)
+                time.sleep(delay)
                 GPIO.output(self.pul, GPIO.LOW)
         else:
             print(

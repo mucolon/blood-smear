@@ -17,7 +17,7 @@ import config
 
 # declaring constants
 stepper_circum = 72.087  # [mm]
-stepper_step = 16  # micro step configuration
+stepper_step = 4  # micro step configuration
 defualt_speed_mms = 200  # [mms]
 defualt_speed_rpm = 190  # [rpm]
 
@@ -89,10 +89,14 @@ def rotate():
         if response == "n":
             break
         elif response == "":
-            slide.rotate(1, defualt_speed_rpm, "ccw")
+            delay = float(input("Enter step delay [ms]: "))
+            # slide.rotate(1, defualt_speed_rpm, "ccw")
+            slide.rotate2(1, delay, "ccw")
             continue
         elif response == "b":
-            slide.rotate(1, defualt_speed_rpm, "cw")
+            delay = float(input("Enter step delay [ms]: "))
+            # slide.rotate(1, defualt_speed_rpm, "cw")
+            slide.rotate2(1, delay, "ccw")
             continue
         elif response == "h":
             move2home(defualt_speed_mms)
@@ -103,6 +107,8 @@ def rotate():
 
 def velocity():
     # function: moves slide one revolution at input linear velocity
+    data = open(r"slide_speed_data.txt", "a")
+    data.write("\n")
     while True:
         try:
             response = str(input("\nEnter linear slide speed [0-10000 mm/s] \
@@ -111,6 +117,7 @@ def velocity():
             print("Error: Invalid Input")
             continue
         if response == "n":
+            data.close()
             break
         elif float(response) < 0:
             print("Error: Input speed cannot be negative")
@@ -119,13 +126,16 @@ def velocity():
             print("Error: Input speed cannot be greater than 10000 mm/s")
             continue
         else:
-            rpm = slide.convert_mms2rpm(float(response))
+            mms = float(response)
+            rpm = slide.convert_mms2rpm(mms)
             now = time.time()
             slide.rotate(1, rpm, "ccw")
             future = time.time()
             time_diff = future - now
+            speed = stepper_circum / time_diff
             print(time_diff, "seconds")
-            print(stepper_circum / time_diff, "mm/s")
+            print(speed, "mm/s")
+            data.write("{} {}\n".format(mms, speed))
             input("Press [ENTER] to redo test")
             move2home(defualt_speed_mms)
             continue

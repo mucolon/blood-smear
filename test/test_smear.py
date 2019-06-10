@@ -31,9 +31,9 @@ linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
 pulley_dispense_duty = 7
 pulley_off_duty = 0
-force_threshold = 100
+force_threshold = 300
 sample_amount = 10
-filtered_amount = 5
+filtered_amount = 3
 
 # wick parameters
 wick_dist = 21  # [mm] cw (towards home)
@@ -45,7 +45,7 @@ smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
 pulley_retract_duty = 12
-pulley_retract_time = 0.2
+pulley_retract_time = 0.6
 pulley_eject_duty = 3
 pulley_eject_time = 3
 rotate_eject_duty = 7
@@ -81,12 +81,13 @@ def blade(distance, threshold):
     # threshold: float number reading off force sensor to stop pulley servo
     slide.enable_pulse()
     slide.move_linear(distance, default_speed, "ccw")
-    time.sleep(2)
+    time.sleep(0.5)
     linear.update_duty(linear_blade_extend_duty)
+    time.sleep(0.5)
     pulley.update_duty(pulley_dispense_duty)
     force_pwr.output(1)
-    samples = np.array([300] * sample_amount)
-    filtered_value = np.array([300] * filtered_amount)
+    samples = np.array([190] * sample_amount)
+    filtered_value = np.array([210] * filtered_amount)
     while True:
         try:
             samples[0] = force_sig.read_raw()
@@ -117,7 +118,7 @@ def wick(distance, wait_time, manual="no"):
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
-        input("\nPress any key after blood has wicked")
+        input("\nPress [ENTER] after blood has wicked")
     else:
         print("\nError: Invalid string for manual")
         print("\"no\" to use preselected wicking wait time")
@@ -152,17 +153,20 @@ def dry(distance, wait_time, manual="no"):
     slide.move_linear(distance, default_speed, "cw")
     fan.output(1)  # on
     rotate.update_duty(rotate_eject_duty)
+    time.sleep(0.5)
     pulley.update_duty(pulley_eject_duty)
     time.sleep(pulley_eject_time)
     pulley.update_duty(pulley_off_duty)
+    time.sleep(0.5)
     rotate.update_duty(rotate_neutral_duty)
+    time.sleep(0.5)
     linear.update_duty(linear_blade_retract_duty)
     if manual == "no":
-        time.sleep(wait_time)
+        time.sleep(wait_time - (1.5 + pulley_eject_time))
         fan.output(0)  # off
         print("Blood has dried")
     elif manual == "yes":
-        input("\nPress any key after blood has dried")
+        input("\nPress [ENTER] after blood has dried")
         fan.output(0)  # off
         print("Blood has dried")
     else:
@@ -185,7 +189,7 @@ def main():
 
     # slide loading interface
     print("\nPlease load slide with blood droplet")
-    input("Press any key after slide is loaded")
+    input("Press [ENTER] after slide is loaded")
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
@@ -211,7 +215,7 @@ def main():
 
     # unloading slide
     print("\nUnload slide")
-    input("Press any key after slide has been unloaded")
+    input("Press [ENTER] after slide has been unloaded")
 
 
 def cleanup():
@@ -248,7 +252,7 @@ if __name__ == "__main__":
     pulley.update_duty(pulley_off_duty)
 
     # confirming power
-    input("Press any key after switch has been turned on")
+    input("Press [ENTER] after switch has been turned on")
 
     # complete smearing process
     main()
@@ -257,7 +261,8 @@ if __name__ == "__main__":
     while True:
         try:
             cont = str(
-                input("Press enter if you're loading another slide\nOR\n Press n to stop: "))
+                input("Press [ENTER] if you're loading another slide\
+                    \nOR press [n] to stop: "))
         except ValueError:
             print("Error: Invalid Value")
             continue
