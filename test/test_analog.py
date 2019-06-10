@@ -8,6 +8,7 @@
 # importing libraries
 import sys
 import time
+import numpy as np
 sys.path.insert(0, "/home/debian/blood-smear/lib")
 from digital_io import Digital_Io  # NEVER DELETE
 from analog_in import Analog_In  # NEVER DELETE
@@ -48,8 +49,25 @@ def read():
             continue
 
 
-# def filter():
+def filter(value):
     # function: read filtered analog values
+    # value: int number for amount of samples to take for running sum filter
+    print("Press [CTRL + C] to exit\n")
+    force_pwr.output(1)
+    samples = np.array([300] * values)
+    i = 1
+    while True:
+        try:
+            samples[0] = force_sig.read_raw()
+            filtered_value = np.sum(samples) / value
+            np.roll(samples, 1)
+            i += 1
+        except KeyboardInterrupt:
+            print('Exiting')
+            break
+        if (i % value == 0):
+            print("Filtered value: ", filtered_value, "\n")
+            continue
 
 
 if __name__ == "__main__":
@@ -74,9 +92,11 @@ if __name__ == "__main__":
         if response == "r":
             read()
             continue
-        # elif response == "f":
-        #     filter()
-        #     continue
+        elif response == "f":
+            values = int(
+                input("Enter amount of values for running sum filter [6 is a good start]: "))
+            filter(values)
+            continue
         elif response == "rn":
             read_nonstop()
             continue
