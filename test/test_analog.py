@@ -24,7 +24,7 @@ def read_nonstop():
         try:
             now = time.time()
             print("Raw value: ", force_sig.read_raw())
-            data.write("{} {}".format(now, force_sig.read_raw()))
+            data.write("{} {}\n".format(now, force_sig.read_raw()))
         except KeyboardInterrupt:
             print('Exiting')
             data.close()
@@ -74,9 +74,9 @@ if __name__ == "__main__":
         if response == "r":
             read()
             continue
-        elif response == "f":
-            filter()
-            continue
+        # elif response == "f":
+        #     filter()
+        #     continue
         elif response == "rn":
             read_nonstop()
             continue
