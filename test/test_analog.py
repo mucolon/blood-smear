@@ -54,18 +54,18 @@ def filter(value):
     # value: int number for amount of samples to take for running sum filter
     print("Press [CTRL + C] to exit\n")
     force_pwr.output(1)
-    samples = np.array([300] * values)
+    samples = np.array([0] * values)
     i = 1
     while True:
         try:
             samples[0] = force_sig.read_raw()
             filtered_value = np.sum(samples) / value
-            np.roll(samples, 1)
+            samples = np.roll(samples, 1)
             i += 1
         except KeyboardInterrupt:
             print('Exiting')
             break
-        if (i % value == 0):
+        if (i % 100 * value == 0):
             print("Filtered value: ", filtered_value, "\n")
             continue
 

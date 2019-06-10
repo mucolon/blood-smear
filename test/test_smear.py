@@ -8,6 +8,7 @@
 # importing libraries
 import time
 import sys
+import numpy as np
 sys.path.insert(0, "/home/debian/blood-smear/lib")
 from ui import UserI
 from stepper import Stepper
@@ -19,8 +20,8 @@ import config
 
 # declaring constants
 # default parameters
-slide_circum = 72  # [mm]
-slide_step = 8  # micro step configuration
+slide_circum = 72.087  # [mm]
+slide_step = 4  # micro step configuration
 default_speed = 160  # [mm/s]
 
 # blade dispensing parameters
@@ -30,6 +31,9 @@ linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
 pulley_dispense_duty = 7
 pulley_off_duty = 0
+force_threshold = 100
+sample_amount = 10
+filtered_amount = 5
 
 # wick parameters
 wick_dist = 21  # [mm] cw (towards home)
@@ -70,22 +74,29 @@ def move2end():
     slide.disable_pulse()
 
 
-def blade(distance):
+def blade(distance, threshold):
     # function: move to smearing blade extension site and extend blade
     # distance: float number of slide linear distance to smearing blade
     #           extension site [mm]
+    # threshold: float number reading off force sensor to stop pulley servo
     slide.enable_pulse()
     slide.move_linear(distance, default_speed, "ccw")
     time.sleep(2)
     linear.update_duty(linear_blade_extend_duty)
     pulley.update_duty(pulley_dispense_duty)
+    force_pwr.output(1)
+    samples = np.array([300] * sample_amount)
+    filtered_value = np.array([300] * filtered_amount)
     while True:
         try:
-            stop = str(input("\nPress enter to stop"))
-        except ValueError:
-            print("Error: Invalid Value")
-            continue
-        if stop == "":
+            samples[0] = force_sig.read_raw()
+            filtered_value[0] = np.sum(samples) / sample_amount
+            samples = np.roll(samples, 1)
+            filtered_value = np.roll(filtered_value, 1)
+        except KeyboardInterrupt:
+            print('Exiting')
+            break
+        if (np.sum(filtered_value) / filtered_amount) <= threshold:
             pulley.update_duty(pulley_off_duty)
             break
         else:
@@ -178,7 +189,7 @@ def main():
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
-    blade(blade_dist)
+    blade(blade_dist, force_threshold)
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
