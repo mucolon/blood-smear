@@ -6,7 +6,7 @@ UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an auto
 
 ## Project Poster
 
-![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Final_Poster_Presentation.pdf)
+![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Final_Poster_Presentation.png)
 
 ## Project Website
 
