@@ -17,8 +17,9 @@ import config
 
 # declaring constants
 stepper_circum = 72.087  # [mm]
-stepper_step = 4  # micro step configuration
+stepper_step = 2  # micro step configuration
 defualt_speed = 100  # [mm/s]
+enable_time = 0.7  # [s]
 
 
 def move2home(speed):
@@ -76,7 +77,7 @@ def side2side():
 
 
 def rotate():
-    # function: moves slide one complete rotation at a time
+    # function: moves slide one complete rotation at a time by step delay input
     while True:
         try:
             response = str(input(
@@ -92,14 +93,12 @@ def rotate():
         elif response == "":
             slide.enable_pulse()
             delay = float(input("Enter step delay [ms]: "))
-            # slide.rotate(1, defualt_speed, "ccw")
             slide.rotate2(1, delay, "ccw")
             slide.disable_pulse()
             continue
         elif response == "b":
             slide.enable_pulse()
             delay = float(input("Enter step delay [ms]: "))
-            # slide.rotate(1, defualt_speed, "cw")
             slide.rotate2(1, delay, "cw")
             slide.disable_pulse()
             continue
@@ -113,7 +112,7 @@ def rotate():
 def velocity():
     # function: moves slide one revolution at input linear velocity
     data = open(r"slide_speed_data.txt", "a")
-    data.write("\n")
+    data.write("\n% microstep = {}\n".format(stepper_step))
     while True:
         try:
             response = str(input("\nEnter linear slide speed [0-10000 mm/s] \
@@ -131,17 +130,18 @@ def velocity():
             print("Error: Input speed cannot be greater than 10000 mm/s")
             continue
         else:
-            speed = float(response)
-            now = time.time()
+            input_speed = float(response)
             slide.enable_pulse()
-            slide.rotate(1, speed, "ccw")
-            slide.disable_pulse()
+            time.sleep(enable_time)
+            now = time.time()
+            slide.rotate(1, input_speed, "ccw")
             future = time.time()
+            slide.disable_pulse()
             time_diff = future - now
             speed = stepper_circum / time_diff
             print(time_diff, "seconds")
             print(speed, "mm/s")
-            data.write("{} {}\n".format(speed, speed))
+            data.write("{} {}\n".format(input_speed, speed))
             input("Press [ENTER] to redo test")
             move2home(defualt_speed)
             continue
