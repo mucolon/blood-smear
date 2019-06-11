@@ -8,7 +8,8 @@ class UserI:
         # function: ask for motor load's speed
         while True:
             try:
-                self.linSpeed = float(input("\nEnter linear travel speed of the motor's load [0-1000 mm/s]: "))
+                self.linSpeed = float(
+                    input("\nEnter linear travel speed of the motor's load [0-1000 mm/s]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -26,7 +27,8 @@ class UserI:
         # function: ask for motor rotations
         while True:
             try:
-                self.rot = float(input("\nEnter amount of motor rotations [0-2.9]: "))
+                self.rot = float(
+                    input("\nEnter amount of motor rotations [0-2.9]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -44,7 +46,6 @@ class UserI:
         # function: ask for motor direction
         while True:
             try:
-                print("\nNo quotation marks necessary")
                 self.dir = str(input("Enter motor direction [cw or ccw]: "))
             except ValueError:
                 print("Error: Invalid Input")
@@ -54,7 +55,9 @@ class UserI:
             elif self.dir == "ccw":
                 break
             else:
-                print("Error: Invalid input\ncw for clockwise\nccw for counter-clockwise")
+                print("Error: Invalid input\
+                    \n[cw] for clockwise\
+                    \n[ccw] for counter-clockwise")
                 continue
         return self.dir
 
@@ -62,7 +65,8 @@ class UserI:
         # function: ask for motor micro step count
         while True:
             try:
-                self.microStep = int(input("\nEnter motor micro step count (enter 0 for help): "))
+                self.microStep = int(
+                    input("\nEnter motor micro step count (enter 0 for help): "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
@@ -71,11 +75,12 @@ class UserI:
                 print("2 micro steps = 400 pulses")
                 print("4 micro steps = 800 pulses")
                 print("8 micro steps = 1600 pulses")
+                print("10 micro steps = 2000 pulses")
                 print("16 micro steps = 3200 pulses")
                 print("32 micro steps = 6400 pulses")
                 print("Check motor driver for configured micro step count")
                 continue
-            elif self.microStep not in (1, 2, 4, 8, 16, 32):
+            elif self.microStep not in (1, 2, 4, 8, 10, 16, 32):
                 print("Error: Invalid value (type 0 for help)")
                 continue
             else:
@@ -86,7 +91,8 @@ class UserI:
         # function: ask for the motor's load linear travel distance
         while True:
             try:
-                self.dist = float(input("Enter linear travel distance of motor's load [0-210 mm]: "))
+                self.dist = float(
+                    input("Enter linear travel distance of motor's load [0-210 mm]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue

@@ -4,6 +4,10 @@
 # run program with this line of code below form home directory (/~)
 # sudo python3 blood-smear/test/test_interrupts.py
 
+'''
+    ######## CODE MAY NOT BE FUNCTIONAL ########
+'''
+
 
 # importing libraries
 import time

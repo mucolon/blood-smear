@@ -18,27 +18,24 @@ import config
 # declaring constants
 stepper_circum = 72.087  # [mm]
 stepper_step = 4  # micro step configuration
-defualt_speed_mms = 200  # [mms]
-defualt_speed_rpm = 190  # [rpm]
+defualt_speed = 100  # [mm/s]
 
 
-def move2home(mms):
+def move2home(speed):
     # function: moves slide to home position
-    # mms: float number for linear travel speed
+    # speed: float number for linear travel speed [mm/s]
     # function return: int 1 to identify slide at home position
-    rpm = slide.convert_mms2rpm(mms)
     while home_switch.read() == 1:
-        slide.move_steps(1, rpm, "cw")
+        slide.move_steps(1, speed, "cw")
     return 1
 
 
-def move2end(mms):
+def move2end(speed):
     # function: moves slide to end position
-    # mms: float number for linear travel speed
+    # speed: float number for linear travel speed [mm/s]
     # function return: int 0 to identify slide at end position
-    rpm = slide.convert_mms2rpm(mms)
     while end_switch.read() == 1:
-        slide.move_steps(1, rpm, "ccw")
+        slide.move_steps(1, speed, "ccw")
     return 0
 
 
@@ -47,26 +44,26 @@ def side2side():
     home = 1
     while True:
         try:
-            input_mms = str(input(
+            input_speed = str(input(
                 "\nEnter linear slide speed [0-10000 mm/s] \
                 \nOR [n] to back out: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
-        if input_mms == "n":
+        if input_speed == "n":
             break
         elif home == 1:
-            mms = float(input_mms)
-            home = move2end(mms)
+            speed = float(input_speed)
+            home = move2end(speed)
             continue
         elif home == 0:
-            mms = float(input_mms)
-            home = move2home(mms)
+            speed = float(input_speed)
+            home = move2home(speed)
             continue
-        elif float(input_mms) < 0:
+        elif float(input_speed) < 0:
             print("Error: Input speed cannot be negative")
             continue
-        elif float(input_mms) > 10000:
+        elif float(input_speed) > 10000:
             print("Error: Input speed cannot be greater than 10000 mm/s")
             continue
         else:
@@ -90,16 +87,16 @@ def rotate():
             break
         elif response == "":
             delay = float(input("Enter step delay [ms]: "))
-            # slide.rotate(1, defualt_speed_rpm, "ccw")
+            # slide.rotate(1, defualt_speed, "ccw")
             slide.rotate2(1, delay, "ccw")
             continue
         elif response == "b":
             delay = float(input("Enter step delay [ms]: "))
-            # slide.rotate(1, defualt_speed_rpm, "cw")
-            slide.rotate2(1, delay, "ccw")
+            # slide.rotate(1, defualt_speed, "cw")
+            slide.rotate2(1, delay, "cw")
             continue
         elif response == "h":
-            move2home(defualt_speed_mms)
+            move2home(defualt_speed)
         else:
             print("Error: Try again")
             continue
@@ -126,18 +123,17 @@ def velocity():
             print("Error: Input speed cannot be greater than 10000 mm/s")
             continue
         else:
-            mms = float(response)
-            rpm = slide.convert_mms2rpm(mms)
+            speed = float(response)
             now = time.time()
-            slide.rotate(1, rpm, "ccw")
+            slide.rotate(1, speed, "ccw")
             future = time.time()
             time_diff = future - now
             speed = stepper_circum / time_diff
             print(time_diff, "seconds")
             print(speed, "mm/s")
-            data.write("{} {}\n".format(mms, speed))
+            data.write("{} {}\n".format(speed, speed))
             input("Press [ENTER] to redo test")
-            move2home(defualt_speed_mms)
+            move2home(defualt_speed)
             continue
 
 
@@ -153,7 +149,7 @@ if __name__ == "__main__":
     # confirming power
     input("Press [ENTER] after motors are connected to power")
 
-    move2home(defualt_speed_mms)
+    move2home(defualt_speed)
 
     while True:
         try:

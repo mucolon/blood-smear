@@ -34,6 +34,26 @@ class Servo:
         # duty: float PWM duty cycle from 0-100
         PWM.set_duty_cycle(self.pul, duty)
 
+    def change_duty(self, start, end, time2turn=2):
+        # function: move servo from a start duty cycle to an end duty cycle
+        # start: float number for starting duty cycle [duty]
+        # end: float number for ending duty cycle [duty]
+        # time2turn: float number for total time for servo to move [s]
+        diff = abs(end - start)
+        time_sleep = time2turn / diff
+        if end > start:
+            angle = start
+            while angle <= end:
+                self.update_duty(angle)
+                time.sleep(time_sleep)
+                angle += 0.5
+        else:
+            angle = end
+            while angle >= start:
+                self.update_duty(angle)
+                time.sleep(time_sleep)
+                angle -= 0.5
+
     def update_angle(self, angle):
         # function: set servo angle
         # angle: float servo angle from (0, max) [degrees]
@@ -44,7 +64,7 @@ class Servo:
         # function: move servo from a start angle to an end angle
         # start: float number for starting angle position [degrees]
         # end: float number for ending angle position [degrees]
-        # time2turn: float number for total time for servo to move
+        # time2turn: float number for total time for servo to move [s]
         diff = abs(end - start)
         time_sleep = time2turn / diff
         if end > start:

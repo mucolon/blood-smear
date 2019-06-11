@@ -22,7 +22,7 @@ import config
 # default parameters
 slide_circum = 72.087  # [mm]
 slide_step = 4  # micro step configuration
-default_speed = 160  # [mm/s]
+default_speed = 90  # [mm/s]
 
 # blade dispensing parameters
 blade_dist = 149.35  # [mm] ccw (towards end)
@@ -37,7 +37,7 @@ filtered_amount = 3
 
 # wick parameters
 wick_dist = 21  # [mm] cw (towards home)
-wick_speed = 90  # [mm/s]
+wick_speed = 80  # [mm/s]
 wick_time = 4  # [sec]
 
 # smear parameters
@@ -127,13 +127,12 @@ def wick(distance, wait_time, manual="no"):
     slide.disable_pulse()
 
 
-def smear(distance, mms_speed):
+def smear(distance, speed):
     # function: move slide for smear
     # distance: float number of slide linear distance for smear [mm]
-    # mms_speed: float number of motor load's linear velocity [mm/s]
+    # speed: float number of motor load's linear velocity [mm/s]
     slide.enable_pulse()
-    rpm = slide.convert_mms2rpm(mms_speed)
-    slide.move_linear(distance, rpm, "ccw")
+    slide.move_linear(distance, speed, "ccw")
     time.sleep(2)
     pulley.update_duty(pulley_retract_duty)
     time.sleep(pulley_retract_time)
@@ -152,13 +151,15 @@ def dry(distance, wait_time, manual="no"):
     slide.enable_pulse()
     slide.move_linear(distance, default_speed, "cw")
     fan.output(1)  # on
-    rotate.update_duty(rotate_eject_duty)
+    # rotate.update_duty(rotate_eject_duty)
+    rotate.change_duty(rotate_neutral_duty, rotate_eject_duty)
     time.sleep(0.5)
     pulley.update_duty(pulley_eject_duty)
     time.sleep(pulley_eject_time)
     pulley.update_duty(pulley_off_duty)
     time.sleep(0.5)
-    rotate.update_duty(rotate_neutral_duty)
+    # rotate.update_duty(rotate_neutral_duty)
+    rotate.change_duty(rotate_eject_duty, rotate_neutral_duty)
     time.sleep(0.5)
     linear.update_duty(linear_blade_retract_duty)
     if manual == "no":
@@ -185,7 +186,7 @@ def main():
 
     # asking for linear speed
     print("\nPlease enter linear speed of smear below")
-    input_mms = slide_ui.linear_speed()
+    input_speed = slide_ui.linear_speed()
 
     # slide loading interface
     print("\nPlease load slide with blood droplet")
@@ -201,7 +202,7 @@ def main():
 
     # smearing blood
     print("\nSmearing blood")
-    smear(smear_dist, input_mms)
+    smear(smear_dist, input_speed)
     print("Completed smear")
 
     # drying blood
