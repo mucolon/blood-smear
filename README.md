@@ -1,9 +1,12 @@
 # blood-smear: A complete repository for a prototype Hematology blood smearing machine (WIP)
 
-![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/complete_final.JPG)
+![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Annotated_Overall_Design.png)
 
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a stepper motor, a TB6600 stepper motor driver, servos, and Python 3.5.3 was used to control this device.
 
+## Project Poster
+
+![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Final_Poster_Presentation.pdf)
 
 ## Project Website
 
@@ -26,7 +29,7 @@ git clone git://github.com/mucolon/blood-smear.git
 A configuration file is used to declare all the used pins on the BeagleBone Black Wireless. Stepper and Servo motor class libraries allows for easy setup and actuation for any number of stepper and servo motors. A GPIO input/output class library sets up pins to output 3.3V or to read binary data. A user-interface class library deals with possible terminal user inputs. Finally, a main script is used to command all of the different motors for the automated smearing process.
 
 ### Flowchart
-![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Overall%20Smear%20Process%20Flowchart%202.0.png?raw=true)
+![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Overall_Smear_Process_Flowchart.png)
 This is a flowchart of the `smear.py` file.
 
 ### File Descriptions

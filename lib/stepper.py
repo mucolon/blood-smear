@@ -12,7 +12,6 @@ class Stepper:
 
     abs_max_speed = 500  # [mm/s]
     pulse_per_microstep = 200
-    # enable_time = 0.7  # [s]
 
     # class initialization also initializes motor
     def __init__(self, pins, circumference, microstep=2):
@@ -75,14 +74,12 @@ class Stepper:
         # speed: float number for stepper load's linear velocity [mm/s]
         # direction: string "cw" for clockwise or
         #            string "ccw" for counter-clockwise
-        # self.enable_pulse()
         if speed > self.max_speed:
             speed = self.max_speed
             print("Input speed was too high, it would have caused unstable pulses")
             print("Max safe speed was assigned ", self.max_speed, " mm/s")
         sleep_time = (self.travel_per_pulse / speed) * 0.3366
         steps = round(rotations * self.pulses)
-        # time.sleep(Stepper.enable_time)
         if direction == "cw":
             GPIO.output(self.dir, GPIO.HIGH)
             for x in range(steps):
@@ -99,7 +96,6 @@ class Stepper:
             print(
                 "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
             print("Please include quotation marks")
-        # self.disable_pulse()
 
     def rotate2(self, rotations, delay, direction):
         # function: move motor by rotations and set time delay
@@ -107,9 +103,7 @@ class Stepper:
         # delay: float number for motor pulse time delay [ms]
         # direction: string "cw" for clockwise or
         #            string "ccw" for counter-clockwise
-        # self.enable_pulse()
         steps = round(rotations * self.pulses)
-        # time.sleep(Stepper.enable_time)
         if direction == "cw":
             GPIO.output(self.dir, GPIO.HIGH)
             for x in range(steps):
@@ -126,7 +120,6 @@ class Stepper:
             print(
                 "Error: Invalid direction sting [\"cw\" for cw or \"ccw\" for ccw]")
             print("Please include quotation marks")
-        # self.disable_pulse()
 
     def move_steps(self, numberOfSteps, speed, direction):
         # function: move motor by amount of steps
@@ -156,5 +149,5 @@ class Stepper:
 
     def cleanup(self):
         # function: cleanup up pins from use
-        self.disable_pulse()
+        GPIO.output(self.ena, GPIO.HIGH)
         GPIO.cleanup()

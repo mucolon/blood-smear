@@ -21,8 +21,9 @@ import config
 # declaring constants
 # default parameters
 slide_circum = 72.087  # [mm]
-slide_step = 4  # micro step configuration
+slide_step = 2  # micro step configuration
 default_speed = 90  # [mm/s]
+default_wait_time = 0.5  # [s]
 
 # blade dispensing parameters
 blade_dist = 149.35  # [mm] ccw (towards end)
@@ -60,18 +61,14 @@ dry_time = 5  # [sec] (optimal value: 150)
 
 def move2home():
     # function: move slide to linear guide motor
-    slide.enable_pulse()
     while home_switch.read() == 1:
         slide.move_steps(1, default_speed, "cw")
-    slide.disable_pulse()
 
 
 def move2end():
     # function: move slide to linear guide end
-    slide.enable_pulse()
     while end_switch.read() == 1:
         slide.move_steps(1, default_speed, "ccw")
-    slide.disable_pulse()
 
 
 def blade(distance, threshold):
@@ -79,11 +76,13 @@ def blade(distance, threshold):
     # distance: float number of slide linear distance to smearing blade
     #           extension site [mm]
     # threshold: float number reading off force sensor to stop pulley servo
-    slide.enable_pulse()
     slide.move_linear(distance, default_speed, "ccw")
-    time.sleep(0.5)
-    linear.update_duty(linear_blade_extend_duty)
-    time.sleep(0.5)
+    time.sleep(default_wait_time)
+
+    linear.change_duty(linear_blade_retract_duty,
+                       linear_blade_extend_duty, 100)
+    time.sleep(default_wait_time)
+
     pulley.update_duty(pulley_dispense_duty)
     force_pwr.output(1)
     samples = np.array([190] * sample_amount)
@@ -102,7 +101,7 @@ def blade(distance, threshold):
             break
         else:
             continue
-    slide.disable_pulse()
+    force_pwr.output(0)
 
 
 def wick(distance, wait_time, manual="no"):
@@ -113,7 +112,6 @@ def wick(distance, wait_time, manual="no"):
     # manual: by default "no" allows time to wick to be preselected
     #         ie. wait_time or
     #         "yes" for manual override
-    slide.enable_pulse()
     slide.move_linear(distance, wick_speed, "cw")
     if manual == "no":
         time.sleep(wait_time)
@@ -124,20 +122,19 @@ def wick(distance, wait_time, manual="no"):
         print("\"no\" to use preselected wicking wait time")
         print("\"yes\" to manually proceed after blood has visually wicked")
         print("Please use quotation marks")
-    slide.disable_pulse()
 
 
 def smear(distance, speed):
     # function: move slide for smear
     # distance: float number of slide linear distance for smear [mm]
     # speed: float number of motor load's linear velocity [mm/s]
-    slide.enable_pulse()
     slide.move_linear(distance, speed, "ccw")
-    time.sleep(2)
+    time.sleep(default_wait_time)
+
     pulley.update_duty(pulley_retract_duty)
     time.sleep(pulley_retract_time)
+
     pulley.update_duty(pulley_off_duty)
-    slide.disable_pulse()
 
 
 def dry(distance, wait_time, manual="no"):
@@ -148,19 +145,22 @@ def dry(distance, wait_time, manual="no"):
     # manual: by default "no" allows time to dry to be preselected
     #         ie. wait_time or
     #         "yes" for manual override
-    slide.enable_pulse()
     slide.move_linear(distance, default_speed, "cw")
     fan.output(1)  # on
     # rotate.update_duty(rotate_eject_duty)
     rotate.change_duty(rotate_neutral_duty, rotate_eject_duty)
-    time.sleep(0.5)
+    time.sleep(default_wait_time)
+
     pulley.update_duty(pulley_eject_duty)
     time.sleep(pulley_eject_time)
+
     pulley.update_duty(pulley_off_duty)
-    time.sleep(0.5)
+    time.sleep(default_wait_time)
+
     # rotate.update_duty(rotate_neutral_duty)
     rotate.change_duty(rotate_eject_duty, rotate_neutral_duty)
-    time.sleep(0.5)
+    time.sleep(default_wait_time)
+
     linear.update_duty(linear_blade_retract_duty)
     if manual == "no":
         time.sleep(wait_time - (1.5 + pulley_eject_time))
@@ -175,13 +175,13 @@ def dry(distance, wait_time, manual="no"):
         print("\"no\" to use preselected drying wait time")
         print("\"yes\" to manually proceed after blood has visually dried")
         print("Please use quotation marks")
-    slide.disable_pulse()
 
 
 def main():
     # function: complete smearing process
 
     # moving slide to start position
+    slide.enable_pulse()
     move2home()
 
     # asking for linear speed
@@ -213,6 +213,7 @@ def main():
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
     move2home()
+    slide.disable_pulse()
 
     # unloading slide
     print("\nUnload slide")

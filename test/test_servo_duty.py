@@ -55,20 +55,14 @@ if __name__ == "__main__":
     while True:
         try:
             input_servo = str(input(
-                "\nEnter servo name [u=unload, r=rotation, l=linear, p=pulley]: "))
+                "\nEnter servo name [r=rotation, l=linear, p=pulley]: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
-        if input_servo == "u":  # unload servo duty: 2.8 - 10 @ 50Hz
-            servo = Servo(config.unload_pin, 180)
-            servo.start(2.8, 10)
-            servo.update_duty(2.8)
-            duty = 2.8
-            break
-        # rotation servo: 1.98 - 12.86 @ 50Hz (7.42 straight)
-        elif input_servo == "r":
+        # rotation servo: 1.98 - 12.85 @ 50Hz (7.415 straight)
+        if input_servo == "r":
             servo = Servo(config.rotation_pin, 180)
-            servo.start(1.98, 12.86)
+            servo.start(1.98, 12.85)
             servo.update_duty(1.98)
             duty = 2.6
             break
