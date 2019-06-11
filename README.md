@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Annotated_Overall_Design.png)
 
-UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a stepper motor, a TB6600 stepper motor driver, servos, and Python 3.5.3 was used to control this device.
+UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a NMEA23 stepper motor, a StepperOnline DM542T stepper motor driver, various servos, and Python 3.5.3 was used to control this device.
 
 ## Project Poster
 
