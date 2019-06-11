@@ -28,7 +28,7 @@ def move2home(speed):
     # function return: int 1 to identify slide at home position
     slide.enable_pulse()
     while home_switch.read() == 1:
-        slide.move_steps(1, speed, "cw")
+        slide.move_steps(1, speed, "ccw")
     slide.disable_pulse()
     return 1
 
@@ -39,7 +39,7 @@ def move2end(speed):
     # function return: int 0 to identify slide at end position
     slide.enable_pulse()
     while end_switch.read() == 1:
-        slide.move_steps(1, speed, "ccw")
+        slide.move_steps(1, speed, "cw")
     slide.disable_pulse()
     return 0
 

@@ -62,13 +62,13 @@ dry_time = 5  # [sec] (optimal value: 150)
 def move2home():
     # function: move slide to linear guide motor
     while home_switch.read() == 1:
-        slide.move_steps(1, default_speed, "cw")
+        slide.move_steps(1, default_speed, "ccw")
 
 
 def move2end():
     # function: move slide to linear guide end
     while end_switch.read() == 1:
-        slide.move_steps(1, default_speed, "ccw")
+        slide.move_steps(1, default_speed, "cw")
 
 
 def blade(distance, threshold):
