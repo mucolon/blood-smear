@@ -25,8 +25,10 @@ def move2home(speed):
     # function: moves slide to home position
     # speed: float number for linear travel speed [mm/s]
     # function return: int 1 to identify slide at home position
+    slide.enable_pulse()
     while home_switch.read() == 1:
         slide.move_steps(1, speed, "cw")
+    slide.disable_pulse()
     return 1
 
 
@@ -34,8 +36,10 @@ def move2end(speed):
     # function: moves slide to end position
     # speed: float number for linear travel speed [mm/s]
     # function return: int 0 to identify slide at end position
+    slide.enable_pulse()
     while end_switch.read() == 1:
         slide.move_steps(1, speed, "ccw")
+    slide.disable_pulse()
     return 0
 
 
@@ -86,14 +90,18 @@ def rotate():
         if response == "n":
             break
         elif response == "":
+            slide.enable_pulse()
             delay = float(input("Enter step delay [ms]: "))
             # slide.rotate(1, defualt_speed, "ccw")
             slide.rotate2(1, delay, "ccw")
+            slide.disable_pulse()
             continue
         elif response == "b":
+            slide.enable_pulse()
             delay = float(input("Enter step delay [ms]: "))
             # slide.rotate(1, defualt_speed, "cw")
             slide.rotate2(1, delay, "cw")
+            slide.disable_pulse()
             continue
         elif response == "h":
             move2home(defualt_speed)
@@ -125,7 +133,9 @@ def velocity():
         else:
             speed = float(response)
             now = time.time()
+            slide.enable_pulse()
             slide.rotate(1, speed, "ccw")
+            slide.disable_pulse()
             future = time.time()
             time_diff = future - now
             speed = stepper_circum / time_diff
