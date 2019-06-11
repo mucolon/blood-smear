@@ -10,8 +10,14 @@ from math import pi
 
 class Stepper:
 
-    abs_max_speed = 500  # [mm/s]
+    abs_max_speed = 400  # [mm/s]
     pulse_per_microstep = 200
+    pre_factor = 0.3366
+    '''
+    The pre_factor constant makes the time delay between steps reflect the speed
+    inputted into the class functions. This constant was determined after some
+    speed test.
+    '''
 
     # class initialization also initializes motor
     def __init__(self, pins, circumference, microstep=2):
@@ -22,9 +28,9 @@ class Stepper:
         #            stepper motor, by default microstep is 2
         '''
         CRITICAL: As microstep count increases max smooth rotational velocity
-                    decreases. ie. 2 microsteps -> 250 mm/s max linear velocity
+                    decreases. ie. 2 microsteps -> 200 mm/s max linear velocity
                     with 72 mm effective motor circumference. The pattern continues
-                    4 microsteps -> 150 mm/s max linear velocity
+                    4 microsteps -> 100 mm/s max linear velocity
         '''
         self.ena = pins["ena"]
         self.dir = pins["dir"]
@@ -78,7 +84,7 @@ class Stepper:
             speed = self.max_speed
             print("Input speed was too high, it would have caused unstable pulses")
             print("Max safe speed was assigned ", self.max_speed, " mm/s")
-        sleep_time = (self.travel_per_pulse / speed) * 0.3366
+        sleep_time = (self.travel_per_pulse / speed) * Stepper.pre_factor
         steps = round(rotations * self.pulses)
         if direction == "cw":
             GPIO.output(self.dir, GPIO.HIGH)
