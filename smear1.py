@@ -36,7 +36,7 @@ pulley_slow_dispense_time = 5  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 18  # [mm] cw (towards home)
+wick_dist = 25  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
@@ -50,8 +50,8 @@ pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 70 + smear_dist / 2  # [mm] cw (towards home)
-dry_time = 20  # [sec] (optimal value: 150)
+dry_dist = 75 + smear_dist / 2  # [mm] cw (towards home)
+dry_time = 30  # [sec] (optimal value: 150)
 
 
 class Smear(Stepper, Digital_Io, Servo):
@@ -209,7 +209,7 @@ class Smear(Stepper, Digital_Io, Servo):
             self.speed = 120
         elif button == 8:
             self.speed = 100
-        self.during_smear
+        self.during_smear()
 
     def start(self):
         # function: displays start screen for device
