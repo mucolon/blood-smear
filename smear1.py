@@ -65,31 +65,31 @@ class Smear(Stepper, Digital_Io, Servo):
             master.winfo_screenwidth() - pad, master.winfo_screenheight() - pad))
         master.title("Blood Smearing Device")
 
-        # initializing  classes and pins
-        self.slide = Stepper.__init__(
-            self, config.slide_pins, slide_circum, slide_step)
-        # slide = self.slide
-        self.home_switch = Digital_Io.__init__(
-            self, config.limit_home_pin, "in")  # NEVER DELETE
-        # home_switch = self.home_switch
-        self.end_switch = Digital_Io.__init__(
-            self, config.limit_end_pin, "in")  # NEVER DELETE
-        # end_switch = self.end_switch
-        self.linear = Servo.__init__(self, config.linear_pin)
-        # linear = self.linear
-        self.pulley = Servo.__init__(self, config.pulley_pin)
-        self.rotate = Servo.__init__(self, config.rotation_pin, 180)
-        self.fan = Digital_Io.__init__(self, config.fan_pin, "out", 0)
-        self.force_pwr = Digital_Io.__init__(
-            self, config.force_pins, "out", 0)  # NEVER DELETE
+        # # initializing  classes and pins
+        # self.slide = Stepper.__init__(
+        #     self, config.slide_pins, slide_circum, slide_step)
+        # # slide = self.slide
+        # self.home_switch = Digital_Io.__init__(
+        #     self, config.limit_home_pin, "in")  # NEVER DELETE
+        # # home_switch = self.home_switch
+        # self.end_switch = Digital_Io.__init__(
+        #     self, config.limit_end_pin, "in")  # NEVER DELETE
+        # # end_switch = self.end_switch
+        # self.linear = Servo.__init__(self, config.linear_pin)
+        # # linear = self.linear
+        # self.pulley = Servo.__init__(self, config.pulley_pin)
+        # self.rotate = Servo.__init__(self, config.rotation_pin, 180)
+        # self.fan = Digital_Io.__init__(self, config.fan_pin, "out", 0)
+        # self.force_pwr = Digital_Io.__init__(
+        #     self, config.force_pins, "out", 0)  # NEVER DELETE
 
-        # initializing pins
-        self.rotate.start(1.98, 12.85)
-        self.rotate.update_duty(rotate_neutral_duty)
-        self.linear.start(10, 5, 50)
-        self.linear.update_duty(linear_blade_retract_duty)
-        self.pulley.start(0, 12.59)
-        self.pulley.update_duty(pulley_off_duty)
+        # # initializing pins
+        # self.rotate.start(1.98, 12.85)
+        # self.rotate.update_duty(rotate_neutral_duty)
+        # self.linear.start(10, 5, 50)
+        # self.linear.update_duty(linear_blade_retract_duty)
+        # self.pulley.start(0, 12.59)
+        # self.pulley.update_duty(pulley_off_duty)
 
     def active_widgets(self):
         # function: lists all active widgets in window
@@ -295,30 +295,30 @@ class Smear(Stepper, Digital_Io, Servo):
 
     def move2home(self):
         # function: move slide to linear guide motor
-        while self.home_switch.read() == 1:
-            self.slide.move_steps(1, default_speed, "ccw")
+        while home_switch.read() == 1:
+            slide.move_steps(1, default_speed, "ccw")
 
     def move2end(self):
         # function: move slide to linear guide end
-        while self.end_switch.read() == 1:
-            self.slide.move_steps(1, default_speed, "cw")
+        while end_switch.read() == 1:
+            slide.move_steps(1, default_speed, "cw")
 
     def blade(self, distance):
         # function: move to smearing blade extension site and extend blade
         # distance: float number of slide linear distance to smearing blade
         #           extension site [mm]
-        self.slide.move_linear(distance, default_speed, "cw")
+        slide.move_linear(distance, default_speed, "cw")
         time.sleep(default_wait_time)
 
-        self.linear.update_duty(linear_blade_extend_duty)
+        linear.update_duty(linear_blade_extend_duty)
         time.sleep(default_wait_time)
 
-        self.rotate.update_duty(rotate_neutral_duty)
-        self.pulley.update_duty(pulley_slow_dispense_duty)
+        rotate.update_duty(rotate_neutral_duty)
+        pulley.update_duty(pulley_slow_dispense_duty)
         time.sleep(pulley_slow_dispense_time)
 
-        self.rotate.update_duty(rotate_neutral_duty)
-        self.pulley.update_duty(pulley_fast_dispense_duty)
+        rotate.update_duty(rotate_neutral_duty)
+        pulley.update_duty(pulley_fast_dispense_duty)
         time.sleep(pulley_fast_dispense_time)
 
         self.pulley.update_duty(pulley_off_duty)
@@ -331,7 +331,7 @@ class Smear(Stepper, Digital_Io, Servo):
         # manual: by default "no" allows time to wick to be preselected
         #         ie. wait_time or
         #         "yes" for manual override
-        self.slide.move_linear(distance, default_speed, "ccw")
+        slide.move_linear(distance, default_speed, "ccw")
         if manual == "no":
             time.sleep(wait_time)
         elif manual == "yes":
@@ -346,13 +346,13 @@ class Smear(Stepper, Digital_Io, Servo):
         # function: move slide for smear
         # distance: float number of slide linear distance for smear [mm]
         # speed: float number of motor load's linear velocity [mm/s]
-        self.slide.move_linear(distance, speed, "cw")
+        slide.move_linear(distance, speed, "cw")
         time.sleep(default_wait_time)
 
-        self.pulley.update_duty(pulley_retract_duty)
+        pulley.update_duty(pulley_retract_duty)
         time.sleep(pulley_retract_time)
 
-        self.pulley.update_duty(pulley_off_duty)
+        pulley.update_duty(pulley_off_duty)
 
     def dry(self, distance, wait_time, manual="no"):
         # function: move slide to drying site and wait for blood to dry
@@ -362,28 +362,28 @@ class Smear(Stepper, Digital_Io, Servo):
         # manual: by default "no" allows time to dry to be preselected
         #         ie. wait_time or
         #         "yes" for manual override
-        self.slide.move_linear(distance, default_speed, "ccw")
-        self.fan.output(1)  # on
-        self.rotate.update_duty(rotate_eject_duty)
+        slide.move_linear(distance, default_speed, "ccw")
+        fan.output(1)  # on
+        rotate.update_duty(rotate_eject_duty)
         time.sleep(default_wait_time)
 
-        self.pulley.update_duty(pulley_eject_duty)
+        pulley.update_duty(pulley_eject_duty)
         time.sleep(pulley_eject_time)
 
-        self.pulley.update_duty(pulley_off_duty)
+        pulley.update_duty(pulley_off_duty)
         time.sleep(default_wait_time)
 
-        self.rotate.update_duty(rotate_neutral_duty)
+        rotate.update_duty(rotate_neutral_duty)
         time.sleep(default_wait_time)
 
-        self.linear.update_duty(linear_blade_retract_duty)
+        linear.update_duty(linear_blade_retract_duty)
         if manual == "no":
             time.sleep(wait_time)
-            self.fan.output(0)  # off
+            fan.output(0)  # off
             print("Blood has dried")
         elif manual == "yes":
             input("\nPress [ENTER] after blood has dried")
-            self.fan.output(0)  # off
+            fan.output(0)  # off
             print("Blood has dried")
         else:
             print("\nError: Invalid string for manual")
@@ -413,16 +413,33 @@ class Smear(Stepper, Digital_Io, Servo):
 
     def cleanup(self):
         # function: cleans up all used pins for motors and sensors
-        self.slide.cleanup()
-        self.home_switch.cleanup()  # NEVER DELETE
-        self.end_switch.cleanup()  # NEVER DELETE
-        self.linear.cleanup()
-        self.pulley.cleanup()
-        self.rotate.cleanup()
-        self.fan.cleanup()
+        slide.cleanup()
+        home_switch.cleanup()  # NEVER DELETE
+        end_switch.cleanup()  # NEVER DELETE
+        linear.cleanup()
+        pulley.cleanup()
+        rotate.cleanup()
+        fan.cleanup()
 
 
 if __name__ == "__main__":
+
+    # initializing  classes and pins
+    slide = Stepper(config.slide_pins, slide_circum, slide_step)
+    home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
+    end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
+    linear = Servo(config.linear_pin)
+    pulley = Servo(config.pulley_pin)
+    rotate = Servo(config.rotation_pin, 180)
+    fan = Digital_Io(config.fan_pin, "out", 0)
+
+    # initializing pins
+    rotate.start(1.98, 12.85)
+    rotate.update_duty(rotate_neutral_duty)
+    linear.start(10, 5)
+    linear.update_duty(linear_blade_retract_duty)
+    pulley.start(0, 12.59)
+    pulley.update_duty(pulley_off_duty)
 
     # setting up gui window
     window = tk.Tk()
