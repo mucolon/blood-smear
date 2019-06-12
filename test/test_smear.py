@@ -14,7 +14,6 @@ from ui import UserI
 from stepper import Stepper
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
-from analog_in import Analog_In  # NEVER DELETE
 import config
 
 
@@ -34,13 +33,9 @@ linear_blade_retract_duty = 10
 pulley_dispense_duty = 2.17
 pulley_dispense_time = 20  # [s]
 pulley_off_duty = 0
-force_threshold = 300
-sample_amount = 10
-filtered_amount = 3
 
 # wick parameters
 wick_dist = 21  # [mm] cw (towards home)
-wick_speed = 80  # [mm/s]
 wick_time = 4  # [s]
 
 # smear parameters
@@ -55,10 +50,7 @@ rotate_eject_duty = 5
 
 # fan parameters
 dry_dist = 56 + smear_dist / 2  # [mm] cw (towards home)
-dry_time = 5  # [sec] (optimal value: 150)
-
-# force_diameter = 25.4E-3  # [m]
-# force_area = pi * ((force_diameter / 2) ** 2)  # [m^2]
+dry_time = 10  # [sec] (optimal value: 150)
 
 
 def move2home():
@@ -68,7 +60,6 @@ def move2home():
     else:
         while home_switch.read() == 1:
             slide.move_steps(1, default_speed, "ccw")
-    slide.disable_pulse()
 
 
 def move2end():
@@ -81,11 +72,10 @@ def blade(distance):
     # function: move to smearing blade extension site and extend blade
     # distance: float number of slide linear distance to smearing blade
     #           extension site [mm]
-    slide.move_linear(distance, default_speed, "ccw")
+    slide.move_linear(distance, default_speed, "cw")
     time.sleep(default_wait_time)
 
-    linear.change_duty(linear_blade_retract_duty,
-                       linear_blade_extend_duty, 100)
+    linear.update_duty(linear_blade_extend_duty)
     time.sleep(default_wait_time)
 
     pulley.update_duty(pulley_dispense_duty)
@@ -102,7 +92,7 @@ def wick(distance, wait_time, manual="no"):
     # manual: by default "no" allows time to wick to be preselected
     #         ie. wait_time or
     #         "yes" for manual override
-    slide.move_linear(distance, wick_speed, "cw")
+    slide.move_linear(distance, default_speed, "ccw")
     if manual == "no":
         time.sleep(wait_time)
     elif manual == "yes":
@@ -118,7 +108,7 @@ def smear(distance, speed):
     # function: move slide for smear
     # distance: float number of slide linear distance for smear [mm]
     # speed: float number of motor load's linear velocity [mm/s]
-    slide.move_linear(distance, speed, "ccw")
+    slide.move_linear(distance, speed, "cw")
     time.sleep(default_wait_time)
 
     pulley.update_duty(pulley_retract_duty)
@@ -135,9 +125,8 @@ def dry(distance, wait_time, manual="no"):
     # manual: by default "no" allows time to dry to be preselected
     #         ie. wait_time or
     #         "yes" for manual override
-    slide.move_linear(distance, default_speed, "cw")
+    slide.move_linear(distance, default_speed, "ccw")
     fan.output(1)  # on
-    # rotate.update_duty(rotate_eject_duty)
     rotate.change_duty(rotate_neutral_duty, rotate_eject_duty)
     time.sleep(default_wait_time)
 
@@ -147,7 +136,6 @@ def dry(distance, wait_time, manual="no"):
     pulley.update_duty(pulley_off_duty)
     time.sleep(default_wait_time)
 
-    # rotate.update_duty(rotate_neutral_duty)
     rotate.change_duty(rotate_eject_duty, rotate_neutral_duty)
     time.sleep(default_wait_time)
 
@@ -171,7 +159,6 @@ def main():
     # function: complete smearing process
 
     # moving slide to start position
-    slide.enable_pulse()
     move2home()
 
     # asking for linear speed
@@ -203,7 +190,6 @@ def main():
     # moving slide to unloading site
     print("\nMoving slide to unloading site")
     move2home()
-    slide.disable_pulse()
 
     # unloading slide
     print("\nUnload slide")
@@ -234,11 +220,11 @@ if __name__ == "__main__":
     fan = Digital_Io(config.fan_pin, "out", 0)
 
     # initializing pins
-    rotate.start(1.98, 12.86)
+    rotate.start(1.98, 12.85)
     rotate.update_duty(rotate_neutral_duty)
     linear.start(10, 5)
     linear.update_duty(linear_blade_retract_duty)
-    pulley.start(0, 7.1)
+    pulley.start(0, 12.59)
     pulley.update_duty(pulley_off_duty)
 
     # confirming power

@@ -43,7 +43,7 @@ class Stepper:
         self.max_speed = Stepper.abs_max_speed / microstep
         GPIO.setup(self.pul, GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup(self.dir, GPIO.OUT)
-        GPIO.setup(self.ena, GPIO.OUT, initial=GPIO.HIGH)
+        GPIO.setup(self.ena, GPIO.OUT, initial=GPIO.LOW)
 
     def disable_pulse(self):
         # function: disable motor from sending pulses

@@ -13,37 +13,47 @@ sys.path.insert(0, "/home/debian/blood-smear/lib")
 from stepper import Stepper
 from servo import Servo
 from digital_io import Digital_Io  # NEVER DELETE
-from analog_in import Analog_In  # NEVER DELETE
 import config
 
 
 # declaring constants
 # default parameters
-slide_circum = 72  # [mm]
-slide_step = 4  # micro step configuration
-default_speed = 150  # [mm/s]
+slide_circum = 72.087  # [mm]
+slide_step = 2  # micro step configuration
+default_speed = 50  # [mm/s]
+default_wait_time = 0.5  # [s]
+inductive_sensor_buffer = 6  # [mm]
 
 # blade dispensing parameters
-dist2blade = 145  # [mm] ccw (towards end)
-blade_neutral_duty = 2.6  # TEST AGAIN!!
+blade_dist = 149.35  # [mm] ccw (towards end)
+rotate_neutral_duty = 7.415
+linear_blade_extend_duty = 5
+linear_blade_retract_duty = 10
+pulley_dispense_duty = 2.17
+pulley_dispense_time = 20  # [s]
+pulley_off_duty = 0
 
 # wick parameters
-dist2wick = 12  # [mm] cw (towards home)
-wick_speed = 90  # [mm/s]
-wick_time = 3  # [sec]
+wick_dist = 21  # [mm] cw (towards home)
+wick_speed = 80  # [mm/s]
+wick_time = 4  # [s]
 
 # smear parameters
-smear_dist = 45  # [mm] ccw (towards end)
+smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
-eject_duty = 5
+pulley_retract_duty = 7.54
+pulley_retract_time = 35  # [s]
+pulley_eject_duty = 2.17
+pulley_eject_time = 5  # [s]
+rotate_eject_duty = 5
 
 # fan parameters
-dist2fan = 50 + smear_dist / 2  # [mm] cw (towards home)
-dry_time = 20  # [sec] (optimal value: 150)
+dry_dist = 56 + smear_dist / 2  # [mm] cw (towards home)
+dry_time = 5  # [sec] (optimal value: 150)
 
 
-class Smear(Stepper, Digital_Io, Servo, Analog_In):
+class Smear(Stepper, Digital_Io, Servo):
 
     def __init__(self, master, boot=0):
         # function: sets up pins for motors and sensors and initializes gui
