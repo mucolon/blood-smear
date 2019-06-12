@@ -184,7 +184,7 @@ def main():
 
     # moving slide to smearing station
     print("\nMoving blood slide to smearing blade")
-    blade(blade_dist, force_threshold)
+    blade(blade_dist)
 
     # blood wicking interface
     print("\nWaiting for blood to wick")
