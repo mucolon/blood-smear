@@ -40,7 +40,7 @@ wick_dist = 18  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
-smear_dist = 47.89  # [mm] ccw (towards end)
+smear_dist = 45  # [mm] ccw (towards end)
 
 # blade ejection parameters
 pulley_retract_duty = 7.85
@@ -50,7 +50,7 @@ pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 60 + smear_dist / 2  # [mm] cw (towards home)
+dry_dist = 70 + smear_dist / 2  # [mm] cw (towards home)
 dry_time = 20  # [sec] (optimal value: 150)
 
 
