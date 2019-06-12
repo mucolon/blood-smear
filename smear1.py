@@ -67,11 +67,15 @@ class Smear(Stepper, Digital_Io, Servo):
 
         # initializing  classes and pins
         self.slide = Stepper(config.slide_pins, slide_circum, slide_step)
+        # slide = self.slide
         self.home_switch = Digital_Io(
             config.limit_home_pin, "in")  # NEVER DELETE
+        # home_switch = self.home_switch
         self.end_switch = Digital_Io(
             config.limit_end_pin, "in")  # NEVER DELETE
+        # end_switch = self.end_switch
         self.linear = Servo(config.linear_pin)
+        # linear = self.linear
         self.pulley = Servo(config.pulley_pin)
         self.rotate = Servo(config.rotation_pin, 180)
         self.fan = Digital_Io(config.fan_pin, "out", 0)
@@ -136,7 +140,7 @@ class Smear(Stepper, Digital_Io, Servo):
             item.grid_forget()
 
         # moving to loading site
-        self.slide.move2home()
+        self.move2home()
 
         self.label_slide = tk.Label(
             self.master, text="Please load slide with blood droplet", font=("Verdana Bold", 24))
@@ -160,7 +164,6 @@ class Smear(Stepper, Digital_Io, Servo):
         self.emergency_button.grid(row=1, columnspan=4, pady=30,
                                    padx=300, ipadx=20, ipady=15)
         self.main()
-        self.smear_done()
 
     def smear_done(self):
         # function: outputs a window stating the smear is complete
@@ -404,6 +407,8 @@ class Smear(Stepper, Digital_Io, Servo):
 
         # moving slide to unloading site
         self.move2home()
+
+        self.smear_done()
 
     def cleanup(self):
         # function: cleans up all used pins for motors and sensors
