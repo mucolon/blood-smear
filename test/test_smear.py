@@ -8,7 +8,6 @@
 # importing libraries
 import time
 import sys
-import numpy as np
 sys.path.insert(0, "/home/debian/blood-smear/lib")
 from ui import UserI
 from stepper import Stepper
@@ -126,7 +125,7 @@ def dry(distance, wait_time, manual="no"):
     #         "yes" for manual override
     slide.move_linear(distance, default_speed, "ccw")
     fan.output(1)  # on
-    rotate.change_duty(rotate_neutral_duty, rotate_eject_duty)
+    rotate.update_duty(rotate_eject_duty)
     time.sleep(default_wait_time)
 
     pulley.update_duty(pulley_eject_duty)
@@ -135,7 +134,7 @@ def dry(distance, wait_time, manual="no"):
     pulley.update_duty(pulley_off_duty)
     time.sleep(default_wait_time)
 
-    rotate.change_duty(rotate_eject_duty, rotate_neutral_duty)
+    rotate.update_duty(rotate_neutral_duty)
     time.sleep(default_wait_time)
 
     linear.update_duty(linear_blade_retract_duty)
