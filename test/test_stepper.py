@@ -179,7 +179,7 @@ def linear():
         elif float(response) > 200:
             print("Error: Distance cannot be greater than 200 mm")
             continue
-        elif (float(response) <= 200) and (float(response) >= 0):
+        else:
             while True:
                 try:
                     direction = str(input("Enter direction [cw or ccw]: "))
@@ -195,9 +195,6 @@ def linear():
                     continue
             distance = float(response)
             slide.move_linear(distance, default_speed, direction)
-        else:
-            print("Error: Try again")
-            continue
 
 
 if __name__ == "__main__":
