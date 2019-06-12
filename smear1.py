@@ -66,21 +66,22 @@ class Smear(Stepper, Digital_Io, Servo):
         master.title("Blood Smearing Device")
 
         # initializing  classes and pins
-        self.slide = Stepper(config.slide_pins, slide_circum, slide_step)
+        self.slide = Stepper.__init__(
+            self, config.slide_pins, slide_circum, slide_step)
         # slide = self.slide
-        self.home_switch = Digital_Io(
-            config.limit_home_pin, "in")  # NEVER DELETE
+        self.home_switch = Digital_Io.__init__(
+            self, config.limit_home_pin, "in")  # NEVER DELETE
         # home_switch = self.home_switch
-        self.end_switch = Digital_Io(
-            config.limit_end_pin, "in")  # NEVER DELETE
+        self.end_switch = Digital_Io.__init__(
+            self, config.limit_end_pin, "in")  # NEVER DELETE
         # end_switch = self.end_switch
-        self.linear = Servo(config.linear_pin)
+        self.linear = Servo.__init__(self, config.linear_pin)
         # linear = self.linear
-        self.pulley = Servo(config.pulley_pin)
-        self.rotate = Servo(config.rotation_pin, 180)
-        self.fan = Digital_Io(config.fan_pin, "out", 0)
-        self.force_pwr = Digital_Io(
-            config.force_pins, "out", 0)  # NEVER DELETE
+        self.pulley = Servo.__init__(self, config.pulley_pin)
+        self.rotate = Servo.__init__(self, config.rotation_pin, 180)
+        self.fan = Digital_Io.__init__(self, config.fan_pin, "out", 0)
+        self.force_pwr = Digital_Io.__init__(
+            self, config.force_pins, "out", 0)  # NEVER DELETE
 
         # initializing pins
         self.rotate.start(1.98, 12.85)
