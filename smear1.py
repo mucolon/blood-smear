@@ -138,7 +138,7 @@ class Smear(Stepper, Digital_Io, Servo):
             self.master, text="Emergency Shutoff", font=("Verdana Bold", 24), command=self.quit)
         self.emergency_button.grid(row=1, columnspan=4, pady=30,
                                    padx=300, ipadx=20, ipady=15)
-        # self.main()
+        self.main()
 
     def smear_done(self):
         # function: outputs a window stating the smear is complete
@@ -148,21 +148,21 @@ class Smear(Stepper, Digital_Io, Servo):
 
         self.label_done = tk.Label(
             self.master, text="Blood smear is complete", font=("Verdana Bold", 24))
-        self.label_done.grid(row=0, columnspan=4, pady=70, padx=300)
+        self.label_done.grid(row=0, columnspan=4, pady=40, padx=200)
         self.label_remove = tk.Label(
             self.master, text="Please remove slide", font=("Verdana Bold", 20))
-        self.label_remove.grid(row=1, columnspan=4, pady=40, padx=300)
+        self.label_remove.grid(row=1, columnspan=4, pady=20, padx=200)
         self.label_continue = tk.Label(
             self.master, text="Do you want to make another blood smear", font=("Verdana Bold", 22))
-        self.label_continue.grid(row=2, columnspan=4, pady=70, padx=300)
+        self.label_continue.grid(row=2, columnspan=4, pady=70, padx=200)
         self.button_another = tk.Button(
             self.master, text="Yes", font=("Verdana Bold", 24), command=self.start)
         self.button_another.grid(
-            row=3, column=0, columnspan=2, ipady=15, ipadx=20, pady=30, padx=150)
+            row=3, column=0, columnspan=2, ipady=15, ipadx=20, pady=30, padx=100)
         self.button_no = tk.Button(
             self.master, text="No", font=("Verdana Bold", 24), command=self.quit)
         self.button_no.grid(row=3, column=2, columnspan=2,
-                            ipady=15, ipadx=20, pady=30, padx=150)
+                            ipady=15, ipadx=20, pady=30, padx=100)
 
     def button_press(self, button):
         # function: checks which button is pressed and passes on linear speed
@@ -184,7 +184,7 @@ class Smear(Stepper, Digital_Io, Servo):
         elif button == 8:
             self.speed = 100
         self.during_smear()
-        self.main()
+        # self.main()
 
     def start(self):
         # function: displays start screen for device
@@ -376,7 +376,7 @@ class Smear(Stepper, Digital_Io, Servo):
         self.wick(wick_dist, wick_time)
 
         # smearing blood
-        self.smear(smear_dist)
+        self.smear(smear_dist, self.speed)
 
         # drying blood
         self.dry(dry_dist, dry_time)
