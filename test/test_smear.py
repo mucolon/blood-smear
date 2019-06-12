@@ -41,7 +41,7 @@ wick_time = 4  # [s]
 smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.54
+pulley_retract_duty = 7.55
 pulley_retract_time = 35  # [s]
 pulley_eject_duty = 2.17
 pulley_eject_time = 5  # [s]

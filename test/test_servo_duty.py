@@ -76,7 +76,7 @@ if __name__ == "__main__":
         #   pulley servo:
         #    stop: 0, 100
         #    ccw: [2.17 - 7.23] (fast - slow) extend blade
-        #    cw: [7.54 - 12.59] (slow - fast) retract blade
+        #    cw: [7.55 - 12.59] (slow - fast) retract blade
         elif input_servo == "p":
             servo = Servo(config.pulley_pin, 180)
             servo.start(0, 8)
