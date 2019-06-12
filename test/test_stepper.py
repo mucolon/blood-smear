@@ -194,7 +194,11 @@ def linear():
                     print("Error: Try again")
                     continue
             distance = float(response)
+            slide.enable_pulse()
+            time.sleep(enable_time)
             slide.move_linear(distance, default_speed, direction)
+            slide.disable_pulse()
+            continue
 
 
 if __name__ == "__main__":
