@@ -25,31 +25,31 @@ default_wait_time = 0.5  # [s]
 inductive_sensor_buffer = 6  # [mm]
 
 # blade dispensing parameters
-blade_dist = 149.35  # [mm] ccw (towards end)
+blade_dist = 145  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
-pulley_dispense_duty = 2.17
+pulley_dispense_duty = 2.3
 pulley_dispense_time = 20  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 21  # [mm] cw (towards home)
+wick_dist = 12  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
 smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.55
+pulley_retract_duty = 7.8
 pulley_retract_time = 35  # [s]
-pulley_eject_duty = 2.17
+pulley_eject_duty = pulley_dispense_duty
 pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 56 + smear_dist / 2  # [mm] cw (towards home)
-dry_time = 10  # [sec] (optimal value: 150)
+dry_dist = 45 + smear_dist / 2  # [mm] cw (towards home)
+dry_time = 20  # [sec] (optimal value: 150)
 
 
 def move2home():
@@ -139,7 +139,7 @@ def dry(distance, wait_time, manual="no"):
 
     linear.update_duty(linear_blade_retract_duty)
     if manual == "no":
-        time.sleep(wait_time - (1.5 + pulley_eject_time))
+        time.sleep(wait_time)
         fan.output(0)  # off
         print("Blood has dried")
     elif manual == "yes":
