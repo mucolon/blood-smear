@@ -18,7 +18,7 @@ import config
 # declaring constants
 stepper_circum = 72.087  # [mm]
 stepper_step = 2  # micro step configuration
-defualt_speed = 100  # [mm/s]
+default_speed = 50  # [mm/s]
 enable_time = 0.7  # [s]
 
 
@@ -27,8 +27,12 @@ def move2home(speed):
     # speed: float number for linear travel speed [mm/s]
     # function return: int 1 to identify slide at home position
     slide.enable_pulse()
-    while home_switch.read() == 1:
-        slide.move_steps(1, speed, "ccw")
+    time.sleep(enable_time)
+    if home_switch.read() == 1:
+        slide.move_linear(5, default_speed, "cw")
+    else:
+        while home_switch.read() == 1:
+            slide.move_steps(1, speed, "ccw")
     slide.disable_pulse()
     return 1
 
@@ -38,8 +42,12 @@ def move2end(speed):
     # speed: float number for linear travel speed [mm/s]
     # function return: int 0 to identify slide at end position
     slide.enable_pulse()
-    while end_switch.read() == 1:
-        slide.move_steps(1, speed, "cw")
+    time.sleep(enable_time)
+    if end_switch.read() == 1:
+        slide.move_linear(5, default_speed, "ccw")
+    else:
+        while end_switch.read() == 1:
+            slide.move_steps(1, speed, "cw")
     slide.disable_pulse()
     return 0
 
@@ -92,18 +100,20 @@ def rotate():
             break
         elif response == "":
             slide.enable_pulse()
+            time.sleep(enable_time)
             delay = float(input("Enter step delay [ms]: "))
             slide.rotate2(1, delay, "ccw")
             slide.disable_pulse()
             continue
         elif response == "b":
             slide.enable_pulse()
+            time.sleep(enable_time)
             delay = float(input("Enter step delay [ms]: "))
             slide.rotate2(1, delay, "cw")
             slide.disable_pulse()
             continue
         elif response == "h":
-            move2home(defualt_speed)
+            move2home(default_speed)
         else:
             print("Error: Try again")
             continue
@@ -143,7 +153,7 @@ def velocity():
             print(speed, "mm/s")
             data.write("{} {}\n".format(input_speed, speed))
             input("Press [ENTER] to redo test")
-            move2home(defualt_speed)
+            move2home(default_speed)
             continue
 
 
@@ -159,7 +169,7 @@ if __name__ == "__main__":
     # confirming power
     input("Press [ENTER] after motors are connected to power")
 
-    move2home(defualt_speed)
+    move2home(default_speed)
 
     while True:
         try:

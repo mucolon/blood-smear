@@ -22,12 +22,12 @@ import config
 # default parameters
 slide_circum = 72.087  # [mm]
 slide_step = 2  # micro step configuration
-default_speed = 90  # [mm/s]
+default_speed = 50  # [mm/s]
 default_wait_time = 0.5  # [s]
 
 # blade dispensing parameters
 blade_dist = 149.35  # [mm] ccw (towards end)
-rotate_neutral_duty = 1.98
+rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
 pulley_dispense_duty = 7
@@ -61,8 +61,12 @@ dry_time = 5  # [sec] (optimal value: 150)
 
 def move2home():
     # function: move slide to linear guide motor
-    while home_switch.read() == 1:
-        slide.move_steps(1, default_speed, "ccw")
+    if home_switch.read() == 1:
+        slide.move_linear(5, default_speed, "cw")
+    else:
+        while home_switch.read() == 1:
+            slide.move_steps(1, default_speed, "ccw")
+    slide.disable_pulse()
 
 
 def move2end():
