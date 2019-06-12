@@ -57,9 +57,8 @@ def move2home():
     # function: move slide to linear guide motor
     if home_switch.read() == 1:
         slide.move_linear(inductive_sensor_buffer, default_speed, "cw")
-    else:
-        while home_switch.read() == 1:
-            slide.move_steps(1, default_speed, "ccw")
+    while home_switch.read() == 1:
+        slide.move_steps(1, default_speed, "ccw")
 
 
 def move2end():
