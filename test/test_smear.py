@@ -29,7 +29,7 @@ blade_dist = 143  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
-pulley_dispense_duty = 2.3
+pulley_dispense_duty = 2.35
 pulley_dispense_time = 20  # [s]
 pulley_off_duty = 0
 
@@ -41,7 +41,7 @@ wick_time = 4  # [s]
 smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.8
+pulley_retract_duty = 7.85
 pulley_retract_time = 8  # [s]
 pulley_eject_duty = pulley_dispense_duty
 pulley_eject_time = 5  # [s]
