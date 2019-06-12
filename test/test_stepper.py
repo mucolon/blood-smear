@@ -170,19 +170,14 @@ def linear():
             continue
         if response == "n":
             break
+        elif response == "h":
+            move2home(default_speed)
+            continue
         elif float(response) < 0:
-            slide.enable_pulse()
-            time.sleep(enable_time)
-            delay = float(input("Enter step delay [ms]: "))
-            slide.rotate2(1, delay, "ccw")
-            slide.disable_pulse()
+            print("Error: Distance cannot be negative")
             continue
         elif float(response) > 200:
-            slide.enable_pulse()
-            time.sleep(enable_time)
-            delay = float(input("Enter step delay [ms]: "))
-            slide.rotate2(1, delay, "cw")
-            slide.disable_pulse()
+            print("Error: Distance cannot be greater than 200 mm")
             continue
         elif (float(response) <= 200) and (float(response) >= 0):
             while True:
@@ -200,8 +195,6 @@ def linear():
                     continue
             distance = float(response)
             slide.move_linear(distance, default_speed, direction)
-        elif response == "h":
-            move2home(default_speed)
         else:
             print("Error: Try again")
             continue
