@@ -9,12 +9,12 @@ class UserI:
         while True:
             try:
                 self.linSpeed = float(
-                    input("\nEnter linear travel speed of the motor's load [0-1000 mm/s]: "))
+                    input("\nEnter linear travel speed of the motor's load [0-200 mm/s]: "))
             except ValueError:
                 print("Error: Invalid Input")
                 continue
-            if self.linSpeed > 1000:
-                print("Error: Max linear speed is 1000 mm/s")
+            if self.linSpeed > 200:
+                print("Error: Max linear speed is 200 mm/s")
                 continue
             elif self.linSpeed < 0:
                 print("Error: Linear speed cannot be negative")

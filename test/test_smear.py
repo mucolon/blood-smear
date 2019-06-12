@@ -24,13 +24,15 @@ slide_circum = 72.087  # [mm]
 slide_step = 2  # micro step configuration
 default_speed = 50  # [mm/s]
 default_wait_time = 0.5  # [s]
+inductive_sensor_buffer = 6  # [mm]
 
 # blade dispensing parameters
 blade_dist = 149.35  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
-pulley_dispense_duty = 7
+pulley_dispense_duty = 2.17
+pulley_dispense_time = 20  # [s]
 pulley_off_duty = 0
 force_threshold = 300
 sample_amount = 10
@@ -39,17 +41,17 @@ filtered_amount = 3
 # wick parameters
 wick_dist = 21  # [mm] cw (towards home)
 wick_speed = 80  # [mm/s]
-wick_time = 4  # [sec]
+wick_time = 4  # [s]
 
 # smear parameters
 smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 12
-pulley_retract_time = 0.6
-pulley_eject_duty = 3
-pulley_eject_time = 3
-rotate_eject_duty = 7
+pulley_retract_duty = 7.54
+pulley_retract_time = 35  # [s]
+pulley_eject_duty = 2.17
+pulley_eject_time = 5  # [s]
+rotate_eject_duty = 5
 
 # fan parameters
 dry_dist = 56 + smear_dist / 2  # [mm] cw (towards home)
@@ -62,7 +64,7 @@ dry_time = 5  # [sec] (optimal value: 150)
 def move2home():
     # function: move slide to linear guide motor
     if home_switch.read() == 1:
-        slide.move_linear(5, default_speed, "cw")
+        slide.move_linear(inductive_sensor_buffer, default_speed, "cw")
     else:
         while home_switch.read() == 1:
             slide.move_steps(1, default_speed, "ccw")
@@ -75,11 +77,10 @@ def move2end():
         slide.move_steps(1, default_speed, "cw")
 
 
-def blade(distance, threshold):
+def blade(distance):
     # function: move to smearing blade extension site and extend blade
     # distance: float number of slide linear distance to smearing blade
     #           extension site [mm]
-    # threshold: float number reading off force sensor to stop pulley servo
     slide.move_linear(distance, default_speed, "ccw")
     time.sleep(default_wait_time)
 
@@ -88,24 +89,9 @@ def blade(distance, threshold):
     time.sleep(default_wait_time)
 
     pulley.update_duty(pulley_dispense_duty)
-    force_pwr.output(1)
-    samples = np.array([190] * sample_amount)
-    filtered_value = np.array([210] * filtered_amount)
-    while True:
-        try:
-            samples[0] = force_sig.read_raw()
-            filtered_value[0] = np.sum(samples) / sample_amount
-            samples = np.roll(samples, 1)
-            filtered_value = np.roll(filtered_value, 1)
-        except KeyboardInterrupt:
-            print('Exiting')
-            break
-        if (np.sum(filtered_value) / filtered_amount) <= threshold:
-            pulley.update_duty(pulley_off_duty)
-            break
-        else:
-            continue
-    force_pwr.output(0)
+    time.sleep(pulley_dispense_time)
+
+    pulley.update_duty(pulley_off_duty)
 
 
 def wick(distance, wait_time, manual="no"):
@@ -246,8 +232,6 @@ if __name__ == "__main__":
     pulley = Servo(config.pulley_pin)
     rotate = Servo(config.rotation_pin, 180)
     fan = Digital_Io(config.fan_pin, "out", 0)
-    force_pwr = Digital_Io(config.force_pins, "out", 0)  # NEVER DELETE
-    force_sig = Analog_In(config.force_pins)  # NEVER DELETE
 
     # initializing pins
     rotate.start(1.98, 12.86)

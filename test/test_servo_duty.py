@@ -59,20 +59,25 @@ if __name__ == "__main__":
         except ValueError:
             print("Error: Invalid Input")
             continue
-        # rotation servo: 1.98 - 12.85 @ 50Hz (7.415 straight)
+        # rotation servo: 1.98 - 12.85 @ 50Hz (7.415 straight) (5 trash bin)
         if input_servo == "r":
             servo = Servo(config.rotation_pin, 180)
             servo.start(1.98, 12.85)
-            servo.update_duty(1.98)
+            servo.update_duty(7.415)
             duty = 2.6
             break
-        elif input_servo == "l":  # linear servo: 5 extended, 10 retracted @ 50Hz
+        # linear servo: 5 extended, 10 retracted @ 50Hz
+        elif input_servo == "l":
             servo = Servo(config.linear_pin, 180)
             servo.start(10, 5)
             servo.update_duty(10)
             duty = 10
             break
-        elif input_servo == "p":  # pulley servo: 0 stops, 7.1 good slow speed @ 50Hz
+        #   pulley servo:
+        #    stop: 0, 100
+        #    ccw: [2.17 - 7.23] (fast - slow) extend blade
+        #    cw: [7.54 - 12.59] (slow - fast) retract blade
+        elif input_servo == "p":
             servo = Servo(config.pulley_pin, 180)
             servo.start(0, 8)
             servo.update_duty(0)

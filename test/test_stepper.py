@@ -53,7 +53,7 @@ def move2end(speed):
 
 
 def side2side():
-    # function: moves slide side to side
+    # function: moves slide side to side with input linear velocity
     home = 1
     while True:
         try:
@@ -85,7 +85,7 @@ def side2side():
 
 
 def rotate():
-    # function: moves slide one complete rotation at a time by step delay input
+    # function: moves slide one complete rotation with input linear velocity
     while True:
         try:
             response = str(input(
@@ -120,12 +120,12 @@ def rotate():
 
 
 def velocity():
-    # function: moves slide one revolution at input linear velocity
+    # function: moves slide one revolution with input linear velocity
     data = open(r"slide_speed_data.txt", "a")
     data.write("\n% microstep = {}\n".format(stepper_step))
     while True:
         try:
-            response = str(input("\nEnter linear slide speed [0-10000 mm/s] \
+            response = str(input("\nEnter linear slide speed [0-200 mm/s] \
                 \nOR [n] to back out: "))
         except ValueError:
             print("Error: Invalid Input")
@@ -136,8 +136,8 @@ def velocity():
         elif float(response) < 0:
             print("Error: Input speed cannot be negative")
             continue
-        elif float(response) > 10000:
-            print("Error: Input speed cannot be greater than 10000 mm/s")
+        elif float(response) > 200:
+            print("Error: Input speed cannot be greater than 200 mm/s")
             continue
         else:
             input_speed = float(response)
@@ -154,6 +154,56 @@ def velocity():
             data.write("{} {}\n".format(input_speed, speed))
             input("Press [ENTER] to redo test")
             move2home(default_speed)
+            continue
+
+
+def linear():
+    # function: moves slide with input linear distance
+    while True:
+        try:
+            response = str(input(
+                "\nEnter linear slide travel distance [0-200 mm] \
+                \nOR [h] to move back to home \
+                \nOR [n] to back out: "))
+        except ValueError:
+            print("Error: Invalid Input")
+            continue
+        if response == "n":
+            break
+        elif float(response) < 0:
+            slide.enable_pulse()
+            time.sleep(enable_time)
+            delay = float(input("Enter step delay [ms]: "))
+            slide.rotate2(1, delay, "ccw")
+            slide.disable_pulse()
+            continue
+        elif float(response) > 200:
+            slide.enable_pulse()
+            time.sleep(enable_time)
+            delay = float(input("Enter step delay [ms]: "))
+            slide.rotate2(1, delay, "cw")
+            slide.disable_pulse()
+            continue
+        elif (float(response) <= 200) and (float(response) >= 0):
+            while True:
+                try:
+                    direction = str(input("Enter direction [cw or ccw]: "))
+                except ValueError:
+                    print("Error: Invalid Input")
+                    continue
+                if direction == "cw":
+                    break
+                elif direction == "ccw":
+                    break
+                else:
+                    print("Error: Try again")
+                    continue
+            distance = float(response)
+            slide.move_linear(distance, default_speed, direction)
+        elif response == "h":
+            move2home(default_speed)
+        else:
+            print("Error: Try again")
             continue
 
 
@@ -174,8 +224,9 @@ if __name__ == "__main__":
     while True:
         try:
             response = str(
-                input("\nEnter test name [s=side2side, r=rotation, v=velocity] \
-                    \nOR [n] to exit program: "))
+                input("\nEnter test name [s=side2side, r=rotation, v=velocity, l=linear] \
+                    \nOR [n] to exit program \
+                    \nOR [h] for help: "))
         except ValueError:
             print("Error: Invalid Input")
             continue
@@ -187,8 +238,15 @@ if __name__ == "__main__":
             continue
         elif response == "v":
             velocity()
+        elif response == "l":
+            linear()
         elif response == "n":
             break
+        elif response == "h":
+            print("side2side: Moves slide side to slide with input speed")
+            print("rotation: Moves slide with input rotations")
+            print("velocity: Moves slide 1 rotation with input speed and records data")
+            print("linear: Moves slide with input linear distance")
         else:
             print("Error: Try again")
             continue
