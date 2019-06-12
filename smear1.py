@@ -159,6 +159,8 @@ class Smear(Stepper, Digital_Io, Servo):
             self.master, text="Emergency Shutoff", font=("Verdana Bold", 24), command=self.quit)
         self.emergency_button.grid(row=1, columnspan=4, pady=30,
                                    padx=300, ipadx=20, ipady=15)
+        self.main()
+        self.smear_done()
 
     def smear_done(self):
         # function: outputs a window stating the smear is complete
@@ -203,6 +205,7 @@ class Smear(Stepper, Digital_Io, Servo):
             self.speed = 120
         elif button == 8:
             self.speed = 100
+        self.during_smear
 
     def start(self):
         # function: displays start screen for device
@@ -386,9 +389,6 @@ class Smear(Stepper, Digital_Io, Servo):
 
     def main(self):
         # function: complete smearing process
-
-        # moving slide to start position
-        self.move2home()
 
         # moving slide to smearing station
         self.blade(blade_dist)
