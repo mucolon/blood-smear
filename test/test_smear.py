@@ -48,7 +48,7 @@ pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 45 + smear_dist / 2  # [mm] cw (towards home)
+dry_dist = 60 + smear_dist / 2  # [mm] cw (towards home)
 dry_time = 20  # [sec] (optimal value: 150)
 
 
