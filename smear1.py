@@ -31,12 +31,12 @@ linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
 pulley_fast_dispense_duty = 2.35
 pulley_slow_dispense_duty = 7
-pulley_fast_dispense_time = 20  # [s]
+pulley_fast_dispense_time = 10  # [s]
 pulley_slow_dispense_time = 5  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 25  # [mm] cw (towards home)
+wick_dist = 20  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
@@ -64,32 +64,6 @@ class Smear(Stepper, Digital_Io, Servo):
         master.geometry("{0}x{1}+0+0".format(
             master.winfo_screenwidth() - pad, master.winfo_screenheight() - pad))
         master.title("Blood Smearing Device")
-
-        # # initializing  classes and pins
-        # self.slide = Stepper.__init__(
-        #     self, config.slide_pins, slide_circum, slide_step)
-        # # slide = self.slide
-        # self.home_switch = Digital_Io.__init__(
-        #     self, config.limit_home_pin, "in")  # NEVER DELETE
-        # # home_switch = self.home_switch
-        # self.end_switch = Digital_Io.__init__(
-        #     self, config.limit_end_pin, "in")  # NEVER DELETE
-        # # end_switch = self.end_switch
-        # self.linear = Servo.__init__(self, config.linear_pin)
-        # # linear = self.linear
-        # self.pulley = Servo.__init__(self, config.pulley_pin)
-        # self.rotate = Servo.__init__(self, config.rotation_pin, 180)
-        # self.fan = Digital_Io.__init__(self, config.fan_pin, "out", 0)
-        # self.force_pwr = Digital_Io.__init__(
-        #     self, config.force_pins, "out", 0)  # NEVER DELETE
-
-        # # initializing pins
-        # self.rotate.start(1.98, 12.85)
-        # self.rotate.update_duty(rotate_neutral_duty)
-        # self.linear.start(10, 5, 50)
-        # self.linear.update_duty(linear_blade_retract_duty)
-        # self.pulley.start(0, 12.59)
-        # self.pulley.update_duty(pulley_off_duty)
 
     def active_widgets(self):
         # function: lists all active widgets in window
@@ -164,7 +138,7 @@ class Smear(Stepper, Digital_Io, Servo):
             self.master, text="Emergency Shutoff", font=("Verdana Bold", 24), command=self.quit)
         self.emergency_button.grid(row=1, columnspan=4, pady=30,
                                    padx=300, ipadx=20, ipady=15)
-        self.main()
+        # self.main()
 
     def smear_done(self):
         # function: outputs a window stating the smear is complete
@@ -210,6 +184,7 @@ class Smear(Stepper, Digital_Io, Servo):
         elif button == 8:
             self.speed = 100
         self.during_smear()
+        self.main()
 
     def start(self):
         # function: displays start screen for device
@@ -321,7 +296,7 @@ class Smear(Stepper, Digital_Io, Servo):
         pulley.update_duty(pulley_fast_dispense_duty)
         time.sleep(pulley_fast_dispense_time)
 
-        self.pulley.update_duty(pulley_off_duty)
+        pulley.update_duty(pulley_off_duty)
 
     def wick(self, distance, wait_time, manual="no"):
         # function: move to wicking site and wait for wick to finish
