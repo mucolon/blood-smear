@@ -19,21 +19,17 @@ import config
 stepper_circum = 72.087  # [mm]
 stepper_step = 2  # micro step configuration
 default_speed = 50  # [mm/s]
-enable_time = 0.7  # [s]
 
 
 def move2home(speed):
     # function: moves slide to home position
     # speed: float number for linear travel speed [mm/s]
     # function return: int 1 to identify slide at home position
-    slide.enable_pulse()
-    time.sleep(enable_time)
     if home_switch.read() == 1:
         slide.move_linear(5, default_speed, "cw")
     else:
         while home_switch.read() == 1:
             slide.move_steps(1, speed, "ccw")
-    slide.disable_pulse()
     return 1
 
 
@@ -41,14 +37,11 @@ def move2end(speed):
     # function: moves slide to end position
     # speed: float number for linear travel speed [mm/s]
     # function return: int 0 to identify slide at end position
-    slide.enable_pulse()
-    time.sleep(enable_time)
     if end_switch.read() == 1:
         slide.move_linear(5, default_speed, "ccw")
     else:
         while end_switch.read() == 1:
             slide.move_steps(1, speed, "cw")
-    slide.disable_pulse()
     return 0
 
 
@@ -99,18 +92,12 @@ def rotate():
         if response == "n":
             break
         elif response == "":
-            slide.enable_pulse()
-            time.sleep(enable_time)
             delay = float(input("Enter step delay [ms]: "))
             slide.rotate2(1, delay, "ccw")
-            slide.disable_pulse()
             continue
         elif response == "b":
-            slide.enable_pulse()
-            time.sleep(enable_time)
             delay = float(input("Enter step delay [ms]: "))
             slide.rotate2(1, delay, "cw")
-            slide.disable_pulse()
             continue
         elif response == "h":
             move2home(default_speed)
@@ -141,12 +128,9 @@ def velocity():
             continue
         else:
             input_speed = float(response)
-            slide.enable_pulse()
-            time.sleep(enable_time)
             now = time.time()
             slide.rotate(1, input_speed, "ccw")
             future = time.time()
-            slide.disable_pulse()
             time_diff = future - now
             speed = stepper_circum / time_diff
             print(time_diff, "seconds")
@@ -194,10 +178,7 @@ def linear():
                     print("Error: Try again")
                     continue
             distance = float(response)
-            slide.enable_pulse()
-            time.sleep(enable_time)
             slide.move_linear(distance, default_speed, direction)
-            slide.disable_pulse()
             continue
 
 
