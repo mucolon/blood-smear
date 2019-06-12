@@ -25,7 +25,7 @@ default_wait_time = 0.5  # [s]
 inductive_sensor_buffer = 6  # [mm]
 
 # blade dispensing parameters
-blade_dist = 145  # [mm] ccw (towards end)
+blade_dist = 143  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
@@ -34,7 +34,7 @@ pulley_dispense_time = 20  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 12  # [mm] cw (towards home)
+wick_dist = 18  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
@@ -42,7 +42,7 @@ smear_dist = 47.89  # [mm] ccw (towards end)
 
 # blade ejection parameters
 pulley_retract_duty = 7.8
-pulley_retract_time = 35  # [s]
+pulley_retract_time = 8  # [s]
 pulley_eject_duty = pulley_dispense_duty
 pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
@@ -76,6 +76,7 @@ def blade(distance):
     linear.update_duty(linear_blade_extend_duty)
     time.sleep(default_wait_time)
 
+    rotate.update_duty(rotate_neutral_duty)
     pulley.update_duty(pulley_dispense_duty)
     time.sleep(pulley_dispense_time)
 
