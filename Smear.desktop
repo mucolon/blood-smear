@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Smear
+GenericName=Smear
+Comment=Start blood smearing program
+Exec=python3 /home/debian/blood-smear/smear1.py
+Icon=utilities-terminal
+Type=Application
+Categories=Application
