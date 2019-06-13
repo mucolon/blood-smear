@@ -1,14 +1,14 @@
 # smear.py
-# This is code for a basic smear
+# This is code for making a blood smear
 #
 # run program with this line of code below from home directory (/~)
-# sudo python3 blood-smear/smear.py
+# python3 blood-smear/smear.py
 
 
 # importing libraries
-import tkinter as tk
 import time
 import sys
+import tkinter as tk
 sys.path.insert(0, "/home/debian/blood-smear/lib")
 from stepper import Stepper
 from servo import Servo
@@ -22,71 +22,47 @@ slide_circum = 72.087  # [mm]
 slide_step = 2  # micro step configuration
 default_speed = 50  # [mm/s]
 default_wait_time = 0.5  # [s]
-inductive_sensor_buffer = 6  # [mm]
 
 # blade dispensing parameters
-blade_dist = 149.35  # [mm] ccw (towards end)
+blade_dist = 134.5  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
-pulley_dispense_duty = 2.17
-pulley_dispense_time = 20  # [s]
+pulley_fast_dispense_duty = 2.2
+pulley_slow_dispense_duty = 7
+pulley_fast_dispense_time = 12  # [s]
+pulley_slow_dispense_time = 8  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 21  # [mm] cw (towards home)
-wick_speed = 80  # [mm/s]
+wick_dist = 25.5  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
-smear_dist = 47.89  # [mm] ccw (towards end)
+smear_dist = 43.5  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.54
-pulley_retract_time = 35  # [s]
-pulley_eject_duty = 2.17
+pulley_retract_duty = 8
+pulley_retract_time = 8  # [s]
+pulley_eject_duty = pulley_fast_dispense_duty
 pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 56 + smear_dist / 2  # [mm] cw (towards home)
-dry_time = 5  # [sec] (optimal value: 150)
+dry_dist = 70 + smear_dist / 2  # [mm] cw (towards home)
+dry_time = 30  # [sec] (optimal value: 150)
 
 
 class Smear(Stepper, Digital_Io, Servo):
 
-    def __init__(self, master, boot=0):
+    def __init__(self, master):
         # function: sets up pins for motors and sensors and initializes gui
         # master: variable name for gui window
-        # boot: int 0 to declare start of program
         self.master = master
         pad = 3
         master.geometry("{0}x{1}+0+0".format(
             master.winfo_screenwidth() - pad, master.winfo_screenheight() - pad))
         master.title("Blood Smearing Device")
-        self.boot = boot
-
-        # initializing  classes and pins
-        self.slide = Stepper(config.slide_pins, slide_circum, slide_step)
-        self.home_switch = Digital_Io(
-            config.limit_home_pin, "in")  # NEVER DELETE
-        self.end_switch = Digital_Io(
-            config.limit_end_pin, "in")  # NEVER DELETE
-        self.linear = Servo(config.linear_pin)
-        self.pulley = Servo(config.pulley_pin)
-        self.rotate = Servo(config.rotation_pin, 180)
-        self.fan = Digital_Io(config.fan_pin, "out", 0)
-        self.force_pwr = Digital_Io(
-            config.force_pins, "out", 0)  # NEVER DELETE
-        self.force_sig = Analog_In(config.force_pins)  # NEVER DELETE
-
-        # initializing pins
-        self.rotate.start(1.98, 12.86, 50)
-        self.rotate.update_duty(blade_neutral_duty)
-        self.linear.start(10, 5, 50)
-        self.linear.update_duty(10)
-        self.pulley.start(0, 7.1, 50)
-        self.pulley.update_duty(0)
 
     def active_widgets(self):
         # function: lists all active widgets in window
@@ -105,11 +81,11 @@ class Smear(Stepper, Digital_Io, Servo):
 
         self.label_power_on = tk.Label(
             self.master, text="Please turn switch on", font=("Verdana Bold", 24))
-        self.label_power_on.grid(row=0, columnspan=4, pady=70, padx=300)
+        self.label_power_on.grid(row=0, columnspan=4, pady=70, padx=310)
         self.button_power_on = tk.Button(
-            self.master, text="Okay", font=("Verdana Bold", 24))
+            self.master, text="Okay", font=("Verdana Bold", 24), command=self.load_slide)
         self.button_power_on.grid(row=1, columnspan=4, pady=30,
-                                  padx=300, ipadx=20, ipady=15)
+                                  padx=310, ipadx=20, ipady=15)
 
     def power_off(self):
         # function: outputs a window to turn off motor switch
@@ -137,13 +113,16 @@ class Smear(Stepper, Digital_Io, Servo):
         for item in widget_list:
             item.grid_forget()
 
+        # moving to loading site
+        self.move2home()
+
         self.label_slide = tk.Label(
             self.master, text="Please load slide with blood droplet", font=("Verdana Bold", 24))
-        self.label_slide.grid(row=0, columnspan=4, pady=70, padx=300)
+        self.label_slide.grid(row=0, columnspan=4, pady=70, padx=230)
         self.button_slide = tk.Button(
-            self.master, text="Okay", font=("Verdana Bold", 24), command=self.during_smear)
+            self.master, text="Okay", font=("Verdana Bold", 24), command=self.start)
         self.button_slide.grid(row=1, columnspan=4, pady=30,
-                               padx=300, ipadx=20, ipady=15)
+                               padx=180, ipadx=20, ipady=15)
 
     def during_smear(self):
         # function: outputs a window during smearing process
@@ -158,6 +137,7 @@ class Smear(Stepper, Digital_Io, Servo):
             self.master, text="Emergency Shutoff", font=("Verdana Bold", 24), command=self.quit)
         self.emergency_button.grid(row=1, columnspan=4, pady=30,
                                    padx=300, ipadx=20, ipady=15)
+        self.main()
 
     def smear_done(self):
         # function: outputs a window stating the smear is complete
@@ -167,25 +147,29 @@ class Smear(Stepper, Digital_Io, Servo):
 
         self.label_done = tk.Label(
             self.master, text="Blood smear is complete", font=("Verdana Bold", 24))
-        self.label_done.grid(row=0, columnspan=4, pady=70, padx=300)
+        self.label_done.grid(row=0, columnspan=4, pady=40, padx=200)
         self.label_remove = tk.Label(
             self.master, text="Please remove slide", font=("Verdana Bold", 20))
-        self.label_remove.grid(row=1, columnspan=4, pady=40, padx=300)
+        self.label_remove.grid(row=1, columnspan=4, pady=20, padx=200)
         self.label_continue = tk.Label(
             self.master, text="Do you want to make another blood smear", font=("Verdana Bold", 22))
-        self.label_continue.grid(row=2, columnspan=4, pady=70, padx=300)
+        self.label_continue.grid(row=2, columnspan=4, pady=70, padx=200)
         self.button_another = tk.Button(
             self.master, text="Yes", font=("Verdana Bold", 24), command=self.start)
         self.button_another.grid(
-            row=3, column=0, columnspan=2, ipady=15, ipadx=20, pady=30, padx=150)
+            row=3, column=0, columnspan=2, ipady=15, ipadx=20, pady=30, padx=100)
         self.button_no = tk.Button(
             self.master, text="No", font=("Verdana Bold", 24), command=self.quit)
         self.button_no.grid(row=3, column=2, columnspan=2,
-                            ipady=15, ipadx=20, pady=30, padx=150)
+                            ipady=15, ipadx=20, pady=30, padx=100)
 
     def button_press(self, button):
         # function: checks which button is pressed and passes on linear speed
         # button: int number for button
+        widget_list = self.active_widgets()
+        for item in widget_list:
+            item.grid_forget()
+
         if button == 1:
             self.speed = 180
         elif button == 2:
@@ -202,9 +186,8 @@ class Smear(Stepper, Digital_Io, Servo):
             self.speed = 120
         elif button == 8:
             self.speed = 100
-        if self.boot == 0:
-            self.power_on()
-            self.boot += 1
+        self.during_smear()
+        # self.main()
 
     def start(self):
         # function: displays start screen for device
@@ -290,40 +273,33 @@ class Smear(Stepper, Digital_Io, Servo):
 
     def move2home(self):
         # function: move slide to linear guide motor
-        self.slide.enable_pulse()
-        while self.home_switch.read() == 1:
-            self.slide.move_steps(1, default_speed, "cw")
-        self.slide.disable_pulse()
+        while home_switch.read() == 1:
+            slide.move_steps(1, default_speed, "ccw")
 
     def move2end(self):
         # function: move slide to linear guide end
-        self.slide.enable_pulse()
-        while self.end_switch.read() == 1:
-            self.slide.move_steps(1, default_speed, "ccw")
-        self.slide.disable_pulse()
+        while end_switch.read() == 1:
+            slide.move_steps(1, default_speed, "cw")
 
     def blade(self, distance):
         # function: move to smearing blade extension site and extend blade
         # distance: float number of slide linear distance to smearing blade
         #           extension site [mm]
-        self.slide.enable_pulse()
-        self.slide.move_linear(distance, default_speed, "ccw")
-        time.sleep(2)
-        self.linear.update_duty(5)  # extended
-        self.pulley.update_duty(7)  # slow speed
-        while True:
-            try:
-                stop = str(input("\nPress enter to stop"))
-            except ValueError:
-                print("Error: Invalid Value")
-                continue
-            if stop == "":
-                self.pulley.update_duty(0)  # off
-                self.linear.update_duty(10)  # retracted
-                break
-            else:
-                continue
-        self.slide.disable_pulse()
+        slide.move_linear(distance, default_speed, "cw")
+        time.sleep(default_wait_time)
+
+        linear.update_duty(linear_blade_extend_duty)
+        time.sleep(default_wait_time)
+
+        rotate.update_duty(rotate_neutral_duty)
+        pulley.update_duty(pulley_slow_dispense_duty)
+        time.sleep(pulley_slow_dispense_time)
+
+        rotate.update_duty(rotate_neutral_duty)
+        pulley.update_duty(pulley_fast_dispense_duty)
+        time.sleep(pulley_fast_dispense_time)
+
+        pulley.update_duty(pulley_off_duty)
 
     def wick(self, distance, wait_time, manual="no"):
         # function: move to wicking site and wait for wick to finish
@@ -333,28 +309,28 @@ class Smear(Stepper, Digital_Io, Servo):
         # manual: by default "no" allows time to wick to be preselected
         #         ie. wait_time or
         #         "yes" for manual override
-        self.slide.enable_pulse()
-        self.slide.move_linear(distance, wick_speed, "cw")
+        slide.move_linear(distance, default_speed, "ccw")
         if manual == "no":
             time.sleep(wait_time)
         elif manual == "yes":
-            input("\nPress any key after blood has wicked")
+            input("\nPress [ENTER] after blood has wicked")
         else:
             print("\nError: Invalid string for manual")
             print("\"no\" to use preselected wicking wait time")
             print("\"yes\" to manually proceed after blood has visually wicked")
             print("Please use quotation marks")
-        self.slide.disable_pulse()
 
-    def smear(self, distance):
+    def smear(self, distance, speed):
         # function: move slide for smear
         # distance: float number of slide linear distance for smear [mm]
-        # mms_speed: float number of motor load's linear velocity [mm/s]
-        self.slide.enable_pulse()
-        rpm = self.slide.convert_mms2rpm(self.speed)
-        self.slide.move_linear(distance, rpm, "ccw")
-        self.time.sleep(2)
-        self.slide.disable_pulse()
+        # speed: float number of motor load's linear velocity [mm/s]
+        slide.move_linear(distance, speed, "cw")
+        time.sleep(default_wait_time)
+
+        pulley.update_duty(pulley_retract_duty)
+        time.sleep(pulley_retract_time)
+
+        pulley.update_duty(pulley_off_duty)
 
     def dry(self, distance, wait_time, manual="no"):
         # function: move slide to drying site and wait for blood to dry
@@ -364,67 +340,89 @@ class Smear(Stepper, Digital_Io, Servo):
         # manual: by default "no" allows time to dry to be preselected
         #         ie. wait_time or
         #         "yes" for manual override
-        self.slide.enable_pulse()
-        self.slide.move_linear(distance, default_speed, "cw")
-        self.fan.output(1)  # on
-        self.rotate.update_duty(eject_duty)  # turns ccw
-        self.pulley.update_duty(5)  # on
-        time.sleep(5)
-        self.pulley.update_duty(0)  # off
-        self.rotate.update_duty(blade_neutral_duty)
+        slide.move_linear(distance, default_speed, "ccw")
+        fan.output(1)  # on
+        rotate.update_duty(rotate_eject_duty)
+        time.sleep(default_wait_time)
+
+        pulley.update_duty(pulley_eject_duty)
+        time.sleep(pulley_eject_time)
+
+        pulley.update_duty(pulley_off_duty)
+        time.sleep(default_wait_time)
+
+        rotate.update_duty(rotate_neutral_duty)
+        time.sleep(default_wait_time)
+
+        linear.update_duty(linear_blade_retract_duty)
         if manual == "no":
             time.sleep(wait_time)
-            self.fan.output(0)  # off
+            fan.output(0)  # off
             print("Blood has dried")
         elif manual == "yes":
-            input("\nPress any key after blood has dried")
-            self.fan.output(0)  # off
+            input("\nPress [ENTER] after blood has dried")
+            fan.output(0)  # off
             print("Blood has dried")
         else:
             print("\nError: Invalid string for manual")
             print("\"no\" to use preselected drying wait time")
             print("\"yes\" to manually proceed after blood has visually dried")
             print("Please use quotation marks")
-        self.slide.disable_pulse()
 
     def main(self):
         # function: complete smearing process
 
-        # moving slide to start position
-        self.move2home()
-
         # moving slide to smearing station
-        self.blade(dist2blade)
+        self.blade(blade_dist)
 
         # blood wicking interface
-        self.wick(dist2wick, wick_time)
+        self.wick(wick_dist, wick_time)
 
         # smearing blood
-        self.smear(smear_dist)
+        self.smear(smear_dist, self.speed)
 
         # drying blood
-        self.dry(dist2fan, dry_time)
+        self.dry(dry_dist, dry_time)
 
         # moving slide to unloading site
         self.move2home()
 
+        self.smear_done()
+
     def cleanup(self):
         # function: cleans up all used pins for motors and sensors
-        self.slide.cleanup()
-        self.home_switch.cleanup()  # NEVER DELETE
-        self.end_switch.cleanup()  # NEVER DELETE
-        self.linear.cleanup()
-        self.pulley.cleanup()
-        self.rotate.cleanup()
-        self.fan.cleanup()
+        slide.cleanup()
+        home_switch.cleanup()  # NEVER DELETE
+        end_switch.cleanup()  # NEVER DELETE
+        linear.cleanup()
+        pulley.cleanup()
+        rotate.cleanup()
+        fan.cleanup()
 
 
 if __name__ == "__main__":
+
+    # initializing  classes and pins
+    slide = Stepper(config.slide_pins, slide_circum, slide_step)
+    home_switch = Digital_Io(config.limit_home_pin, "in")  # NEVER DELETE
+    end_switch = Digital_Io(config.limit_end_pin, "in")  # NEVER DELETE
+    linear = Servo(config.linear_pin)
+    pulley = Servo(config.pulley_pin)
+    rotate = Servo(config.rotation_pin, 180)
+    fan = Digital_Io(config.fan_pin, "out", 0)
+
+    # initializing pins
+    rotate.start(1.98, 12.85)
+    rotate.update_duty(rotate_neutral_duty)
+    linear.start(10, 5)
+    linear.update_duty(linear_blade_retract_duty)
+    pulley.start(0, 12.59)
+    pulley.update_duty(pulley_off_duty)
 
     # setting up gui window
     window = tk.Tk()
     smear = Smear(window)
 
     # complete smearing process
-    smear.start()
+    smear.power_on()
     window.mainloop()
