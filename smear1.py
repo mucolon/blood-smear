@@ -24,25 +24,25 @@ default_speed = 50  # [mm/s]
 default_wait_time = 0.5  # [s]
 
 # blade dispensing parameters
-blade_dist = 140  # [mm] ccw (towards end)
+blade_dist = 137  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
-pulley_fast_dispense_duty = 2.19
-pulley_slow_dispense_duty = 7.21
+pulley_fast_dispense_duty = 2.2
+pulley_slow_dispense_duty = 7.1
 pulley_fast_dispense_time = 12  # [s]
 pulley_slow_dispense_time = 8  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 20  # [mm] cw (towards home)
+wick_dist = 21  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
 smear_dist = 45  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.7
+pulley_retract_duty = 7.8
 pulley_retract_time = 8  # [s]
 pulley_eject_duty = pulley_fast_dispense_duty
 pulley_eject_time = 5  # [s]
@@ -118,11 +118,11 @@ class Smear(Stepper, Digital_Io, Servo):
 
         self.label_slide = tk.Label(
             self.master, text="Please load slide with blood droplet", font=("Verdana Bold", 24))
-        self.label_slide.grid(row=0, columnspan=4, pady=70, padx=250)
+        self.label_slide.grid(row=0, columnspan=4, pady=70, padx=230)
         self.button_slide = tk.Button(
             self.master, text="Okay", font=("Verdana Bold", 24), command=self.start)
         self.button_slide.grid(row=1, columnspan=4, pady=30,
-                               padx=250, ipadx=20, ipady=15)
+                               padx=230, ipadx=20, ipady=15)
 
     def during_smear(self):
         # function: outputs a window during smearing process
