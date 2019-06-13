@@ -10,5 +10,4 @@ Type=Application
 Categories=Application
 
 # command to move file to Desktop
-
 # cp /home/debian/blood-smear/Smear.desktop /home/debian/Desktop/Smear.desktop

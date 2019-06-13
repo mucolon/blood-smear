@@ -30,8 +30,8 @@ linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
 pulley_fast_dispense_duty = 2.2
 pulley_slow_dispense_duty = 7
-pulley_fast_dispense_time = 12  # [s]
-pulley_slow_dispense_time = 8  # [s]
+pulley_fast_dispense_time = 18  # [s]
+pulley_slow_dispense_time = 5  # [s]
 pulley_off_duty = 0
 
 # wick parameters
