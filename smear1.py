@@ -22,15 +22,14 @@ slide_circum = 72.087  # [mm]
 slide_step = 2  # micro step configuration
 default_speed = 50  # [mm/s]
 default_wait_time = 0.5  # [s]
-inductive_sensor_buffer = 6  # [mm]
 
 # blade dispensing parameters
 blade_dist = 143  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
-pulley_fast_dispense_duty = 2.35
-pulley_slow_dispense_duty = 7
+pulley_fast_dispense_duty = 2.19
+pulley_slow_dispense_duty = 7.21
 pulley_fast_dispense_time = 10  # [s]
 pulley_slow_dispense_time = 5  # [s]
 pulley_off_duty = 0
@@ -43,7 +42,7 @@ wick_time = 4  # [s]
 smear_dist = 45  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.85
+pulley_retract_duty = 7.57
 pulley_retract_time = 8  # [s]
 pulley_eject_duty = pulley_fast_dispense_duty
 pulley_eject_time = 5  # [s]
@@ -167,6 +166,10 @@ class Smear(Stepper, Digital_Io, Servo):
     def button_press(self, button):
         # function: checks which button is pressed and passes on linear speed
         # button: int number for button
+        widget_list = self.active_widgets()
+        for item in widget_list:
+            item.grid_forget()
+
         if button == 1:
             self.speed = 180
         elif button == 2:
