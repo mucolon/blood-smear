@@ -29,7 +29,7 @@ rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
 pulley_fast_dispense_duty = 2.2
-pulley_slow_dispense_duty = 7.1
+pulley_slow_dispense_duty = 7
 pulley_fast_dispense_time = 12  # [s]
 pulley_slow_dispense_time = 8  # [s]
 pulley_off_duty = 0
@@ -39,10 +39,10 @@ wick_dist = 25  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
-smear_dist = 45  # [mm] ccw (towards end)
+smear_dist = 44  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 7.8
+pulley_retract_duty = 8
 pulley_retract_time = 8  # [s]
 pulley_eject_duty = pulley_fast_dispense_duty
 pulley_eject_time = 5  # [s]
