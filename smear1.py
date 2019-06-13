@@ -35,11 +35,11 @@ pulley_slow_dispense_time = 8  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 25  # [mm] cw (towards home)
+wick_dist = 25.5  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
-smear_dist = 44  # [mm] ccw (towards end)
+smear_dist = 43.5  # [mm] ccw (towards end)
 
 # blade ejection parameters
 pulley_retract_duty = 8
