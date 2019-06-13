@@ -43,13 +43,13 @@ smear_dist = 43.5  # [mm] ccw (towards end)
 
 # blade ejection parameters
 pulley_retract_duty = 8.5
-pulley_retract_time = 8  # [s]
+pulley_retract_time = 6.5  # [s]
 pulley_eject_duty = pulley_fast_dispense_duty
 pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 65 + smear_dist / 2  # [mm] cw (towards home)
+dry_dist = 62 + smear_dist / 2  # [mm] cw (towards home)
 dry_time = 30  # [sec] (optimal value: 150)
 
 
@@ -80,7 +80,7 @@ class Smear(Stepper, Digital_Io, Servo):
             item.grid_forget()
 
         self.label_power_on = tk.Label(
-            self.master, text="Please turn switch on", font=("Verdana Bold", 24))
+            self.master, text="Please turn power switch on", font=("Verdana Bold", 24))
         self.label_power_on.grid(row=0, columnspan=4, pady=70, padx=310)
         self.button_power_on = tk.Button(
             self.master, text="Okay", font=("Verdana Bold", 24), command=self.load_slide)
@@ -118,7 +118,7 @@ class Smear(Stepper, Digital_Io, Servo):
 
         self.label_slide = tk.Label(
             self.master, text="Please load slide with blood droplet", font=("Verdana Bold", 24))
-        self.label_slide.grid(row=0, columnspan=4, pady=70, padx=230)
+        self.label_slide.grid(row=0, columnspan=4, pady=70, padx=150)
         self.button_slide = tk.Button(
             self.master, text="Okay", font=("Verdana Bold", 24), command=self.start)
         self.button_slide.grid(row=1, columnspan=4, pady=30,
