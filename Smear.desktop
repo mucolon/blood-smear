@@ -1,10 +1,14 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Name=Smear
-GenericName=Smear
+Name=Blood Smear
+GenericName=Blood Smear
 Comment=Start blood smearing program
 Exec=python3 /home/debian/blood-smear/smear.py
 Icon=utilities-terminal
 Type=Application
 Categories=Application
+
+# command to move file to Desktop
+
+# mv /home/debian/blood-smear/Smear.desktop /home/debian/Desktop/Smear.desktop

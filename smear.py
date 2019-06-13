@@ -35,21 +35,21 @@ pulley_slow_dispense_time = 8  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 25.5  # [mm] cw (towards home)
+wick_dist = 25  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
 smear_dist = 43.5  # [mm] ccw (towards end)
 
 # blade ejection parameters
-pulley_retract_duty = 8
+pulley_retract_duty = 8.5
 pulley_retract_time = 8  # [s]
 pulley_eject_duty = pulley_fast_dispense_duty
 pulley_eject_time = 5  # [s]
 rotate_eject_duty = 5
 
 # fan parameters
-dry_dist = 70 + smear_dist / 2  # [mm] cw (towards home)
+dry_dist = 65 + smear_dist / 2  # [mm] cw (towards home)
 dry_time = 30  # [sec] (optimal value: 150)
 
 
@@ -122,7 +122,7 @@ class Smear(Stepper, Digital_Io, Servo):
         self.button_slide = tk.Button(
             self.master, text="Okay", font=("Verdana Bold", 24), command=self.start)
         self.button_slide.grid(row=1, columnspan=4, pady=30,
-                               padx=180, ipadx=20, ipady=15)
+                               padx=150, ipadx=20, ipady=15)
 
     def during_smear(self):
         # function: outputs a window during smearing process
