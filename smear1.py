@@ -24,7 +24,7 @@ default_speed = 50  # [mm/s]
 default_wait_time = 0.5  # [s]
 
 # blade dispensing parameters
-blade_dist = 137  # [mm] ccw (towards end)
+blade_dist = 135  # [mm] ccw (towards end)
 rotate_neutral_duty = 7.415
 linear_blade_extend_duty = 5
 linear_blade_retract_duty = 10
@@ -35,7 +35,7 @@ pulley_slow_dispense_time = 8  # [s]
 pulley_off_duty = 0
 
 # wick parameters
-wick_dist = 21  # [mm] cw (towards home)
+wick_dist = 25  # [mm] cw (towards home)
 wick_time = 4  # [s]
 
 # smear parameters
@@ -81,11 +81,11 @@ class Smear(Stepper, Digital_Io, Servo):
 
         self.label_power_on = tk.Label(
             self.master, text="Please turn switch on", font=("Verdana Bold", 24))
-        self.label_power_on.grid(row=0, columnspan=4, pady=70, padx=300)
+        self.label_power_on.grid(row=0, columnspan=4, pady=70, padx=310)
         self.button_power_on = tk.Button(
             self.master, text="Okay", font=("Verdana Bold", 24), command=self.load_slide)
         self.button_power_on.grid(row=1, columnspan=4, pady=30,
-                                  padx=300, ipadx=20, ipady=15)
+                                  padx=310, ipadx=20, ipady=15)
 
     def power_off(self):
         # function: outputs a window to turn off motor switch
@@ -122,7 +122,7 @@ class Smear(Stepper, Digital_Io, Servo):
         self.button_slide = tk.Button(
             self.master, text="Okay", font=("Verdana Bold", 24), command=self.start)
         self.button_slide.grid(row=1, columnspan=4, pady=30,
-                               padx=230, ipadx=20, ipady=15)
+                               padx=200, ipadx=20, ipady=15)
 
     def during_smear(self):
         # function: outputs a window during smearing process
