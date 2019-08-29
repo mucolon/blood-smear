@@ -1,4 +1,4 @@
-# blood-smear: A complete repository for a prototype Hematology blood smearing machine (WIP)
+# blood-smear: A complete repository for a prototype Hematology blood smearing machine
 
 ![alt text](https://github.com/mucolon/blood-smear/blob/master/Media/Annotated_Overall_Design.png)
 
