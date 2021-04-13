@@ -4,6 +4,12 @@
 
 UCSD MAE 156 Spring 2019 Team 18 Project. This project involves building an automated blood smearing machine for Hematology studies. A BeagleBone Black Wireless, a NMEA23 stepper motor, a StepperOnline DM542T stepper motor driver, various servos, and Python 3.5.3 was used to control this device.
 
+## Proof of Concept Demonstration
+
+[![Proof of Concept Demonstration](https://img.youtube.com/vi/9ZaU937I_Ds/0.jpg)](https://youtu.be/9ZaU937I_Ds)
+
+*Click the image above to view a recorded test run*
+
 ## Project Poster
 
 <img src="Media/Final_Poster_Presentation.png" style="zoom: 33%;" />
